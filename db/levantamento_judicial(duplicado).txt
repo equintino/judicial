@@ -1,0 +1,9 @@
+duplicado(levantamento_judicial)
+
+('0133.93.03.00005694', 'Joel Inacio dos Anjos', 'Josefa Barbosa de Melo', '5.000,00', '10.387,87', '', '', 'PROVAVEL', 'CARLA', 272),
+('0123.93.03.00000763', 'Jose Ribamar Silva', 'Jadson Alves Silva', '9.418,79', '7.706,29', '', '', 'PROVAVEL', 'CARLA', 313),
+('0123.93.03.00000763', 'Jose Ribamar Silva', 'Norma Muniz Silva', '9.418,79', '7.706,29', '', '', 'PROVAVEL', 'CARLA', 315),
+('0123.93.03.00000763', 'Jose Ribamar Silva', 'Sandoval Muniz Silva', '15.000,00', '7.706,29', '', '', 'PROVAVEL', 'CARLA', 316),
+('0133.93.03.00004268', 'JOSÉ TAVARES MONTENEGRO', 'Lucia Maria de Carvalho Montenegro', '33.854,10', '13.870,83', '', '', 'PROVAVEL', 'CARLA', 321),
+('0152.93.03.00000312', 'Rita Cortez de Lima', 'Antonio Cortez Lima', '1', '25.101,70', '', '', 'PROVAVEL', 'ANA', 459),
+('0121.93.03.00000047', 'Tereza Cristina Rufino Cal', 'Tereza Cristina Rufino Cal', '0', '9.401,25', '0', '', 'PROVAVEL', 'ANA', 498),

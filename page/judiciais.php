@@ -29,13 +29,19 @@ header('Content-type: text/html; charset=UTF-8');
     $Oraclesearch=new OracleSearchCriteria();
     
     $Judidao=new JudiDao();
+    $Judisearch=new JudiSearchCriteria();
     //$oracle=new Odbc();die;
     
     //print_r($Odbcsearch);die;
     
     //print_r(get_class_methods($Judidao));die;
     
-    print_r($Judidao->listaProvavel2($Todosearch));die;
+    $judis=$Judidao->listaProvavel2($Judisearch);
+    
+    echo "<pre>";
+    print_r($judis);
+    echo "</pre>";
+    die;
     
     /*
     //print_r($Tododao->find5());die;

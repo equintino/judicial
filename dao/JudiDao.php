@@ -14,6 +14,7 @@
  * @author equintino
  */
 class JudiDao {
+    private $db = null;
     
     private function getDb2() {
         if ($this->db !== null) {
@@ -27,19 +28,61 @@ class JudiDao {
         }
         return $this->db;
     }
-    public function listaProvavel2(TodoSearchCriteria $Todosearch = null) {
-        $rows = $this->query("SELECT * FROM provavel_contabilizada LEFT JOIN (levantamento_judicial INNER JOIN geral_henrique) ON provavel_contabilizada.SEGURADO = levantamento_judicial.SEGURADO ORDER BY `levantamento_judicial`.`SINISTRO`  ASC") ->fetchAll();
-        print_r($row);die;
+    public function listaProvavel2(JudiSearchCriteria $Judisearch = null) {
+     $sql="SELECT * FROM provavel_contabilizada LEFT JOIN (levantamento_judicial INNER JOIN geral_henrique) ON provavel_contabilizada.SEGURADO_con = levantamento_judicial.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Segurado_con` ASC LIMIT 0,10";
+     $sql="SELECT * FROM levantamento_judicial INNER JOIN geral_henrique ON levantamento_judicial.SEGURADO_lev=geral_henrique.TITULAR_h ORDER BY `levantamento_judicial`.`SEGURADO_lev` ASC";
+     $sql="SELECT * FROM levantamento_henrique ORDER BY `SEGURADO_lev` ASC";
+     $rows = $this->query($sql) ->fetchAll();
+ /*
+        /// Criando arquivo com segurados administratativo ///
+            $filename_='arquivos/judicial.csv';
+            $handle_=fopen($filename_, 'w+');
+            $texto_="Numero_CNJ_Antigo_con;Natureza_con;UF_con;Parte_contraria_con;Segurado_con;Valor_con;Honorarios_con;id_con;SINISTRO_lev;SEGURADO_lev;PARTE_CONTRARIA_lev;VALOR_PEDIDO_lev;VALOR_ADMINISTRATIVO_lev;HONORARIOS_lev;POSSIVEL_lev;PROVAVEL_lev;DIGITADOR_lev;id_lev;APOLICE_h;ENDOSSO_h;SINISTRO_h;DT_AVISO_h;TITULAR_h;CPF_h;IMPORTANCIA_SEGURADA_h;CORRECAO_IGPM_h;CORRECAO_TR_h;id_h\r\n";
+            fwrite($handle_, $texto_);
+        /// continua ///
+  */
+     //foreach($rows as $item){ 
+      /*
+      TodoValidator::removePonto($item['Valor_con']);
+      TodoValidator::removePonto($item['Honorarios_con']);
+      TodoValidator::removePonto($item['VALOR_PEDIDO_lev']);
+      TodoValidator::removePonto($item['VALOR_ADMINISTRATIVO_lev']);
+      TodoValidator::removePonto($item['HONORARIOS_lev']);
+      TodoValidator::removePonto($item['IMPORTANCIA_SEGURADA_h']);
+      TodoValidator::removePonto($item['CORRECAO_IGPM_h']);
+      TodoValidator::removePonto($item['CORRECAO_TR_h']);
+       */
+      
+       // echo "<pre>";
+       // print_r($item);
+       // echo "</pre>";
+    // }die;
+   /*     
+        /// continuacao ///
+           $texto_=$item['Numero_CNJ_Antigo_con'].";".$item['Natureza_con'].";".$item['UF_con'].";".$item['Parte_contraria_con'].";".$item['Segurado_con'].";".number_format($item['Valor_con'],'2',',','.').";".number_format($item['Honorarios_con'],'2',',','.').";".$item['id_con'].";".$item['SINISTRO_lev'].";".$item['SEGURADO_lev'].";".$item['PARTE_CONTRARIA_lev'].";".number_format($item['VALOR_PEDIDO_lev'],'2',',','.').";".number_format($item['VALOR_ADMINISTRATIVO_lev'],'2',',','.').";".number_format($item['HONORARIOS_lev'],'2',',','.').";".$item['POSSIVEL_lev'].";".$item['PROVAVEL_lev'].";".$item['DIGITADOR_lev'].";".$item['id_lev'].";".$item['APOLICE_h'].";".$item['ENDOSSO_h'].";".$item['SINISTRO_h'].";".$item['DT_AVISO_h'].";".$item['TITULAR_h'].";".$item['CPF_h'].";".number_format($item['IMPORTANCIA_SEGURADA_h'],'2',',','.').";".number_format($item['CORRECAO_IGPM_h'],'2',',','.').";".number_format($item['CORRECAO_TR_h'],'2',',','.').";".$item['id_h']."\r\n";
+           fwrite($handle_, $texto_);
+    * 
+    */
+    //}
+           //fclose($handle_);
+           //unset($texto_);die;
+        /// continua ///
+        
         //if (!$row) {
             //return null;
         //}
-        $todo = new Todo();
+        $judi = new Judi();
+        //print_r($judi);die;
         foreach($rows as $row){
-            TodoMapper::map($todo, $row);
-            $todos[]=$row;
+         //print_r($judi);
+         //echo "<br><br>";
+            JudiMapper::map($judi, $row);
+            $result[] = $judi;
         }
-        //print_r($todos);die;
-        return $todos;
+            //print_r($judi);die;
+            //echo "<br><br>";
+        //print_r($result);die;
+        return $result;
     }
     public function query($sql) {
             set_time_limit(3600);

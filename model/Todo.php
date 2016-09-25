@@ -2,7 +2,8 @@
 /**
  * Model class representing one TODO item.
  */
-final class Todo {
+//final 
+class Todo {
 
     // priority
     const PRIORITY_IMEDIATA = 0;
