@@ -21,7 +21,7 @@ final class Index {
         set_exception_handler(array($this, 'handleException'));
         spl_autoload_register(array($this, 'loadClass'));
         // session
-        session_start();
+        //session_start();
     }
 //     Run the application!
     public function run() {

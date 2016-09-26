@@ -14,7 +14,8 @@ and open the template in the editor.
         <div class="relatorio">
             <?php 
                   echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-                  echo "<tr><th>N&uacute;mero CNJ Antigo</th><th>Natureza</th><th>UF</th><th>PARTE CONTR&Aacute;RIA</th><th>Segurado</th><th>Valor</th><th>Honor&aacute;rios</th><th>SINISTRO</th><th>SEGURADO</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>VALOR ADMINISTRATIVO</th><th>HONOR&Aacute;RIOS</th><th>PROV&Aacute;VEL</th><th>DIGITADOR</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRO</th><th>DATA AVISO</th><th>TITULAR</th><th>CPF</th><th>IMPORT&Acirc;NCIA SEGURADA</th><th>CORRE&Ccedil;&Atilde;O IGPM</th><th>CORRE&Ccedil;&Atilde;O</th><tr>";
+                  echo "<tr><th>N&uacute;mero CNJ Antigo</th><th>Natureza</th><th>UF</th><th>PARTE CONTR&Aacute;RIA</th><th>Segurado</th><th>Valor</th><th>Honor&aacute;rios</th><th>SINISTRO</th><th>SEGURADO</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>VALOR ADMINISTRATIVO</th><th>HONOR&Aacute;RIOS</th><th>PROV&Aacute;VEL</th><th>DIGITADOR</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRO</th><th>DATA AVISO</th><th>TITULAR</th><th>CPF</th><th>IMPORT&Acirc;NCIA SEGURADA</th><th>CORRE&Ccedil;&Atilde;O IGPM</th><th>CORRE&Ccedil;&Atilde;O TR</th><tr>";
+                  $Segurado_con_old=null;
                 foreach($judis as $provavel){
                  //print_r($provavel->getSINISTRO_lev());
                  //echo " - ";
@@ -33,7 +34,11 @@ and open the template in the editor.
                      echo $provavel->getUF_con();
                      echo "</td><td>";
                      echo $provavel->getParte_contraria_con();
-                     echo "</td><td>";
+                     if($Segurado_con_old==$provavel->getSegurado_con()&&$Segurado_con_old!=null){
+                        echo "</td><td bgcolor=yellow>";
+                     }else{
+                        echo "</td><td>"; 
+                     }
                      echo $provavel->getSegurado_con();
                      echo "</td><td>";
                      echo $provavel->getValor_con();
@@ -73,7 +78,8 @@ and open the template in the editor.
                      echo $provavel->getCORRECAO_IGPM_h();
                      echo "</td><td>";
                      echo $provavel->getCORRECAO_TR_h();
-                     echo "</td>";     
+                     echo "</td>"; 
+                     $Segurado_con_old=$provavel->getSegurado_con();
                 }
                 echo "</tr></table>";
             ?>
