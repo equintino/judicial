@@ -30,6 +30,7 @@ class Judi extends Todo{
    private $CORRECAO_IGPM_h;
    private $CORRECAO_TR_h;
    private $id_h;
+   private $id;
    
    
     public function getNumero_CNJ_Antigo_con(){
@@ -199,5 +200,11 @@ class Judi extends Todo{
     }
     public function setid_h($id_h){
         $this->id_h = $id_h;
+    }
+    public function getid(){
+        return $this->id;
+    }
+    public function setid($id){
+        $this->id = $id;
     }
 }

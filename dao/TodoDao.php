@@ -1,5 +1,5 @@
 <?php
-final class TodoDao {
+ class TodoDao {
     //extends PDOStatement
     /** @var PDO */
     private $db = null;

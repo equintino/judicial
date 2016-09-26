@@ -38,11 +38,12 @@ header('Content-type: text/html; charset=UTF-8');
     
     $judis=$Judidao->listaProvavel2($Judisearch);
     
-    echo "<pre>";
-    print_r($judis);
-    echo "</pre>";
-    die;
+    //echo "<pre>";
+    //print_r($judis);
+    //echo "</pre>";
+    //die;
     
+    //die;
     /*
     //print_r($Tododao->find5());die;
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -74,7 +75,7 @@ header('Content-type: text/html; charset=UTF-8');
       die;
      * 
      */
-      
+    /*  
     @$sinistro= $_POST['num_sinistro'];
     if(@!$sinistro){
        @$sinistro= $_GET['num_sinistro']; 
@@ -134,6 +135,7 @@ header('Content-type: text/html; charset=UTF-8');
     //print_r($todos);
     //echo "<br><br>";
     //print_r($oracles);die;
+    /*
     $x=0;
     if($todos){
      //echo "existe todos";die;
@@ -187,4 +189,6 @@ header('Content-type: text/html; charset=UTF-8');
     //echo "<br><br>";
     //print_r($search);
     echo "</div>";
+     * 
+     */
 ?>

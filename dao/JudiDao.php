@@ -13,7 +13,7 @@
  *
  * @author equintino
  */
-class JudiDao {
+class JudiDao extends TodoDao{
     private $db = null;
     
     private function getDb2() {
@@ -32,6 +32,7 @@ class JudiDao {
      $sql="SELECT * FROM provavel_contabilizada LEFT JOIN (levantamento_judicial INNER JOIN geral_henrique) ON provavel_contabilizada.SEGURADO_con = levantamento_judicial.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Segurado_con` ASC LIMIT 0,10";
      $sql="SELECT * FROM levantamento_judicial INNER JOIN geral_henrique ON levantamento_judicial.SEGURADO_lev=geral_henrique.TITULAR_h ORDER BY `levantamento_judicial`.`SEGURADO_lev` ASC";
      $sql="SELECT * FROM levantamento_henrique ORDER BY `SEGURADO_lev` ASC";
+     $sql="SELECT * FROM provavel_contabilizada LEFT JOIN levantamento_henrique ON provavel_contabilizada.SEGURADO_con = levantamento_henrique.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Segurado_con` ASC ";
      $rows = $this->query($sql) ->fetchAll();
  /*
         /// Criando arquivo com segurados administratativo ///
@@ -71,17 +72,11 @@ class JudiDao {
         //if (!$row) {
             //return null;
         //}
-        $judi = new Judi();
-        //print_r($judi);die;
         foreach($rows as $row){
-         //print_r($judi);
-         //echo "<br><br>";
+         $judi = new Judi();
             JudiMapper::map($judi, $row);
             $result[] = $judi;
         }
-            //print_r($judi);die;
-            //echo "<br><br>";
-        //print_r($result);die;
         return $result;
     }
     public function query($sql) {

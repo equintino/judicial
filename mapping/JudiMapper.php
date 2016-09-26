@@ -6,6 +6,9 @@ class JudiMapper {
         if (array_key_exists('id_h', $properties)) {
             $judi->setid_h($properties['id_h']);
         }
+        if (array_key_exists('Numero_CNJ_Antigo_con', $properties)) {
+            $judi->setNumero_CNJ_Antigo_con($properties['Numero_CNJ_Antigo_con']);
+        }
         if (array_key_exists('CORRECAO_TR_h', $properties)) {
             $judi->setCORRECAO_TR_h($properties['CORRECAO_TR_h']);
         }
@@ -87,6 +90,9 @@ class JudiMapper {
         if (array_key_exists('Numero_CNJ_Antigo_con', $properties)){
             $judi->setNumero_CNJ_Antigo_con($properties['Numero_CNJ_Antigo_con']);
         }  
+        if (array_key_exists('id', $properties)){
+            $judi->setid($properties['id']);
+        } 
     }
 }
 
