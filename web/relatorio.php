@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -6,26 +6,80 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Relat&oacute;rio</title>
+        <title>Relat&oacuterio</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script>
+    function total($x){
+        var x='Total de processos encontrados ('+$x+')';
+        document.getElementById('total').innerHTML=x;
+    }
+</script>
+<?php  
+    include '../dao/TodoDao.php';
+    include '../dao/TodoSearchCriteria.php';
+    include '../dao/JudiDao.php';
+    include '../dao/JudiSearchCriteria.php';
+    include '../config/config.php';
+    include '../model/Judi.php';
+    include '../model/Todo.php';
+
+    $Tododao=new TodoDao();
+    $Todosearch=new TodoSearchCriteria();
+    //$Odbcdao=new OdbcDao();
+    //$Odbcsearch=new OdbcSearchCriteria();
+    //$Oracledao=new OracleDao();
+    //$Oraclesearch=new OracleSearchCriteria();
+    
+    $Judidao=new JudiDao();
+    $Judisearch=new JudiSearchCriteria();
+    
+    $judis=$Judidao->listaProvavel2($Judisearch);
+?>
+        
     </head>
     <body>
         <div class="relatorio">
             <?php 
+                  $array=array(
+                      'N&uacute;mero CNJ Antigo',
+                      'Natureza',
+                      'UF',
+                      'PARTE CONTR&Aacute;RIA',
+                      'Segurado',
+                      'Valor',
+                      'Honor&aacute;rios',
+                      'SINISTRO',
+                      'SEGURADO',
+                      'PARTE CONTR&Aacute;RIA',
+                      'VALOR PEDIDO',
+                      'VALOR ADMINISTRATIVO',
+                      'HONOR&Aacute;RIOS',
+                      'PROV&Aacute;VEL',
+                      'DIGITADOR',
+                      'AP&Oacute;LICE',
+                      'CERTIFICADO',
+                      'SINISTRO',
+                      'DATA AVISO',
+                      'TITULAR',
+                      'CPF',
+                      'IMPORT&Acirc;NCIA SEGURADA',
+                      'CORRE&Ccedil;&Atilde;O IGPM',
+                      'CORRE&Ccedil;&Atilde;O TR'
+                      );
+    echo "<div id=total ></div>";
                   echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-                  echo "<tr><th>N&uacute;mero CNJ Antigo</th><th>Natureza</th><th>UF</th><th>PARTE CONTR&Aacute;RIA</th><th>Segurado</th><th>Valor</th><th>Honor&aacute;rios</th><th>SINISTRO</th><th>SEGURADO</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>VALOR ADMINISTRATIVO</th><th>HONOR&Aacute;RIOS</th><th>PROV&Aacute;VEL</th><th>DIGITADOR</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRO</th><th>DATA AVISO</th><th>TITULAR</th><th>CPF</th><th>IMPORT&Acirc;NCIA SEGURADA</th><th>CORRE&Ccedil;&Atilde;O IGPM</th><th>CORRE&Ccedil;&Atilde;O TR</th><tr>";
+                  //print_r(count($array));
+                  echo "<tr>";
+                for ($x=0;$x < 24;$x++){
+                   echo "<th>".$array[$x]."</th>";
+                }
+                  echo "</tr>";
+                 // echo "<tr><th>N&uacute;mero CNJ Antigo</th><th>Natureza</th><th>UF</th><th>PARTE CONTR&Aacute;RIA</th><th>Segurado</th><th>Valor</th><th>Honor&aacute;rios</th><th>SINISTRO</th><th>SEGURADO</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>VALOR ADMINISTRATIVO</th><th>HONOR&Aacute;RIOS</th><th>PROV&Aacute;VEL</th><th>DIGITADOR</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRO</th><th>DATA AVISO</th><th>TITULAR</th><th>CPF</th><th>IMPORT&Acirc;NCIA SEGURADA</th><th>CORRE&Ccedil;&Atilde;O IGPM</th><th>CORRE&Ccedil;&Atilde;O TR</th><tr>";
+                  
                   $Segurado_con_old=null;
                 foreach($judis as $provavel){
-                 //print_r($provavel->getSINISTRO_lev());
-                 //echo " - ";
-                 //print_r($provavel->getNumero_CNJ_Antigo_con());
-                 //echo "<br>";
-                 //echo "<pre>";
-                 //print_r($provavel);
-                 //echo "</pre>";
-                //}
-                //die;
                      echo "<tr><td>";
                      echo $provavel->getNumero_CNJ_Antigo_con();
                      echo "</td><td>";

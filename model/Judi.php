@@ -1,6 +1,7 @@
 <?php
+include '../mapping/JudiMapper.php';
 
-class Judi extends Todo{
+class Judi {
  
    private $Numero_CNJ_Antigo_con;
    private $Natureza_con;

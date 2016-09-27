@@ -11,6 +11,10 @@ final class Utils {
         $params = array_merge(array('page' => $page), $params);
         return 'index.php?' .http_build_query($params);
     }
+    public static function createLink2($page, array $params = array()) {
+        $params = array_merge(array('page' => $page), $params);
+        return 'relatorio.php?' .http_build_query($params);
+    }
 
     /**
      * Format date.
