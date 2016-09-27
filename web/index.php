@@ -63,6 +63,7 @@ final class Index {
             'OracleSearchCriteria' => '../dao/OracleSearchCriteria.php',
             'JudiSearchCriteria' => '../dao/JudiSearchCriteria.php',
             'TodoValidator' => '../validation/TodoValidator.php',
+            'JudiValidator' => '../validation/JudiValidator.php',
             'OdbcValidator' => '../validation/OdbcValidator.php',
             'OrscleValidator' => '../validation/OracleValidator.php',
             'Utils' => '../util/Utils.php',

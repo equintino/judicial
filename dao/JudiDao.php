@@ -79,6 +79,17 @@ class JudiDao extends TodoDao{
         }
         return $result;
     }
+    public function listaProvavel3(JudiSearchCriteria $Judisearch = null) {
+     $sql="SELECT * FROM transito_julgado";
+     $rows = $this->query($sql) ->fetchAll();
+     //print_r($rows);die;
+        foreach($rows as $row){
+         $judi = new Judi();
+            JudiMapper::map($judi, $row);
+            $result[] = $judi;
+        }
+        return $result;
+    }
     public function query($sql) {
             set_time_limit(3600);
         $statement = $this->getDb2()->query($sql, PDO::FETCH_ASSOC);

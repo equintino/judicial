@@ -33,6 +33,14 @@ class Judi {
    private $id_h;
    private $id;
    
+   private $Número_CNJ_Antigo_tra;
+   private $Natureza_tra;
+   private $UF_tra;
+   private $Parte_contraria_tra;
+   private $Segurado_tra;
+   private $Valor_tra;
+   private $Honorarios_tra; 
+   
    
     public function getNumero_CNJ_Antigo_con(){
         return $this->Numero_CNJ_Antigo_con;
@@ -208,4 +216,46 @@ class Judi {
     public function setid($id){
         $this->id = $id;
     }
+    public function getNúmero_CNJ_Antigo_tra(){
+        return $this->Número_CNJ_Antigo_tra;
+    }
+    public function setNúmero_CNJ_Antigo_tra($Número_CNJ_Antigo_tra){
+        $this->Número_CNJ_Antigo_tra = $Número_CNJ_Antigo_tra;
+    }
+    public function getNatureza_tra(){
+        return $this->Natureza_tra;
+    }
+    public function setNatureza_tra($Natureza_tra){
+        $this->Natureza_tra = $Natureza_tra;
+    }
+    public function getUF_tra(){
+        return $this->UF_tra;
+    }
+    public function setUF_tra($UF_tra){
+        $this->UF_tra = $UF_tra;
+    }
+    public function getParte_contraria_tra(){
+        return $this->Parte_contraria_tra;
+    }
+    public function setParte_contraria_tra($Parte_contraria_tra){
+        $this->Parte_contraria_tra = $Parte_contraria_tra;
+    }
+    public function getSegurado_tra(){
+        return $this->Segurado_tra;
+    }
+    public function setSegurado_tra($Segurado_tra){
+        $this->Segurado_tra = $Segurado_tra;
+    }
+    public function getValor_tra(){
+        return $this->Valor_tra;
+    }
+    public function setValor_tra($Valor_tra){
+        $this->Valor_tra = $Valor_tra;
+    }
+    public function getHonorarios_tra(){
+        return $this->Honorarios_tra;
+    }
+    public function setHonorarios_tra($Honorarios_tra){
+        $this->Honorarios_tra = $Honorarios_tra;
+    } 
 }

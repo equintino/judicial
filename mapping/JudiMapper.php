@@ -28,7 +28,7 @@ class JudiMapper {
             $judi->setDT_AVISO_h($properties['DT_AVISO_h']);
         }
         if (array_key_exists('SINISTRO_h;', $properties)) {
-            $judi->setSINISTRO_h;($properties['SINISTRO_h;']);
+            $judi->setSINISTRO_h($properties['SINISTRO_h;']);
         }
         if (array_key_exists('ENDOSSO_h', $properties)) {
             $judi->setENDOSSO_h($properties['ENDOSSO_h']);
@@ -92,7 +92,28 @@ class JudiMapper {
         }  
         if (array_key_exists('id', $properties)){
             $judi->setid($properties['id']);
-        } 
+        }
+        if (array_key_exists('Número_CNJ_Antigo_tra', $properties)){
+            $judi->setNúmero_CNJ_Antigo_tra($properties['Número_CNJ_Antigo_tra']);
+        }
+        if (array_key_exists('Natureza_tra', $properties)){
+            $judi->setNatureza_tra($properties['Natureza_tra']);
+        }
+        if (array_key_exists('UF_tra', $properties)){
+            $judi->setUF_tra($properties['UF_tra']);
+        }
+        if (array_key_exists('Parte_contraria_tra', $properties)){
+            $judi->setParte_contraria_tra($properties['Parte_contraria_tra']);
+        }
+        if (array_key_exists('Segurado_tra', $properties)){
+            $judi->setSegurado_tra($properties['Segurado_tra']);
+        }
+        if (array_key_exists('Valor_tra', $properties)){
+            $judi->setValor_tra($properties['Valor_tra']);
+        }
+        if (array_key_exists('Honorarios_tra', $properties)){
+            $judi->setHonorarios_tra($properties['Honorarios_tra']);
+        }       
     }
 }
 

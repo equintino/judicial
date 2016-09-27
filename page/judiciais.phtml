@@ -15,7 +15,21 @@ and open the template in the editor.
             <?php 
                   echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
                   echo "<tr><th>N&uacute;mero CNJ Antigo</th><th>Natureza</th><th>UF</th><th>PARTE CONTR&Aacute;RIA</th><th>Segurado</th><th>Valor</th><th>Honor&aacute;rios</th><th>SINISTRO</th><th>SEGURADO</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>VALOR ADMINISTRATIVO</th><th>HONOR&Aacute;RIOS</th><th>PROV&Aacute;VEL</th><th>DIGITADOR</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRO</th><th>DATA AVISO</th><th>TITULAR</th><th>CPF</th><th>IMPORT&Acirc;NCIA SEGURADA</th><th>CORRE&Ccedil;&Atilde;O IGPM</th><th>CORRE&Ccedil;&Atilde;O TR</th><tr>";
+                  //echo "<pre>";
+                  $proc_repetido=null;
+                  $processo_old=null;
+                  foreach($judis as $item){
+                      if($item->getNumero_CNJ_Antigo_con()==$processo_old){
+                          $proc_repetido[]=$item->getNumero_CNJ_Antigo_con();
+                      }
+                      $processo_old=$item->getNumero_CNJ_Antigo_con();
+                  }
+                  //print_r($proc_repetido);
+                  //die;
                   $Segurado_con_old=null;
+                  $total_adm=0;
+                  $contador=0;
+                  //$judicial=$provavel->getNumero_CNJ_Antigo_con();
                 foreach($judis as $provavel){
                  //print_r($provavel->getSINISTRO_lev());
                  //echo " - ";
@@ -26,6 +40,91 @@ and open the template in the editor.
                  //echo "</pre>";
                 //}
                 //die;
+                    if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido) || $contador == 1){                       
+                        if (in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){ 
+                            $Numero_CNJ=$provavel->getNumero_CNJ_Antigo_con();
+                            $Natureza_con=$provavel->getNatureza_con();
+                            $UF_con=$provavel->getUF_con();
+                            $Parte_contraria_con=$provavel->getParte_contraria_con();
+                            $Segurado_con=$provavel->getSegurado_con();
+                            $Valor_con=$provavel->getValor_con();
+                            $Honorarios_con=$provavel->getHonorarios_con();
+                            $SINISTRO_lev=$provavel->getSINISTRO_lev();
+                            $SEGURADO_lev=$provavel->getSEGURADO_lev();
+                            $PARTE_CONTRARIA_lev=$provavel->getPARTE_CONTRARIA_lev();
+                            $VALOR_PEDIDO_lev=$provavel->getVALOR_PEDIDO_lev();
+                            $HONORARIOS_lev=$provavel->getHONORARIOS_lev();
+                            $PROVAVEL_lev=$provavel->getPROVAVEL_lev();
+                            $DIGITADOR_lev=$provavel->getDIGITADOR_lev();
+                            $APOLICE_h=$provavel->getAPOLICE_h();
+                            $ENDOSSO_h=$provavel->getENDOSSO_h();
+                            $SINISTRO_h=$provavel->getSINISTRO_h();
+                            $DT_AVISO_h=$provavel->getDT_AVISO_h();
+                            $TITULAR_h=$provavel->getTITULAR_h();
+                            $CPF_h=$provavel->getCPF_h();
+                            $IMPORTANCIA_SEGURADA_h=$provavel->getIMPORTANCIA_SEGURADA_h();
+                            $CORRECAO_IGPM_h=$provavel->getCORRECAO_IGPM_h();
+                            $CORRECAO_TR_h=$provavel->getCORRECAO_TR_h();
+                            
+                            
+                            $total_adm=$total_adm+$provavel->getVALOR_ADMINISTRATIVO_lev();
+                            $contador = 1;
+                        }else{
+                            //echo "<h1>estou aqui</h1>";die;
+                            echo "<tr><td>";
+                            echo $Numero_CNJ;
+                            echo "</td><td>";
+                            echo $Natureza_con;
+                            echo "</td><td>";
+                            echo $UF_con;
+                            echo "</td><td>";
+                            echo $Parte_contraria_con;
+                            echo "</td><td>";
+                            echo $Segurado_con;
+                            echo "</td><td>";
+                            echo $Valor_con;
+                            echo "</td><td>";
+                            echo $Honorarios_con;
+                            echo "</td><td>";
+                            echo $SINISTRO_lev;
+                            echo "</td><td>";
+                            echo $SEGURADO_lev;
+                            echo "</td><td>";
+                            echo $PARTE_CONTRARIA_lev;
+                            echo "</td><td>";
+                            echo $VALOR_PEDIDO_lev;
+                            echo "</td><td>";
+                            echo $total_adm;
+                            echo "</td><td>";
+                            echo $HONORARIOS_lev;
+                            echo "</td><td>";
+                            echo $PROVAVEL_lev;
+                            echo "</td><td>";
+                            echo $DIGITADOR_lev;
+                            echo "</td><td>";
+                            echo $APOLICE_h;
+                            echo "</td><td>";
+                            echo $ENDOSSO_h;
+                            echo "</td><td>";
+                            echo $SINISTRO_h;
+                            echo "</td><td>";
+                            echo $DT_AVISO_h;
+                            echo "</td><td>";
+                            echo $TITULAR_h;
+                            echo "</td><td>";
+                            echo $CPF_h;
+                            echo "</td><td>";
+                            echo $IMPORTANCIA_SEGURADA_h;
+                            echo "</td><td>";
+                            echo $CORRECAO_IGPM_h;
+                            echo "</td><td>";
+                            echo $CORRECAO_TR_h;
+                            echo "</td>"; 
+                            $Segurado_con_old=$provavel->getSegurado_con();
+                            $contador = 2;
+                        }
+                    }else{                          
+                            
                      echo "<tr><td>";
                      echo $provavel->getNumero_CNJ_Antigo_con();
                      echo "</td><td>";
@@ -80,8 +179,11 @@ and open the template in the editor.
                      echo $provavel->getCORRECAO_TR_h();
                      echo "</td>"; 
                      $Segurado_con_old=$provavel->getSegurado_con();
+                    }
+                     //$judicial_old=$provavel->getNumero_CNJ_Antigo_con();
                 }
                 echo "</tr></table>";
+                print_r($proc_repetido);
             ?>
         </div>
     </body>
