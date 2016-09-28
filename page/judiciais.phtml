@@ -40,7 +40,13 @@ and open the template in the editor.
                  //echo "</pre>";
                 //}
                 //die;
-                    if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido) || $contador == 1){                       
+                    if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido) || $contador == 1){ 
+                     if('0019952-70.2015.8.08.0347' == $provavel->getNumero_CNJ_Antigo_con()){
+                      echo "<br><br><br>";
+                      //echo "Estou aqui";
+                      //echo "<br>";
+                      //echo $provavel->getNumero_CNJ_Antigo_con();
+                     }
                         if (in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){ 
                             $Numero_CNJ=$provavel->getNumero_CNJ_Antigo_con();
                             $Natureza_con=$provavel->getNatureza_con();
@@ -71,7 +77,7 @@ and open the template in the editor.
                             $contador = 1;
                         }else{
                             //echo "<h1>estou aqui</h1>";die;
-                            echo "<tr><td>";
+                            echo "<tr><td bgcolor=red>";
                             echo $Numero_CNJ;
                             echo "</td><td>";
                             echo $Natureza_con;

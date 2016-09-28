@@ -39,7 +39,7 @@ header('Content-type: text/html; charset=UTF-8');
     $judis=$Judidao->listaProvavel2($Judisearch);
     
     //echo "<pre>";
-    //print_r($judis);
+    //print_r($judis);die;
     //echo "</pre>";
     //die;
     
