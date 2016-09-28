@@ -27,6 +27,7 @@ and open the template in the editor.
                   //print_r($proc_repetido);
                   //die;
                   $Segurado_con_old=null;
+                  $Numero_CNJ_old=null;
                   $total_adm=0;
                   $contador=0;
                   //$judicial=$provavel->getNumero_CNJ_Antigo_con();
@@ -40,13 +41,14 @@ and open the template in the editor.
                  //echo "</pre>";
                 //}
                 //die;
-                    if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido) || $contador == 1){ 
-                     if('0019952-70.2015.8.08.0347' == $provavel->getNumero_CNJ_Antigo_con()){
-                      echo "<br><br><br>";
+                    //if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){ 
+                     //if('0019952-70.2015.8.08.0347' == $provavel->getNumero_CNJ_Antigo_con()){
+                      //echo "<br><br><br>";
                       //echo "Estou aqui";
                       //echo "<br>";
                       //echo $provavel->getNumero_CNJ_Antigo_con();
-                     }
+                     //}
+                      /*
                         if (in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){ 
                             $Numero_CNJ=$provavel->getNumero_CNJ_Antigo_con();
                             $Natureza_con=$provavel->getNatureza_con();
@@ -129,9 +131,17 @@ and open the template in the editor.
                             $Segurado_con_old=$provavel->getSegurado_con();
                             $contador = 2;
                         }
-                    }else{                          
-                            
-                     echo "<tr><td>";
+                       * 
+                       */
+                    //}else{                          
+                     
+                     if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){
+                        echo "<tr><td bgcolor=red>";
+                        $provavel->setValor_con(0);
+                        $provavel->getHonorarios_con(0);
+                     }else{
+                        echo "<tr><td>"; 
+                     }      
                      echo $provavel->getNumero_CNJ_Antigo_con();
                      echo "</td><td>";
                      echo $provavel->getNatureza_con();
@@ -185,11 +195,14 @@ and open the template in the editor.
                      echo $provavel->getCORRECAO_TR_h();
                      echo "</td>"; 
                      $Segurado_con_old=$provavel->getSegurado_con();
-                    }
+                     $Numero_CNJ_old=$provavel->getNumero_CNJ_Antigo_con();
+                   // }
                      //$judicial_old=$provavel->getNumero_CNJ_Antigo_con();
                 }
                 echo "</tr></table>";
+                echo "<pre>";
                 print_r($proc_repetido);
+                echo "</pre>";
             ?>
         </div>
     </body>
