@@ -112,5 +112,6 @@ final class JudiValidator {
         $dado_=preg_replace( '#[^0-9]#', '', $dado );
         return $dado_;
     }
+    
 }
 ?>

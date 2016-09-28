@@ -13,41 +13,55 @@ and open the template in the editor.
     <body>
         <div class="relatorio">
             <?php 
+
+            
                   echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-                  echo "<tr><th>N&uacute;mero CNJ Antigo</th><th>Natureza</th><th>UF</th><th>PARTE CONTR&Aacute;RIA</th><th>Segurado</th><th>Valor</th><th>Honor&aacute;rios</th><th>SINISTRO</th><th>SEGURADO</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>VALOR ADMINISTRATIVO</th><th>HONOR&Aacute;RIOS</th><th>PROV&Aacute;VEL</th><th>DIGITADOR</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRO</th><th>DATA AVISO</th><th>TITULAR</th><th>CPF</th><th>IMPORT&Acirc;NCIA SEGURADA</th><th>CORRE&Ccedil;&Atilde;O IGPM</th><th>CORRE&Ccedil;&Atilde;O TR</th><tr>";
-                  //echo "<pre>";
-                  $proc_repetido=null;
+                  echo "<tr><th>N&uacute;mero CNJ Antigo</th><th>PARTE CONTR&Aacute;RIA</th><th>Segurado</th><th>SINISTRO</th><th>Valor</th><th>Honor&aacute;rios</th><th>VALOR ADMINISTRATIVO</th><tr>";
+           //// Definindo Quanto repete o Processo Judicial - Key = Proc_Judicial ////       
+                  $proc_repetido=array();
                   $processo_old=null;
+                  $vlAdmSomado=0;
+                  $gravei=0;
                   foreach($judis as $item){
+                      //print_r($item);die;
                       if($item->getNumero_CNJ_Antigo_con()==$processo_old){
-                          $proc_repetido[]=$item->getNumero_CNJ_Antigo_con();
+                          if($gravei!=1){
+                            $quantasRep=2;
+                          }
+                          if($vlAdmSomado==0){
+                              //$vlAdmSomado=$vlInicial;
+                          }
+                          $proc_repetido[$item->getNumero_CNJ_Antigo_con()]=$quantasRep;
+                          echo $vlAdmSomado." - ".$item->getCORRECAO_TR_h();
+                          echo "<br>";
+                          $vlAdmSomado=$vlAdmSomado + $item->getCORRECAO_TR_h();
+                          echo $item->getNumero_CNJ_Antigo_con()." - ".$vlAdmSomado;echo "<br>";
+                          $gravei=1;
+                      }else{
+                          $quantasRep=1;
+                          $vlAdmSomado=0;
                       }
-                      $processo_old=$item->getNumero_CNJ_Antigo_con();
-                  }
-                  //print_r($proc_repetido);
-                  //die;
+                      if($gravei==1){
+                          $quantasRep++;
+                      }
+                          $processo_old=$item->getNumero_CNJ_Antigo_con();
+                          $vlInicial=$item->getCORRECAO_TR_h();
+                      //echo "<h1>".$item->getNumero_CNJ_Antigo_con()." -> $vlAdmSomado</h1>";
+                  }die;
+            //// fim repetição ////      
+                   
                   $Segurado_con_old=null;
                   $Numero_CNJ_old=null;
                   $total_adm=0;
                   $contador=0;
+                  $passeiaqui=0;
+                  $processo_old=null;
+                  $javi=0;
                   //$judicial=$provavel->getNumero_CNJ_Antigo_con();
                 foreach($judis as $provavel){
-                 //print_r($provavel->getSINISTRO_lev());
-                 //echo " - ";
-                 //print_r($provavel->getNumero_CNJ_Antigo_con());
-                 //echo "<br>";
-                 //echo "<pre>";
-                 //print_r($provavel);
-                 //echo "</pre>";
-                //}
-                //die;
+                    //print_r($judis);die;
                     //if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){ 
                      //if('0019952-70.2015.8.08.0347' == $provavel->getNumero_CNJ_Antigo_con()){
-                      //echo "<br><br><br>";
-                      //echo "Estou aqui";
-                      //echo "<br>";
-                      //echo $provavel->getNumero_CNJ_Antigo_con();
-                     //}
                       /*
                         if (in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){ 
                             $Numero_CNJ=$provavel->getNumero_CNJ_Antigo_con();
@@ -133,20 +147,60 @@ and open the template in the editor.
                         }
                        * 
                        */
-                    //}else{                          
-                     
+                    //}else{  
+                    //print_r(count(in_array('0002341-89.2014.8.26.0654',$proc_repetido)));die;
+                     $quantasRep=1;
+                     if($javi!=1){
+                         foreach($proc_repetido as $repeticao){
+                             //echo "<br><br><br>";
+                             //print_r($repeticao);die;
+                             //echo "<br><br>";
+                             //$repeticaoOld=$repeticao;
+                             if($provavel->getNumero_CNJ_Antigo_con() == $repeticao){
+                                 $quantasRep++;
+                                 //echo $provavel->getNumero_CNJ_Antigo_con()." - ";
+                             }
+                             $javi=1;
+                                 //array_push($repPro, $repeticao.' => '.$quantasRep);
+                         }
+                     }
                      if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){
-                        echo "<tr><td bgcolor=red>";
-                        $provavel->setValor_con(0);
-                        $provavel->getHonorarios_con(0);
+                         
+                         if($passeiaqui == 1 && $processo_old == $provavel->getNumero_CNJ_Antigo_con()){
+                            echo "<tr><td bgcolor=yellow>";
+                            //$provavel->setValor_con(0);
+                            //$provavel->setHonorarios_con(0);
+                            $provavel->setCORRECAO_TR_h($vlAdmOld+$provavel->getCORRECAO_TR_h());
+                         }else{
+                             
+                             /////
+                             
+                           //$repPro=array();
+                             //$repPro=array("0004251-22.2014.8.25.0027" => $quantasRep);
+                             //echo "<h1>".$quantasRep."</h1>";
+                             //print_r(@$repPro);
+                             //die;                          
+                             ////
+                             
+                            $provavel->setValor_con(0);
+                            $provavel->setHonorarios_con(0);
+                            echo "<tr><td>";
+                            $vlAdmOld=$provavel->getCORRECAO_TR_h();
+                            $quantasMenos=$quantasRep - 1;
+                            echo "<h1>$quantasMenos</h1>";
+                            if($quantasMenos==0){
+                                $passeiaqui=1;
+                            }
+                            $processo_old=$provavel->getNumero_CNJ_Antigo_con();
+                         }
                      }else{
                         echo "<tr><td>"; 
                      }      
                      echo $provavel->getNumero_CNJ_Antigo_con();
-                     echo "</td><td>";
-                     echo $provavel->getNatureza_con();
-                     echo "</td><td>";
-                     echo $provavel->getUF_con();
+                     //echo "</td><td>";
+                     //echo $provavel->getNatureza_con();
+                     //echo "</td><td>";
+                     //echo $provavel->getUF_con();
                      echo "</td><td>";
                      echo $provavel->getParte_contraria_con();
                      if($Segurado_con_old==$provavel->getSegurado_con()&&$Segurado_con_old!=null){
@@ -156,42 +210,47 @@ and open the template in the editor.
                      }
                      echo $provavel->getSegurado_con();
                      echo "</td><td>";
+                     echo $provavel->getSINISTRO_lev();
+                     echo "</td><td>";
                      echo $provavel->getValor_con();
                      echo "</td><td>";
                      echo $provavel->getHonorarios_con();
+                     //echo "</td><td>";
+                     //echo $provavel->getSEGURADO_lev();
+                     //echo "</td><td>";
+                     //echo $provavel->getPARTE_CONTRARIA_lev();
+                     //echo "</td><td>";
+                     //echo $provavel->getVALOR_PEDIDO_lev();
+                     //echo "</td><td>";
+                     //echo $provavel->getVALOR_ADMINISTRATIVO_lev();
+                     //echo "</td><td>";
+                     //echo $provavel->getHONORARIOS_lev();
+                     //echo "</td><td>";
+                     //echo $provavel->getPROVAVEL_lev();
+                     //echo "</td><td>";
+                     //echo $provavel->getDIGITADOR_lev();
+                     //echo "</td><td>";
+                     //echo $provavel->getAPOLICE_h();
+                     //echo "</td><td>";
+                     //echo $provavel->getENDOSSO_h();
+                     //echo "</td><td>";
+                     //echo $provavel->getSINISTRO_h();
+                     //echo "</td><td>";
+                     //echo $provavel->getDT_AVISO_h();
+                     //echo "</td><td>";
+                     //echo $provavel->getTITULAR_h();
+                     //echo "</td><td>";
+                     //echo $provavel->getCPF_h();
+                     //echo "</td><td>";
+                     //echo $provavel->getIMPORTANCIA_SEGURADA_h();
+                     //echo "</td><td>";
+                     //echo $provavel->getCORRECAO_IGPM_h();
                      echo "</td><td>";
-                     echo $provavel->getSINISTRO_lev();
-                     echo "</td><td>";
-                     echo $provavel->getSEGURADO_lev();
-                     echo "</td><td>";
-                     echo $provavel->getPARTE_CONTRARIA_lev();
-                     echo "</td><td>";
-                     echo $provavel->getVALOR_PEDIDO_lev();
-                     echo "</td><td>";
-                     echo $provavel->getVALOR_ADMINISTRATIVO_lev();
-                     echo "</td><td>";
-                     echo $provavel->getHONORARIOS_lev();
-                     echo "</td><td>";
-                     echo $provavel->getPROVAVEL_lev();
-                     echo "</td><td>";
-                     echo $provavel->getDIGITADOR_lev();
-                     echo "</td><td>";
-                     echo $provavel->getAPOLICE_h();
-                     echo "</td><td>";
-                     echo $provavel->getENDOSSO_h();
-                     echo "</td><td>";
-                     echo $provavel->getSINISTRO_h();
-                     echo "</td><td>";
-                     echo $provavel->getDT_AVISO_h();
-                     echo "</td><td>";
-                     echo $provavel->getTITULAR_h();
-                     echo "</td><td>";
-                     echo $provavel->getCPF_h();
-                     echo "</td><td>";
-                     echo $provavel->getIMPORTANCIA_SEGURADA_h();
-                     echo "</td><td>";
-                     echo $provavel->getCORRECAO_IGPM_h();
-                     echo "</td><td>";
+                     echo "<h1>".$provavel->getCORRECAO_TR_h()."</h1>";
+                     if($provavel->getValor_con() == null){
+                         $provavel->setCORRECAO_TR_h(0);
+                         //echo "estou aqui";die;
+                     }
                      echo $provavel->getCORRECAO_TR_h();
                      echo "</td>"; 
                      $Segurado_con_old=$provavel->getSegurado_con();
@@ -200,9 +259,9 @@ and open the template in the editor.
                      //$judicial_old=$provavel->getNumero_CNJ_Antigo_con();
                 }
                 echo "</tr></table>";
-                echo "<pre>";
-                print_r($proc_repetido);
-                echo "</pre>";
+                //echo "<pre>";
+                //print_r($proc_repetido);
+                //echo "</pre>";
             ?>
         </div>
     </body>
