@@ -28,26 +28,29 @@ and open the template in the editor.
                           if($gravei!=1){
                             $quantasRep=2;
                           }
-                          if($vlAdmSomado==0){
+                          //if($vlAdmSomado==0){
                               //$vlAdmSomado=$vlInicial;
-                          }
-                          $proc_repetido[$item->getNumero_CNJ_Antigo_con()]=$quantasRep;
-                          echo $vlAdmSomado." - ".$item->getCORRECAO_TR_h();
-                          echo "<br>";
+                          //}
                           $vlAdmSomado=$vlAdmSomado + $item->getCORRECAO_TR_h();
-                          echo $item->getNumero_CNJ_Antigo_con()." - ".$vlAdmSomado;echo "<br>";
+                          $proc_repetido[$item->getNumero_CNJ_Antigo_con()]=$quantasRep;
+                          array_push($proc_repetido, $vlAdmSomado);
+                          //echo $vlAdmSomado." - ".$item->getCORRECAO_TR_h();
+                          //echo "<br>";
+                          //echo $item->getNumero_CNJ_Antigo_con()." - ".$vlAdmSomado;echo "<br>";
                           $gravei=1;
                       }else{
                           $quantasRep=1;
-                          $vlAdmSomado=0;
+                          $vlAdmSomado=$item->getCORRECAO_TR_h();
                       }
                       if($gravei==1){
                           $quantasRep++;
                       }
                           $processo_old=$item->getNumero_CNJ_Antigo_con();
-                          $vlInicial=$item->getCORRECAO_TR_h();
+                          //$vlInicial=$item->getCORRECAO_TR_h();
                       //echo "<h1>".$item->getNumero_CNJ_Antigo_con()." -> $vlAdmSomado</h1>";
-                  }die;
+                  }
+                  //echo "<pre>";
+                  //print_r($proc_repetido);die;
             //// fim repetição ////      
                    
                   $Segurado_con_old=null;
@@ -149,7 +152,8 @@ and open the template in the editor.
                        */
                     //}else{  
                     //print_r(count(in_array('0002341-89.2014.8.26.0654',$proc_repetido)));die;
-                     $quantasRep=1;
+                     //$quantasRep=1;
+                 /*
                      if($javi!=1){
                          foreach($proc_repetido as $repeticao){
                              //echo "<br><br><br>";
@@ -164,13 +168,13 @@ and open the template in the editor.
                                  //array_push($repPro, $repeticao.' => '.$quantasRep);
                          }
                      }
-                     if(in_array($provavel->getNumero_CNJ_Antigo_con(),$proc_repetido)){
-                         
+                     */
+                     if(in_array($provavel->getNumero_CNJ_Antigo_con(), $proc_repetido)){
                          if($passeiaqui == 1 && $processo_old == $provavel->getNumero_CNJ_Antigo_con()){
-                            echo "<tr><td bgcolor=yellow>";
+                            echo "<tr><td bgcolor=red>";
                             //$provavel->setValor_con(0);
                             //$provavel->setHonorarios_con(0);
-                            $provavel->setCORRECAO_TR_h($vlAdmOld+$provavel->getCORRECAO_TR_h());
+                            //$provavel->setCORRECAO_TR_h($vlAdmOld+$provavel->getCORRECAO_TR_h());
                          }else{
                              
                              /////
@@ -182,12 +186,12 @@ and open the template in the editor.
                              //die;                          
                              ////
                              
-                            $provavel->setValor_con(0);
-                            $provavel->setHonorarios_con(0);
+                            //$provavel->setValor_con(0);
+                            //$provavel->setHonorarios_con(0);
                             echo "<tr><td>";
                             $vlAdmOld=$provavel->getCORRECAO_TR_h();
                             $quantasMenos=$quantasRep - 1;
-                            echo "<h1>$quantasMenos</h1>";
+                            //echo "<h1>$quantasMenos</h1>";
                             if($quantasMenos==0){
                                 $passeiaqui=1;
                             }
@@ -246,7 +250,7 @@ and open the template in the editor.
                      //echo "</td><td>";
                      //echo $provavel->getCORRECAO_IGPM_h();
                      echo "</td><td>";
-                     echo "<h1>".$provavel->getCORRECAO_TR_h()."</h1>";
+                     //echo "<h1>".$provavel->getCORRECAO_TR_h()."</h1>";
                      if($provavel->getValor_con() == null){
                          $provavel->setCORRECAO_TR_h(0);
                          //echo "estou aqui";die;
