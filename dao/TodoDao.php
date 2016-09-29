@@ -94,6 +94,16 @@
         //print_r($result);die;
         return @$result;
     }
+    public function find8(TodoSearchCriteria $search = null) {
+        //print_r($this->query("SELECT * FROM geral_henrique WHERE 'SINISTRO_h'='0126.93.03.00000882'"));die;
+        foreach ($this->query($this->getFindSql8($search)) as $row) {
+            $todo = new Todo();
+            TodoMapper::map($todo, $row);
+            $result[$todo->getId()] = $todo;
+        }
+        //print_r($result);die;
+        return @$result;
+    }
     public function findById($id) {
         $row = $this->query('SELECT * FROM processojudicial WHERE deleted = 0 and id = ' . (int) $id)->fetch();
         if (!$row) {
@@ -324,6 +334,16 @@
         $sql = 'SELECT * FROM igpm';//WHERE ';//COD_SIN=\'0126.93.03.00000046\'';
         //$orderBy = ' Segurado';
         //$sql .= ' SEGURADOS=\''.$search->getSEGURADOS().'\'';
+        //$sql .= ' ORDER BY ' . $orderBy;
+        //$sql .= ' limit 0,15';
+        //print_r($sql);die;
+        return $sql;
+    }
+    private function getFindSql8(TodoSearchCriteria $search = null) {
+     //print_r($search);die;
+        $sql = 'SELECT * FROM geral_henrique WHERE ';//COD_SIN=\'0126.93.03.00000046\'';
+        //$orderBy = ' Segurado';
+        $sql .= ' `SINISTRO` like \''.$search->getSINISTRO().'\'';
         //$sql .= ' ORDER BY ' . $orderBy;
         //$sql .= ' limit 0,15';
         //print_r($sql);die;

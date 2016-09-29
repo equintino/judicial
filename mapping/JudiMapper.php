@@ -93,8 +93,8 @@ class JudiMapper {
         if (array_key_exists('id', $properties)){
             $judi->setid($properties['id']);
         }
-        if (array_key_exists('Número_CNJ_Antigo_tra', $properties)){
-            $judi->setNúmero_CNJ_Antigo_tra($properties['Número_CNJ_Antigo_tra']);
+        if (array_key_exists('Numero_CNJ_Antigo_tra', $properties)){
+            $judi->setNumero_CNJ_Antigo_tra($properties['Numero_CNJ_Antigo_tra']);
         }
         if (array_key_exists('Natureza_tra', $properties)){
             $judi->setNatureza_tra($properties['Natureza_tra']);
@@ -113,8 +113,28 @@ class JudiMapper {
         }
         if (array_key_exists('Honorarios_tra', $properties)){
             $judi->setHonorarios_tra($properties['Honorarios_tra']);
-        }       
+        }
+        if (array_key_exists('Numero_CNJ_Antigo_cre', $properties)){
+            $judi->setNumero_CNJ_Antigo_cre($properties['Numero_CNJ_Antigo_cre']);
+        }
+        if (array_key_exists('Natureza_cre', $properties)){
+            $judi->setNatureza_cre($properties['Natureza_cre']);
+        }
+        if (array_key_exists('UF_cre', $properties)){
+            $judi->setUF_cre($properties['UF_cre']);
+        }
+        if (array_key_exists('Parte_contraria_cre', $properties)){
+            $judi->setParte_contraria_cre($properties['Parte_contraria_cre']);
+        }
+        if (array_key_exists('Segurado_cre', $properties)){
+            $judi->setSegurado_cre($properties['Segurado_cre']);
+        }
+        if (array_key_exists('Honorarios_cre', $properties)){
+            $judi->setHonorarios_cre($properties['Honorarios_cre']);
+        }
+        if (array_key_exists('Valor_cre', $properties)){
+            $judi->setValor_cre($properties['Valor_cre']);
+        }
     }
 }
-
 ?>

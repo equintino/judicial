@@ -13,6 +13,8 @@ final class OdbcDao {
         $config = Config::getConfig("odbc");
         try {
             $this->db = odbc_connect($config['dsn'],$config['username'],$config['password']) or die (odbc_errormsg());
+            //odbc_exec($this->db , "SET NAMES 'UTF8'");
+            //odbc_exec($this->db , "SET client_encoding='UTF-8'");
             //$this->db = new PDO($config['dsn'],$config['username'],$config['password']);
         } catch (Exception $ex) {
             throw new Exception('DB connection error: ' . $ex->getMessage());
@@ -34,11 +36,13 @@ final class OdbcDao {
         //var_dump($this->getDb(),$sql);die;
         //$sql = "SELECT * FROM Beneficiarios WHERE exclui like 0";
      //print_r($sql);
-        
+       //odbc_exec($conn, "SET names utf8"); 
       $statement = odbc_exec($this->getDb(),$sql);
       while($linha = odbc_fetch_array($statement)){
         $result[]=$linha;
       }
+      //print_r(utf8_decode($result));die;
+      //$col1=utf8_decode(odbc_result($rs, "name"));
       return @$result;      
     }
     public function query2($sql) {
@@ -301,6 +305,7 @@ final class OdbcDao {
         //print_r($this->getBuscaSql($search));
         //$busca = $this->query("select * from Beneficiarios where sinistro='0153.93.03.00001654'");
         $busca = $this->query($this->getBuscaSql($search));
+        //print_r($busca);die;
         //print_r($this->getBuscaSql($search));die;
         if(@$busca){
          foreach ($busca as $key => $row) {
@@ -404,6 +409,30 @@ final class OdbcDao {
          }
         }
         //PRINT_R($result);
+        return @$result;
+    }
+    public function busca7(OdbcSearchCriteria $search = null){
+        $result=array();
+        //echo "estou aqui";
+        //print_r($this->getBuscaSql7($search));die;
+        //print_r($this->getBuscaSql7($search));die;
+        //$busca = $this->query("select * from Beneficiarios where sinistro='0153.93.03.00001654'");
+        $busca = $this->query($this->getBuscaSql7($search));
+        //print_r($busca);die;
+        //print_r($this->getBuscaSql($search));die;
+        if(@$busca){
+         foreach ($busca as $key => $row) {
+            $odbc = new Odbc();
+            //print_r($odbc);die;
+            OdbcMapper::map($odbc, $row);
+            $result[$odbc->getidtitular()] = $odbc;
+           // print_r($result);
+         }
+         //die;
+        }
+            //print_r($odbc);die;
+        //print_r($result);die;
+        //die;
         return @$result;
     }
     public function queryLinhas($sql){
@@ -691,6 +720,64 @@ final class OdbcDao {
         //print_r($search);
         //print_r($sql);die;
         return $sql;
+    }
+    private function getBuscaSql7(OdbcSearchCriteria $search = null){
+        $sql = "SELECT TOP 14 * FROM sinipend WHERE ";
+        $order = ' idtitular';
+        //$sql .= "SINISTRO='".$search->getsinistro()."'";
+        //var_dump($search->setsinistro(0));
+        if(@$search->getENDOSSO()){
+         $campo='ENDOSSO';
+         $busca=$search->getENDOSSO();
+        }elseif(@$search->getsinistro()){
+         $campo='SINISTRO';
+         $busca=$search->getsinistro();
+        }
+        //print_r($search);die;
+        if($search->getIMPORTANCIA_SEGURADA() == null){
+            //echo "nulo";
+            $search->setIMPORTANCIA_SEGURADA(0);
+        }
+        if(@!$search->getidtitular()){
+            $idtitular=0;
+        }else{
+            $idtitular=$search->getidtitular();
+        }
+        //print_r($search);
+        //var_dump($search->getsinistro() != null);die;
+        //var_dump($search->getTITULAR() != null || $search->getsinistro() != null);die;
+        /*
+        if ($search->getTITULAR() != null || $search->getsinistro() != null || $search->getENDOSSO() != null) {
+         //echo $search->getENDOSSO();
+            //echo "search nao esta nulo".$search->getnome();die;
+            if ($search->getsinistro() != null || $search->getENDOSSO() != null) {
+                //echo "sinistro defenido";
+                $sql .= "$campo like '%".$busca."%'";
+            }elseif($search->getTITULAR() != null){
+                //echo "nome defenido";
+                $sql .= "TITULAR like '%".$search->getTITULAR()."%'";
+            }
+            if($search->getIMPORTANCIA_SEGURADA()>0){
+              $sql.= ' AND IMPORTANCIA_SEGURADA > '.$search->getIMPORTANCIA_SEGURADA().' ';
+            }
+        }else{
+            //echo $search->getsinistro();
+            //echo "search esta nulo";die;
+          if($search->getIMPORTANCIA_SEGURADA()>0){
+            $sql.= ' IMPORTANCIA_SEGURADA > '.$search->getIMPORTANCIA_SEGURADA().' ';
+          }else{
+            $sql .= "1";           
+          }
+        }
+         * 
+         */
+        //$sql .= ' AND idtitular > '.$idtitular.' ';
+        //print_r($sql);die;
+        //$sql .= ' ORDER BY '.$order;
+        //print_r($sql);
+        $sql .= "TITULAR like '".$search->getTITULAR()."'";
+        return $sql;
+        
     }
     private function getFindSql2(OdbcSearchCriteria $search = null) {
      //print_r(foreach($this->query($search) as $item));die;

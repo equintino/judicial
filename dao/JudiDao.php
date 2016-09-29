@@ -79,7 +79,7 @@ class JudiDao extends TodoDao{
         }
         return $result;
     }
-    public function listaProvavel3(JudiSearchCriteria $Judisearch = null) {
+    public function listatransito(JudiSearchCriteria $Judisearch = null) {
      $sql="SELECT * FROM transito_julgado";
      $rows = $this->query($sql) ->fetchAll();
      //print_r($rows);die;
@@ -88,6 +88,20 @@ class JudiDao extends TodoDao{
             JudiMapper::map($judi, $row);
             $result[] = $judi;
         }
+        return $result;
+    }
+    public function listacredito(JudiSearchCriteria $Judisearch = null) {
+     $sql="SELECT * FROM certidao_cre";
+     $rows = $this->query($sql) ->fetchAll();
+     //echo "<pre>";
+     //print_r($rows);die;
+        foreach($rows as $row){
+         $judi = new Judi();
+            JudiMapper::map($judi, $row);
+            $result[] = $judi;
+        }
+        //echo "<pre>";
+        //print_r($result);die;
         return $result;
     }
     public function query($sql) {

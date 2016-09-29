@@ -35,27 +35,106 @@ header('Content-type: text/html; charset=UTF-8');
     //print_r($Odbcsearch);die;
     
     //print_r(get_class_methods($Judidao));die;
+            
+    //print_r(get_class_methods($Odbcdao));die;
     
-    $judis=$Judidao->listaProvavel3($Judisearch);
+    
+    
+    $judis=$Judidao->listaProvavel3($Judisearch);// tabela transito julgado
+    
+      echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
+      echo "<tr><th>N&Uacute;MERO CNJ / ANTIGO</th><th>SINISTRO</th><th>SEGURADO</th><th>AVISO</th><th>SEGURADO_TRA</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>HONOR&Aacute;RIOS</th><th>VALOR ADMINISTRATIVO</th></tr>";
+
+
+
     //die;
-     echo "<pre>";
+     //echo "<pre>";
         //print_r($judis);
-     echo "</pre>";
+     //echo "</pre>";die;
+      $x=0;
      foreach($judis as $judi){
             $segurado=JudiValidator::tirarAcento($judi->getSegurado_tra());
-            //echo "<br>";
+            
             $tabela='sinipend';
             $campo='TITULAR';
             $busca=$segurado;
+            //print_r($judis);die;
             
             $Odbcsearch->setTITULAR($segurado);
-            print_r(get_class_methods($Odbc));
+            //print_r($Odbcsearch->getTITULAR());die;
+            if($Odbcsearch->getTITULAR()){
+                //echo "<h1>".$Odbcsearch->getTITULAR()."</h1>";die;
+                $odbcs=$Odbcdao->busca7($Odbcsearch);
+            //PRINT_R($odbcs);die;
+                if($odbcs){
+                    foreach($odbcs as $item){
+                        //print_r($item);die;
+                        $nome=$item->getTITULAR();
+                        $sinistro=$item->getSINISTRO();
+                        $impSegurado=$item->getIMPORTANCIA_SEGURADA();
+                        $aviso=$item->getDT_AVISO();
+                    }
+                    $Todosearch->setSINISTRO($sinistro);
+                    $henr=$Tododao->find8($Todosearch);
+                    //print_r($henr);//die;
+                    if($henr){
+                        foreach($henr as $item2){
+                            if($sinistro == $item2->getSINISTRO()){
+                                //print_r($item2);die;
+                                $impSegurado_tr=$item2->getCORRECAO_TR();
+                                //print_r($item2);
+                            }
+                        }
+                    }else{
+                       $impSegurado_tr=null;
+                    }
+                }
+            }else{
+                $nome=null;
+                $sinistro=null;
+                $impSegurado=null;
+                $aviso=null;
+                $impSegurado_tr=null;
+            }
+            //echo $judi->getHonorarios_tra();
+            //die;
+                //echo "<pre>";
+                //print_r($item->getnome());
             
-            print_r($Odbcdao->getbusca($Odbcsearch));die;
-            print_r($Odbcsearch);die;
-            
-            print_r($Odbcdao->getlistaCampo($tabela,$campo,$busca));die;
+                    echo "<tr><td>";
+                    echo $judi->getNumero_CNJ_Antigo_tra();
+                    echo "</td><td>";
+                    echo $sinistro;
+                    echo "</td><td>";
+                    echo mb_strtoupper($nome);
+                    echo "</td><td>";
+                    echo $aviso;
+                    echo "</td><td>";
+                    echo mb_strtoupper($judi->getSegurado_tra());
+                    echo "</td><td>";
+                    echo mb_strtoupper($judi->getParte_contraria_tra());
+                    echo "</td><td align=right>";
+                    echo $judi->getValor_tra();
+                    //echo "</td><td align=right>";
+                    //echo number_format($item2->getIMPORTANCIA_SEGURADA(),'2',',','.');
+                    echo "</td><td align=right>";
+                    echo $judi->getHonorarios_tra();
+                    echo "</td><td align=right>";
+                    echo $impSegurado_tr;
+                    echo "</td></tr>";
+                    $nome=null;
+                    $sinistro=null;
+                    $impSegurado=null;
+                    $aviso=null;
+                    $impSegurado_tr=null;
+                    
+                    //if($x=200){
+                        //die;
+                    //}
+                    //$x++;
      }
+     
+     echo "</table>";
      die;
     
     //echo "<pre>";

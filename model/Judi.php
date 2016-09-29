@@ -33,14 +33,21 @@ class Judi {
    private $id_h;
    private $id;
    
-   private $Número_CNJ_Antigo_tra;
+   private $Numero_CNJ_Antigo_tra;
    private $Natureza_tra;
    private $UF_tra;
    private $Parte_contraria_tra;
    private $Segurado_tra;
    private $Valor_tra;
    private $Honorarios_tra; 
-   
+
+   private $Numero_CNJ_Antigo_cre;
+   private $Natureza_cre;
+   private $UF_cre;
+   private $Parte_contraria_cre;
+   private $Segurado_cre;
+   private $Honorarios_cre;
+   private $Valor_cre;
    
     public function getNumero_CNJ_Antigo_con(){
         return $this->Numero_CNJ_Antigo_con;
@@ -216,11 +223,11 @@ class Judi {
     public function setid($id){
         $this->id = $id;
     }
-    public function getNúmero_CNJ_Antigo_tra(){
-        return $this->Número_CNJ_Antigo_tra;
+    public function getNumero_CNJ_Antigo_tra(){
+        return $this->Numero_CNJ_Antigo_tra;
     }
-    public function setNúmero_CNJ_Antigo_tra($Número_CNJ_Antigo_tra){
-        $this->Número_CNJ_Antigo_tra = $Número_CNJ_Antigo_tra;
+    public function setNumero_CNJ_Antigo_tra($Numero_CNJ_Antigo_tra){
+        $this->Numero_CNJ_Antigo_tra = $Numero_CNJ_Antigo_tra;
     }
     public function getNatureza_tra(){
         return $this->Natureza_tra;
@@ -257,5 +264,49 @@ class Judi {
     }
     public function setHonorarios_tra($Honorarios_tra){
         $this->Honorarios_tra = $Honorarios_tra;
-    } 
+    }
+    
+    
+    public function getNumero_CNJ_Antigo_cre(){
+        return $this->Numero_CNJ_Antigo_cre;
+    }
+    public function setNumero_CNJ_Antigo_cre($Numero_CNJ_Antigo_cre){
+        $this->Numero_CNJ_Antigo_cre = $Numero_CNJ_Antigo_cre;
+    }
+    public function getNatureza_cre(){
+        return $this->Natureza_cre;
+    }
+    public function setNatureza_cre($Natureza_cre){
+        $this->Natureza_cre = $Natureza_cre;
+    }
+    public function getUF_cre(){
+        return $this->UF_cre;
+    }
+    public function setUF_cre($UF_cre){
+        $this->UF_cre = $UF_cre;
+    }
+    public function getParte_contraria_cre(){
+        return $this->Parte_contraria_cre;
+    }
+    public function setParte_contraria_cre($Parte_contraria_cre){
+        $this->Parte_contraria_cre = $Parte_contraria_cre;
+    }
+    public function getSegurado_cre(){
+        return $this->Segurado_cre;
+    }
+    public function setSegurado_cre($Segurado_cre){
+        $this->Segurado_cre = $Segurado_cre;
+    }
+    public function getHonorarios_cre(){
+        return $this->Honorarios_cre;
+    }
+    public function setHonorarios_cre($Honorarios_cre){
+        $this->Honorarios_cre = $Honorarios_cre;
+    }
+    public function getValor_cre(){
+        return $this->Valor_cre;
+    }
+    public function setValor_cre($Valor_cre){
+        $this->Valor_cre = $Valor_cre;
+    }
 }
