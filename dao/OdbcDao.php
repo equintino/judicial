@@ -346,6 +346,8 @@ final class OdbcDao {
         $result=array();
         $busca = $this->query($this->getBuscaSql3($search));
         //print_r($this->getBuscaSql3($search));
+        //echo "<pre>";
+        //print_r($busca);die;
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();

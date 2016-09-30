@@ -46,6 +46,7 @@ final class Odbc {
     //private $SINISTRO;
     private $ENDOSSO;
     private $DT_AVISO;
+    private $DT_DOC_OK;
     private $DT_SINISTRO;
     //private $APOLICE;
     
@@ -525,6 +526,12 @@ final class Odbc {
     }
     public function setDT_AVISO($DT_AVISO){
         $this->DT_AVISO = $DT_AVISO;
+    }
+    public function getDT_VIG_FINAL(){
+        return $this->DT_VIG_FINAL;
+    }
+    public function setDT_VIG_FINAL($DT_VIG_FINAL){
+        $this->DT_VIG_FINAL = $DT_VIG_FINAL;
     }
     public function getDT_SINISTRO(){
         return $this->DT_SINISTRO;

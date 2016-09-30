@@ -40,15 +40,17 @@
       }
        
       $odbcs=$dao->busca3($search);
+      //echo "<pre>";
       //print_r($odbcs);die;
       
       echo "<div class='busca_tabela'>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       if($odbcs){
-       echo "<tr><th>SINISTRO</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRADO</th><th>IMP.<br>SEGURADA</th><th>DT<br>&OacuteBTO</th><th>DT<br>AVISO</th><th>INFO</th></tr>";
+       echo "<tr><th>SINISTRO</th><th>AP&Oacute;LICE</th><th>CERTIFICADO</th><th>SINISTRADO</th><th>IMP.<br>SEGURADA</th><th>DT<br>&OacuteBTO</th><th>DT<br>AVISO</th><th>DT<br>DOC OK</th><th>INFO</th></tr>";
       }
       $y=0;
-     // print_r($odbcs);die;
+      //echo "<pre>";
+      //print_r($odbcs);die;
      foreach($odbcs as $item){
        if($item->getTITULAR()){
         echo "<tr><td>";
@@ -66,6 +68,31 @@
         echo "</td><td>";
             $data=$item->getDT_AVISO();
             echo OdbcValidator::data($data);
+        echo "</td><td>";
+            $data_=trim($item->getDT_VIG_FINAL());
+            if($data_ != null){
+                echo OdbcValidator::data($data_);
+            }
+            ////// calculando juros /////
+            $mes=OdbcValidator::mes($data_); 
+            $ano=OdbcValidator::ano($data_);
+            $mes=1;
+            $ano=2015;
+            if($ano < date('Y')){
+                switch ($mes){
+                    case 1:
+                        echo "<br>";
+                        echo $importancia=$item->getIMPORTANCIA_SEGURADA();
+                        echo " - ";
+                        for($x=0;$x<12;$x++){
+                            $importancia=$importancia+$importancia*0.005;
+                        }
+                        echo number_format($importancia,'2',',','.');
+                        break;
+                }
+            }
+            die;
+            ///// fim juros /////
         echo "</td><td align=center>";
             echo "<a href='teste3.php?act=status&sinistro=".$item->getsinistro()."&beneficiario=".$item->getnome()."'><img src='img/detalhe.png' height=15 /></a>";
         echo "</td></tr>";
@@ -95,7 +122,7 @@
        }
        
        if(@$valoresembranco==1){
-            echo "<tr><th colspan=8 align=center>".$botao." < </button> $pag_ de ".number_format($totalPag,'0','','.')." ".$botao_." > </button></a></th></tr>";
+            echo "<tr><th colspan=9 align=center>".$botao." < </button> $pag_ de ".number_format($totalPag,'0','','.')." ".$botao_." > </button></a></th></tr>";
        }else{
         $ultimoSinistrado=$item->getidtitular();
         //echo $totalPag;
@@ -106,10 +133,10 @@
                         document.cookie=\"totalPag=$totalPag\";
                         document.cookie=\"ultimoSinistrado=$ultimoSinistrado\";
                     </script>";
-               echo "<tr><th colspan=8 align=center>".$botao." < </button> $pag_ de $totalPag ".$botao_." > </button></a></th></tr>";
+               echo "<tr><th colspan=9 align=center>".$botao." < </button> $pag_ de $totalPag ".$botao_." > </button></a></th></tr>";
                //$pagAtual=$pag_;
            }else{
-               echo "<tr><th colspan=8 align=center><button disabled> < </button> 1 de 1 <button disabled> > </button></a></th></tr>";
+               echo "<tr><th colspan=9 align=center><button disabled> < </button> 1 de 1 <button disabled> > </button></a></th></tr>";
            }
        }
         /// fim paginação ///   

@@ -98,6 +98,21 @@ final class OdbcValidator {
         }
 	 return $maskared;
     }
+    public static function mes($data){    
+      /// extraindo mes ///
+      if(substr($data,-7,1) == "/" ){
+        $mes='0'.substr($data,-6,1);
+      }else{
+        $mes=substr($data,-7,2);
+      }
+      return $mes;
+    }
+    public static function ano($data){   
+      /// extraindo ano ///
+        $ano = substr($data,-4,4);           
+      /// fim data ///
+      return $ano;
+    }
     public static function data($data){    
       /// extraindo dia ///
       if(strlen(strstr($data,'/',true))==1){
