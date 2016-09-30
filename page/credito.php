@@ -37,14 +37,18 @@ header('Content-type: text/html; charset=UTF-8');
     //print_r(get_class_methods($Judidao));die;
             
     //print_r(get_class_methods($Odbcdao));die;
-    
+    //print_r($Judisearch);die;
     //die;
     
-    $judis=$Judidao->listacredito($Judisearch);// tabela transito julgado
-    print_r($judis);die;
+    //$judis=$Judidao->listacredito($Judisearch);// tabela credito
+    //if($Judisearch){
+       $judis=$Judidao->listaCreditoAdministrativo($Judisearch);// tabela transito x credito
+    //}
+    //echo "<pre>";
+    //print_r($judis);die;
     
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<tr><th>N&Uacute;MERO CNJ / ANTIGO</th><th>SINISTRO</th><th>SEGURADO</th><th>AVISO</th><th>SEGURADO_TRA</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>HONOR&Aacute;RIOS</th><th>VALOR ADMINISTRATIVO</th></tr>";
+      echo "<tr><th>N&Uacute;MERO CNJ / ANTIGO</th><th>SINISTRO</th><th>SEGURADO</th><th>AVISO</th><th>SEGURADO_cre</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>HONOR&Aacute;RIOS</th><th>VALOR ADMINISTRATIVO</th></tr>";
 
 
 
@@ -54,6 +58,7 @@ header('Content-type: text/html; charset=UTF-8');
      //echo "</pre>";die;
       $x=0;
      foreach($judis as $judi){
+      /*
             $segurado=JudiValidator::tirarAcento($judi->getSegurado_tra());
             
             $tabela='sinipend';
@@ -97,31 +102,33 @@ header('Content-type: text/html; charset=UTF-8');
                 $aviso=null;
                 $impSegurado_tr=null;
             }
+       * 
+       */
             //echo $judi->getHonorarios_tra();
             //die;
                 //echo "<pre>";
-                //print_r($item->getnome());
+                //print_r($judi);die;
             
                     echo "<tr><td>";
-                    echo $judi->getNumero_CNJ_Antigo_tra();
+                    echo $judi->getNumero_CNJ_Antigo_cre();
                     echo "</td><td>";
-                    echo $sinistro;
+                    echo $judi->getSINISTRO_lev();
                     echo "</td><td>";
-                    echo mb_strtoupper($nome);
+                    echo mb_strtoupper($judi->getTITULAR_h());
                     echo "</td><td>";
-                    echo $aviso;
+                    echo $judi->getDT_AVISO_h();
                     echo "</td><td>";
-                    echo mb_strtoupper($judi->getSegurado_tra());
+                    echo mb_strtoupper($judi->getSegurado_cre());
                     echo "</td><td>";
-                    echo mb_strtoupper($judi->getParte_contraria_tra());
+                    echo mb_strtoupper($judi->getParte_contraria_cre());
                     echo "</td><td align=right>";
-                    echo $judi->getValor_tra();
+                    echo $judi->getValor_cre();
                     //echo "</td><td align=right>";
                     //echo number_format($item2->getIMPORTANCIA_SEGURADA(),'2',',','.');
                     echo "</td><td align=right>";
-                    echo $judi->getHonorarios_tra();
+                    echo $judi->getHonorarios_cre();
                     echo "</td><td align=right>";
-                    echo $impSegurado_tr;
+                    echo $judi->getCORRECAO_TR_h();
                     echo "</td></tr>";
                     $nome=null;
                     $sinistro=null;
