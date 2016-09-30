@@ -42,7 +42,7 @@ header('Content-type: text/html; charset=UTF-8');
     
     //$judis=$Judidao->listacredito($Judisearch);// tabela credito
     //if($Judisearch){
-       $judis=$Judidao->listaCreditoAdministrativo($Judisearch);// tabela transito x credito
+       $judis=$Judidao->duplicadoTraPro($Judisearch);// tabela transito x credito
     //}
     //echo "<pre>";
     //print_r($judis);die;

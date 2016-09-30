@@ -118,6 +118,20 @@ class JudiDao extends TodoDao{
         //print_r($result);die;
         return $result;
     }
+    public function duplicadoTraPro(JudiSearchCriteria $Judisearch = null) {
+     $sql="SELECT * FROM certidao_cre_final LEFT JOIN provavel_contabilizada_final ON certidao_cre_final.Nnmero_CNJ_Antigo_cre_fim = provavel_contabilizada_final.Numero_CNJ_Antigo_con_fim";
+     $rows = $this->query($sql) ->fetchAll();
+     
+     echo "<pre>";
+     print_r($rows);die;
+     
+        foreach($rows as $row){
+         $judi = new Judi();
+            JudiMapper::map($judi, $row);
+            $result[] = $judi;
+        }
+        return $result;
+    }
     public function query($sql) {
             set_time_limit(3600);
         $statement = $this->getDb2()->query($sql, PDO::FETCH_ASSOC);
