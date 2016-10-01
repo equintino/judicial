@@ -135,6 +135,36 @@ class JudiMapper {
         if (array_key_exists('Valor_cre', $properties)){
             $judi->setValor_cre($properties['Valor_cre']);
         }
+        if (array_key_exists('Numero_CNJ_Antigo_mon', $properties)){
+            $judi->setNumero_CNJ_Antigo_mon($properties['Numero_CNJ_Antigo_mon']);
+        }
+        if (array_key_exists('Natureza_mon', $properties)){
+            $judi->setNatureza_mon($properties['Natureza_mon']);
+        }
+        if (array_key_exists('UF_mon', $properties)){
+            $judi->setUF_mon($properties['UF_mon']);
+        }
+        if (array_key_exists('Parte_contraria_mon', $properties)){
+            $judi->setParte_contraria_mon($properties['Parte_contraria_mon']);
+        }
+        if (array_key_exists('Segurado_mon', $properties)){
+            $judi->setSegurado_mon($properties['Segurado_mon']);
+        }
+        if (array_key_exists('Vlr_Deferido_mon', $properties)){
+            $judi->setVlr_Deferido_mon($properties['Vlr_Deferido_mon']);
+        }
+        if (array_key_exists('Vlr_Da_causa_mon', $properties)){
+            $judi->setVlr_Da_causa_mon($properties['Vlr_Da_causa_mon']);
+        }
+        if (array_key_exists('Vlr_Condenação_mon', $properties)){
+            $judi->setVlr_Condenação_mon($properties['Vlr_Condenação_mon']);
+        }
+        if (array_key_exists('Honorarios_mon', $properties)){
+            $judi->setHonorarios_mon($properties['Honorarios_mon']);
+        }
+        if (array_key_exists('Vlr_certidao_de_credito_mon', $properties)){
+            $judi->setVlr_certidao_de_credito_mon($properties['Vlr_certidao_de_credito_mon']);
+        }
     }
 }
 ?>

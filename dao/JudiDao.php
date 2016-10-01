@@ -105,10 +105,10 @@ class JudiDao extends TodoDao{
         return $result;
     }
     public function listaCreditoAdministrativo(JudiSearchCriteria $Judisearch = null) {
-     $sql="SELECT * FROM certidao_cre LEFT JOIN levantamento_henrique ON certidao_cre.Segurado_cre = levantamento_henrique.SEGURADO_lev";
+     $sql="SELECT * FROM certidao_cre_mon2 left JOIN levantamento_henrique ON certidao_cre_mon2.Segurado_mon = levantamento_henrique.SEGURADO_lev";
      $rows = $this->query($sql) ->fetchAll();
-     //echo "<pre>";
-     //print_r($rows);die;
+     echo "<pre>";
+     print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
             JudiMapper::map($judi, $row);

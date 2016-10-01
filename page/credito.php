@@ -48,7 +48,7 @@ header('Content-type: text/html; charset=UTF-8');
     //print_r($judis);die;
     
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<tr><th>N&Uacute;MERO CNJ / ANTIGO</th><th>SINISTRO</th><th>SEGURADO</th><th>AVISO</th><th>SEGURADO_cre</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR PEDIDO</th><th>HONOR&Aacute;RIOS</th><th>VALOR ADMINISTRATIVO</th></tr>";
+      echo "<tr><th>N&Uacute;MERO CNJ / ANTIGO</th><th>Natureza</th><th>UF</th><th>SINISTRO</th><th>SEGURADO</th><th>AVISO</th><th>SEGURADO_cre</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR DEFERIDO</th><th>VALOR DA CAUSA</th><th>VALOR DA CONDENA&Ccedil;&Atilde;O</th><th>VALOR DA CERTID&Atilde;O DE CR&Eacute;DITO</th><th>HONOR&Aacute;RIOS</th><th>VALOR ADMINISTRATIVO</th></tr>";
 
 
 
@@ -110,7 +110,11 @@ header('Content-type: text/html; charset=UTF-8');
                 //print_r($judi);die;
             
                     echo "<tr><td>";
-                    echo $judi->getNumero_CNJ_Antigo_cre();
+                    echo $judi->getNumero_CNJ_Antigo_mon();
+                    echo "</td><td>";
+                    echo $judi->getNatureza_mon();
+                    echo "</td><td>";
+                    echo $judi->getUF_mon();
                     echo "</td><td>";
                     echo $judi->getSINISTRO_lev();
                     echo "</td><td>";
@@ -118,15 +122,21 @@ header('Content-type: text/html; charset=UTF-8');
                     echo "</td><td>";
                     echo $judi->getDT_AVISO_h();
                     echo "</td><td>";
-                    echo mb_strtoupper($judi->getSegurado_cre());
+                    echo mb_strtoupper($judi->getSegurado_mon());
                     echo "</td><td>";
-                    echo mb_strtoupper($judi->getParte_contraria_cre());
+                    echo mb_strtoupper($judi->getParte_contraria_mon());
                     echo "</td><td align=right>";
-                    echo $judi->getValor_cre();
+                    echo $judi->getVlr_Deferido_mon();
+                    echo "</td><td align=right>";
+                    echo $judi->getVlr_Da_causa_mon();
+                    echo "</td><td align=right>";
+                    echo $judi->getVlr_Condenação_mon();
                     //echo "</td><td align=right>";
                     //echo number_format($item2->getIMPORTANCIA_SEGURADA(),'2',',','.');
                     echo "</td><td align=right>";
-                    echo $judi->getHonorarios_cre();
+                    echo $judi->getVlr_certidao_de_credito_mon();
+                    echo "</td><td align=right>";
+                    echo $judi->getHonorarios_mon();
                     echo "</td><td align=right>";
                     echo $judi->getCORRECAO_TR_h();
                     echo "</td></tr>";
@@ -135,7 +145,7 @@ header('Content-type: text/html; charset=UTF-8');
                     $impSegurado=null;
                     $aviso=null;
                     $impSegurado_tr=null;
-                    
+                 
                     //if($x=200){
                         //die;
                     //}
