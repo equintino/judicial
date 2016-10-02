@@ -60,6 +60,22 @@ class Judi {
    private $Honorarios_mon;
    private $Vlr_certidao_de_credito_mon;
    
+   private $PASTA;
+   private $SEGURADO_mon2;
+   private $ASSINATURA_mon2;
+   private $N_SIN_ADM_mon2;
+   private $DT_SIN_mon2;
+   private $N_PROC_JUD_CNJ_mon2;
+   private $N_ANTIGO_mon2;
+   private $UF_CIDADE_mon2;
+   private $COMARCA_mon2;
+   private $FORO_mon2;
+   private $VARA_mon2;
+   private $HABILITANTE_mon2;
+   private $VL_CERT_CRED_mon2;
+   private $DT_CRED_mon2;
+   private $OBSEVACAO_mon2;
+
     public function getNumero_CNJ_Antigo_con(){
         return $this->Numero_CNJ_Antigo_con;
     }
@@ -379,5 +395,97 @@ class Judi {
     }
     public function setVlr_certidao_de_credito_mon($Vlr_certidao_de_credito_mon){
         $this->Vlr_certidao_de_credito_mon = $Vlr_certidao_de_credito_mon;
+    }
+    
+    
+    public function getPASTA(){
+        return $this->PASTA;
+    }
+    public function setPASTA($PASTA){
+        $this->PASTA = $PASTA;
+    }
+    public function getSEGURADO_mon2(){
+        return $this->SEGURADO_mon2;
+    }
+    public function setSEGURADO_mon2($SEGURADO_mon2){
+        $this->SEGURADO_mon2 = $SEGURADO_mon2;
+    }
+    public function getASSINATURA_mon2(){
+        return $this->ASSINATURA_mon2;
+    }
+    public function setASSINATURA_mon2($ASSINATURA_mon2){
+        $this->ASSINATURA_mon2 = $ASSINATURA_mon2;
+    }
+    public function getN_SIN_ADM_mon2(){
+        return $this->N_SIN_ADM_mon2;
+    }
+    public function setN_SIN_ADM_mon2($N_SIN_ADM_mon2){
+        $this->N_SIN_ADM_mon2 = $N_SIN_ADM_mon2;
+    }
+    public function getDT_SIN_mon2(){
+        return $this->DT_SIN_mon2;
+    }
+    public function setDT_SIN_mon2($DT_SIN_mon2){
+        $this->DT_SIN_mon2 = $DT_SIN_mon2;
+    }
+    public function getN_PROC_JUD_CNJ_mon2(){
+        return $this->N_PROC_JUD_CNJ_mon2;
+    }
+    public function setN_PROC_JUD_CNJ_mon2($N_PROC_JUD_CNJ_mon2){
+        $this->N_PROC_JUD_CNJ_mon2 = $N_PROC_JUD_CNJ_mon2;
+    }
+    public function getN_ANTIGO_mon2(){
+        return $this->N_ANTIGO_mon2;
+    }
+    public function setN_ANTIGO_mon2($N_ANTIGO_mon2){
+        $this->N_ANTIGO_mon2 = $N_ANTIGO_mon2;
+    }
+    public function getUF_CIDADE_mon2(){
+        return $this->UF_CIDADE_mon2;
+    }
+    public function setUF_CIDADE_mon2($UF_CIDADE_mon2){
+        $this->UF_CIDADE_mon2 = $UF_CIDADE_mon2;
+    }
+    public function getCOMARCA_mon2(){
+        return $this->COMARCA_mon2;
+    }
+    public function setCOMARCA_mon2($COMARCA_mon2){
+        $this->COMARCA_mon2 = $COMARCA_mon2;
+    }
+    public function getFORO_mon2(){
+        return $this->FORO_mon2;
+    }
+    public function setFORO_mon2($FORO_mon2){
+        $this->FORO_mon2 = $FORO_mon2;
+    }
+    public function getVARA_mon2(){
+        return $this->VARA_mon2;
+    }
+    public function setVARA_mon2($VARA_mon2){
+        $this->VARA_mon2 = $VARA_mon2;
+    }
+    public function getHABILITANTE_mon2(){
+        return $this->HABILITANTE_mon2;
+    }
+    public function setHABILITANTE_mon2($HABILITANTE_mon2){
+        $this->HABILITANTE_mon2 = $HABILITANTE_mon2;
+    }
+    public function getVL_CERT_CRED_mon2(){
+        return $this->VL_CERT_CRED_mon2;
+    }
+    public function setVL_CERT_CRED_mon2($VL_CERT_CRED_mon2){
+        $this->VL_CERT_CRED_mon2 = $VL_CERT_CRED_mon2;
+    }
+    public function getDT_CRED_mon2(){
+        return $this->DT_CRED_mon2;
+    }
+    public function setDT_CRED_mon2($DT_CRED_mon2){
+        $this->DT_CRED_mon2 = $DT_CRED_mon2;
+    }
+    public function getOBSEVACAO_mon2(){
+        return $this->OBSEVACAO_mon2;
+    }
+    public function setOBSEVACAO_mon2($OBSEVACAO_mon2){
+        $this->OBSEVACAO_mon2 = $OBSEVACAO_mon2;
     }
 }

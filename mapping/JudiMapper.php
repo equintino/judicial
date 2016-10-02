@@ -165,6 +165,51 @@ class JudiMapper {
         if (array_key_exists('Vlr_certidao_de_credito_mon', $properties)){
             $judi->setVlr_certidao_de_credito_mon($properties['Vlr_certidao_de_credito_mon']);
         }
+        if (array_key_exists('PASTA', $properties)){
+            $judi->setPASTA($properties['PASTA']);
+        }
+        if (array_key_exists('SEGURADO_mon2', $properties)){
+            $judi->setSEGURADO_mon2($properties['SEGURADO_mon2']);
+        }
+        if (array_key_exists('ASSINATURA_mon2', $properties)){
+            $judi->setASSINATURA_mon2($properties['ASSINATURA_mon2']);
+        }
+        if (array_key_exists('N_SIN_ADM_mon2', $properties)){
+            $judi->setN_SIN_ADM_mon2($properties['N_SIN_ADM_mon2']);
+        }
+        if (array_key_exists('DT_SIN_mon2', $properties)){
+            $judi->setDT_SIN_mon2($properties['DT_SIN_mon2']);
+        }
+        if (array_key_exists('N_PROC_JUD_CNJ_mon2', $properties)){
+            $judi->setN_PROC_JUD_CNJ_mon2($properties['N_PROC_JUD_CNJ_mon2']);
+        }
+        if (array_key_exists('N_ANTIGO_mon2', $properties)){
+            $judi->setN_ANTIGO_mon2($properties['N_ANTIGO_mon2']);
+        }
+        if (array_key_exists('UF_CIDADE_mon2', $properties)){
+            $judi->setUF_CIDADE_mon2($properties['UF_CIDADE_mon2']);
+        }
+        if (array_key_exists('COMARCA_mon2', $properties)){
+            $judi->setCOMARCA_mon2($properties['COMARCA_mon2']);
+        }
+        if (array_key_exists('FORO_mon2', $properties)){
+            $judi->setFORO_mon2($properties['FORO_mon2']);
+        }
+        if (array_key_exists('VARA_mon2', $properties)){
+            $judi->setVARA_mon2($properties['VARA_mon2']);
+        }
+        if (array_key_exists('HABILITANTE_mon2', $properties)){
+            $judi->setHABILITANTE_mon2($properties['HABILITANTE_mon2']);
+        }
+        if (array_key_exists('VL_CERT_CRED_mon2', $properties)){
+            $judi->setVL_CERT_CRED_mon2($properties['VL_CERT_CRED_mon2']);
+        }
+        if (array_key_exists('DT_CRED_mon2', $properties)){
+            $judi->setDT_CRED_mon2($properties['DT_CRED_mon2']);
+        }
+        if (array_key_exists('OBSEVACAO_mon2', $properties)){
+            $judi->setOBSEVACAO_mon2($properties['OBSEVACAO_mon2']);
+        }
     }
 }
 ?>
