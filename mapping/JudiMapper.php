@@ -27,8 +27,8 @@ class JudiMapper {
         if (array_key_exists('DT_AVISO_h', $properties)) {
             $judi->setDT_AVISO_h($properties['DT_AVISO_h']);
         }
-        if (array_key_exists('SINISTRO_h;', $properties)) {
-            $judi->setSINISTRO_h($properties['SINISTRO_h;']);
+        if (array_key_exists('SINISTRO_h', $properties)) {
+            $judi->setSINISTRO_h($properties['SINISTRO_h']);
         }
         if (array_key_exists('ENDOSSO_h', $properties)) {
             $judi->setENDOSSO_h($properties['ENDOSSO_h']);
@@ -162,8 +162,8 @@ class JudiMapper {
         if (array_key_exists('Honorarios_mon', $properties)){
             $judi->setHonorarios_mon($properties['Honorarios_mon']);
         }
-        if (array_key_exists('Vlr_certidao_de_credito_mon', $properties)){
-            $judi->setVlr_certidao_de_credito_mon($properties['Vlr_certidao_de_credito_mon']);
+        if (array_key_exists('Vlr_Certidao_de_credito_mon', $properties)){
+            $judi->setVlr_Certidao_de_credito_mon($properties['Vlr_Certidao_de_credito_mon']);
         }
         if (array_key_exists('PASTA', $properties)){
             $judi->setPASTA($properties['PASTA']);
@@ -180,8 +180,8 @@ class JudiMapper {
         if (array_key_exists('DT_SIN_mon2', $properties)){
             $judi->setDT_SIN_mon2($properties['DT_SIN_mon2']);
         }
-        if (array_key_exists('N_PROC_JUD_CNJ_mon2', $properties)){
-            $judi->setN_PROC_JUD_CNJ_mon2($properties['N_PROC_JUD_CNJ_mon2']);
+        if (array_key_exists('N_PROC_JUD_CNJ_mon', $properties)){
+            $judi->setN_PROC_JUD_CNJ_mon($properties['N_PROC_JUD_CNJ_mon']);
         }
         if (array_key_exists('N_ANTIGO_mon2', $properties)){
             $judi->setN_ANTIGO_mon2($properties['N_ANTIGO_mon2']);
@@ -209,6 +209,9 @@ class JudiMapper {
         }
         if (array_key_exists('OBSEVACAO_mon2', $properties)){
             $judi->setOBSEVACAO_mon2($properties['OBSEVACAO_mon2']);
+        }
+        if (array_key_exists('Vlr_condenacao_mon', $properties)){
+            $judi->setVlr_condenacao_mon($properties['Vlr_condenacao_mon']);
         }
     }
 }

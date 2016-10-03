@@ -105,17 +105,22 @@ class JudiDao extends TodoDao{
         return $result;
     }
     public function listaCreditoAdministrativo(JudiSearchCriteria $Judisearch = null) {
-     $sql="SELECT * FROM certidao_cre_mon2 LEFT JOIN levantamento_henrique ON certidao_cre_mon2.Segurado_mon2 = levantamento_henrique.SEGURADO_lev";
+     $sql="SELECT * FROM certidao_cre_mon LEFT JOIN geral_henrique ON certidao_cre_mon.Segurado_mon = geral_henrique.TITULAR_h";
+     //$sql="SELECT * FROM acoes_transitado_julgado2 INNER JOIN certidao_cre_mon_final ON acoes_transitado_julgado2.Numero_CNJ_Antigo = certidao_cre_mon_final.N_PROC_JUD_CNJ_mon";
      $rows = $this->query($sql) ->fetchAll();
      //echo "<pre>";
      //print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
+            //print_r($row['Vlr_Certidao_de_credito_mon']);
+            //echo "<br>";
             JudiMapper::map($judi, $row);
+            //ECHO "<pre>";
+            //print_r($judi);die;
             $result[] = $judi;
         }
         //echo "<pre>";
-        //print_r($result);die;
+        //print_r($rows);die;
         return $result;
     }
     public function duplicadoTraPro(JudiSearchCriteria $Judisearch = null) {

@@ -65,7 +65,7 @@ class Judi {
    private $ASSINATURA_mon2;
    private $N_SIN_ADM_mon2;
    private $DT_SIN_mon2;
-   private $N_PROC_JUD_CNJ_mon2;
+   private $N_PROC_JUD_CNJ_mon;
    private $N_ANTIGO_mon2;
    private $UF_CIDADE_mon2;
    private $COMARCA_mon2;
@@ -75,6 +75,8 @@ class Judi {
    private $VL_CERT_CRED_mon2;
    private $DT_CRED_mon2;
    private $OBSEVACAO_mon2;
+   private $Vlr_condenacao_mon;
+ 
 
     public function getNumero_CNJ_Antigo_con(){
         return $this->Numero_CNJ_Antigo_con;
@@ -428,11 +430,11 @@ class Judi {
     public function setDT_SIN_mon2($DT_SIN_mon2){
         $this->DT_SIN_mon2 = $DT_SIN_mon2;
     }
-    public function getN_PROC_JUD_CNJ_mon2(){
-        return $this->N_PROC_JUD_CNJ_mon2;
+    public function getN_PROC_JUD_CNJ_mon(){
+        return $this->N_PROC_JUD_CNJ_mon;
     }
-    public function setN_PROC_JUD_CNJ_mon2($N_PROC_JUD_CNJ_mon2){
-        $this->N_PROC_JUD_CNJ_mon2 = $N_PROC_JUD_CNJ_mon2;
+    public function setN_PROC_JUD_CNJ_mon($N_PROC_JUD_CNJ_mon){
+        $this->N_PROC_JUD_CNJ_mon = $N_PROC_JUD_CNJ_mon;
     }
     public function getN_ANTIGO_mon2(){
         return $this->N_ANTIGO_mon2;
@@ -487,5 +489,11 @@ class Judi {
     }
     public function setOBSEVACAO_mon2($OBSEVACAO_mon2){
         $this->OBSEVACAO_mon2 = $OBSEVACAO_mon2;
+    }
+    public function getVlr_condenacao_mon(){
+        return $this->Vlr_condenacao_mon;
+    }
+    public function setVlr_condenacao_mon($Vlr_condenacao_mon){
+        $this->Vlr_condenacao_mon = $Vlr_condenacao_mon;
     }
 }
