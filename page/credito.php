@@ -48,7 +48,11 @@ header('Content-type: text/html; charset=UTF-8');
     //print_r($judis);die;
     
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<tr><th>N&Uacute;MERO CNJ / ANTIGO</th><th>Natureza</th><th>UF</th><th>SINISTRO</th><th>SEGURADO</th><th>AVISO</th><th>SEGURADO_cre</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR DEFERIDO</th><th>VALOR DA CAUSA</th><th>VALOR DA CONDENA&Ccedil;&Atilde;O</th><th>VALOR DA CERTID&Atilde;O DE CR&Eacute;DITO</th><th>HONOR&Aacute;RIOS</th><th>VALOR ADMINISTRATIVO</th></tr>";
+      echo "<tr><th>PASTA</th><th>SEGURADO_mon2</th><th>ASSINATURA_mon2</th><th>N_SIN_ADM_mon2</th><th>DT_SIN_mon2</th><th>N_PROC_JUD_CNJ_mon2</th><th>N_ANTIGO_mon2</th><th>UF_CIDADE_mon2</th><th>COMARCA_mon2</th><th>FORO_mon2</th><th>VARA_mon2</th><th>HABILITANTE_mon2</th><th>VL_CERT_CRED_mon2</th><th>DT_CRED_mon2</th><th>OBSEVACAO_mon2</th>"
+      ."<th>SEGURADO_lev</th><th>PARTE_CONTRARIA_lev</th><th>VALOR_PEDIDO_lev</th><th>VALOR_ADMINISTRATIVO_lev</th><th>HONORARIOS_lev</th><th>POSSIVEL_lev</th><th>PROVAVEL_lev</th><th>DIGITADOR_lev</th><th>id_lev</th><th>APOLICE_h</th><th>ENDOSSO_h</th><th>SINISTRO_h</th><th>DT_AVISO_h</th><th>TITULAR_h</th><th>CPF_h</th><th>IMPORTANCIA_SEGURADA_h</th><th>CORRECAO_IGPM_h</th><th>CORRECAO_TR_h</th><th>id_h</th>";
+      
+      //. "<th>N&Uacute;MERO CNJ / ANTIGO</th><th>Natureza</th><th>UF</th><th>SINISTRO</th><th>SEGURADO</th><th>AVISO</th><th>SEGURADO_cre</th><th>PARTE CONTR&Aacute;RIA</th><th>VALOR DEFERIDO</th><th>VALOR DA CAUSA</th><th>VALOR DA CONDENA&Ccedil;&Atilde;O</th><th>VALOR DA CERTID&Atilde;O DE CR&Eacute;DITO</th><th>HONOR&Aacute;RIOS</th><th>VALOR ADMINISTRATIVO</th></tr>";
+      
 
 
 
@@ -108,8 +112,77 @@ header('Content-type: text/html; charset=UTF-8');
             //die;
                 //echo "<pre>";
                 //print_r($judi);die;
-            
                     echo "<tr><td>";
+                    echo $judi->getPASTA();
+                    echo "</td><td>";
+                    echo $judi->getSEGURADO_mon2();
+                    echo "</td><td>";
+                    echo $judi->getASSINATURA_mon2();
+                    echo "</td><td>";
+                    echo $judi->getN_SIN_ADM_mon2();
+                    echo "</td><td>";
+                    echo $judi->getDT_SIN_mon2();
+                    echo "</td><td>";
+                    echo $judi->getN_PROC_JUD_CNJ_mon2();
+                    echo "</td><td>";
+                    echo $judi->getN_ANTIGO_mon2();
+                    echo "</td><td>";
+                    echo $judi->getUF_CIDADE_mon2();
+                    echo "</td><td>";
+                    echo $judi->getCOMARCA_mon2();
+                    echo "</td><td>";
+                    echo $judi->getFORO_mon2();
+                    echo "</td><td>";
+                    echo $judi->getVARA_mon2();
+                    echo "</td><td>";
+                    echo $judi->getHABILITANTE_mon2();
+                    echo "</td><td>";
+                    echo $judi->getVL_CERT_CRED_mon2();
+                    echo "</td><td>";
+                    echo $judi->getDT_CRED_mon2();
+                    echo "</td><td>";
+                    echo $judi->getOBSEVACAO_mon2();
+                    echo "</td><td>";
+                    echo $judi->getSEGURADO_lev();
+                    echo "</td><td>";
+                    echo $judi->getPARTE_CONTRARIA_lev();
+                    echo "</td><td>";
+                    echo $judi->getVALOR_PEDIDO_lev();
+                    echo "</td><td>";
+                    echo $judi->getVALOR_ADMINISTRATIVO_lev();
+                    echo "</td><td>";
+                    echo $judi->getHONORARIOS_lev();
+                    echo "</td><td>";
+                    echo $judi->getPOSSIVEL_lev();
+                    echo "</td><td>";
+                    echo $judi->getPROVAVEL_lev();
+                    echo "</td><td>";
+                    echo $judi->getDIGITADOR_lev();
+                    echo "</td><td>";
+                    echo $judi->getid_lev();
+                    echo "</td><td>";
+                    echo $judi->getAPOLICE_h();
+                    echo "</td><td>";
+                    echo $judi->getENDOSSO_h();
+                    echo "</td><td>";
+                    echo $judi->getSINISTRO_h();
+                    echo "</td><td>";
+                    echo $judi->getDT_AVISO_h();
+                    echo "</td><td>";
+                    echo $judi->getTITULAR_h();
+                    echo "</td><td>";
+                    echo $judi->getCPF_h();
+                    echo "</td><td>";
+                    echo $judi->getIMPORTANCIA_SEGURADA_h();
+                    echo "</td><td>";
+                    echo $judi->getCORRECAO_IGPM_h();
+                    echo "</td><td>";
+                    echo $judi->getCORRECAO_TR_h();
+                    echo "</td><td>";
+                    echo $judi->getid_h();
+                    echo "</td></tr>";
+                    
+             /*       
                     echo $judi->getNumero_CNJ_Antigo_mon();
                     echo "</td><td>";
                     echo $judi->getNatureza_mon();
@@ -150,6 +223,8 @@ header('Content-type: text/html; charset=UTF-8');
                         //die;
                     //}
                     //$x++;
+              * 
+              */
      }
      
      echo "</table>";
