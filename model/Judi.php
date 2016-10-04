@@ -76,7 +76,19 @@ class Judi {
    private $DT_CRED_mon2;
    private $OBSEVACAO_mon2;
    private $Vlr_condenacao_mon;
- 
+   
+   private $Numero_CNJ_Antigo;
+   private $Natureza;
+   private $UF;
+   private $Parte_contraria;
+   private $Segurado;
+   private $Vlr_deferido;
+   private $Vlr_da_causa;
+   private $Vlr_condenacao;
+   private $Honorarios;
+   private $Vlr_certidao_de_credito;
+   private $Aba;
+   
 
     public function getNumero_CNJ_Antigo_con(){
         return $this->Numero_CNJ_Antigo_con;
@@ -495,5 +507,71 @@ class Judi {
     }
     public function setVlr_condenacao_mon($Vlr_condenacao_mon){
         $this->Vlr_condenacao_mon = $Vlr_condenacao_mon;
+    }
+    public function getNumero_CNJ_Antigo(){
+        return $this->Numero_CNJ_Antigo;
+    }
+    public function setNumero_CNJ_Antigo($Numero_CNJ_Antigo){
+        $this->Numero_CNJ_Antigo = $Numero_CNJ_Antigo;
+    }
+    public function getNatureza(){
+        return $this->Natureza;
+    }
+    public function setNatureza($Natureza){
+        $this->Natureza = $Natureza;
+    }
+    public function getUF(){
+        return $this->UF;
+    }
+    public function setUF($UF){
+        $this->UF = $UF;
+    }
+    public function getParte_contraria(){
+        return $this->Parte_contraria;
+    }
+    public function setParte_contraria($Parte_contraria){
+        $this->Parte_contraria = $Parte_contraria;
+    }
+    public function getSegurado(){
+        return $this->Segurado;
+    }
+    public function setSegurado($Segurado){
+        $this->Segurado = $Segurado;
+    }
+    public function getVlr_deferido(){
+        return $this->Vlr_deferido;
+    }
+    public function setVlr_deferido($Vlr_deferido){
+        $this->Vlr_deferido = $Vlr_deferido;
+    }
+    public function getVlr_da_causa(){
+        return $this->Vlr_da_causa;
+    }
+    public function setVlr_da_causa($Vlr_da_causa){
+        $this->Vlr_da_causa = $Vlr_da_causa;
+    }
+    public function getVlr_condenacao(){
+        return $this->Vlr_condenacao;
+    }
+    public function setVlr_condenacao($Vlr_condenacao){
+        $this->Vlr_condenacao = $Vlr_condenacao;
+    }
+    public function getHonorarios(){
+        return $this->Honorarios;
+    }
+    public function setHonorarios($Honorarios){
+        $this->Honorarios = $Honorarios;
+    }
+    public function getVlr_certidao_de_credito(){
+        return $this->Vlr_certidao_de_credito;
+    }
+    public function setVlr_certidao_de_credito($Vlr_certidao_de_credito){
+        $this->Vlr_certidao_de_credito = $Vlr_certidao_de_credito;
+    }
+    public function getAba(){
+        return $this->Aba;
+    }
+    public function setAba($Aba){
+        $this->Aba = $Aba;
     }
 }

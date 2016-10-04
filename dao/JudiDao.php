@@ -1,18 +1,6 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 //namespace judicial;
 
-/**
- * Description of JuduDao
- *
- * @author equintino
- */
 class JudiDao extends TodoDao{
     private $db = null;
     
@@ -91,7 +79,7 @@ class JudiDao extends TodoDao{
         return $result;
     }
     public function listacredito(JudiSearchCriteria $Judisearch = null) {
-     $sql="SELECT * FROM certidao_cre";
+     $sql="SELECT * FROM certidao_cre_impressao";
      $rows = $this->query($sql) ->fetchAll();
      //echo "<pre>";
      //print_r($rows);die;

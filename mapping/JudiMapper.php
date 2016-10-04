@@ -87,8 +87,8 @@ class JudiMapper {
         if (array_key_exists('Natureza_con', $properties)){
             $judi->setNatureza_con($properties['Natureza_con']);
         }
-        if (array_key_exists('Numero_CNJ_Antigo_con', $properties)){
-            $judi->setNumero_CNJ_Antigo_con($properties['Numero_CNJ_Antigo_con']);
+        if (array_key_exists('Numero_CNJ_Antigo', $properties)){
+            $judi->setNumero_CNJ_Antigo($properties['Numero_CNJ_Antigo']);
         }  
         if (array_key_exists('id', $properties)){
             $judi->setid($properties['id']);
@@ -212,6 +212,36 @@ class JudiMapper {
         }
         if (array_key_exists('Vlr_condenacao_mon', $properties)){
             $judi->setVlr_condenacao_mon($properties['Vlr_condenacao_mon']);
+        }
+        if (array_key_exists('Natureza', $properties)){
+            $judi->setNatureza($properties['Natureza']);
+        }
+        if (array_key_exists('UF', $properties)){
+            $judi->setUF($properties['UF']);
+        }
+        if (array_key_exists('Parte_contraria', $properties)){
+            $judi->setParte_contraria($properties['Parte_contraria']);
+        }
+        if (array_key_exists('Segurado', $properties)){
+            $judi->setSegurado($properties['Segurado']);
+        }
+        if (array_key_exists('Vlr_deferido', $properties)){
+            $judi->setVlr_deferido($properties['Vlr_deferido']);
+        }
+        if (array_key_exists('Vlr_da_causa', $properties)){
+            $judi->setVlr_da_causa($properties['Vlr_da_causa']);
+        }
+        if (array_key_exists('Vlr_condenacao', $properties)){
+            $judi->setVlr_condenacao($properties['Vlr_condenacao']);
+        }
+        if (array_key_exists('Honorarios', $properties)){
+            $judi->setHonorarios($properties['Honorarios']);
+        }
+        if (array_key_exists('Vlr_certidao_de_credito', $properties)){
+            $judi->setVlr_certidao_de_credito($properties['Vlr_certidao_de_credito']);
+        }
+        if (array_key_exists('Aba', $properties)){
+            $judi->setAba($properties['Aba']);
         }
     }
 }
