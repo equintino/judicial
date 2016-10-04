@@ -88,6 +88,7 @@ class Judi {
    private $Honorarios;
    private $Vlr_certidao_de_credito;
    private $Aba;
+   private $Alteracao;
    
 
     public function getNumero_CNJ_Antigo_con(){
@@ -573,5 +574,11 @@ class Judi {
     }
     public function setAba($Aba){
         $this->Aba = $Aba;
+    }
+    public function getAlteracao(){
+        return $this->Alteracao;
+    }
+    public function setALteracao($Alteracao){
+        $this->Alteracao = $Alteracao;
     }
 }

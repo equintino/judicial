@@ -243,6 +243,9 @@ class JudiMapper {
         if (array_key_exists('Aba', $properties)){
             $judi->setAba($properties['Aba']);
         }
+        if (array_key_exists('Alteracao', $properties)){
+            $judi->setAlteracao($properties['Alteracao']);
+        }
     }
 }
 ?>

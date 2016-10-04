@@ -1,7 +1,7 @@
 <?php
 //namespace judicial;
 
-class JudiDao extends TodoDao{
+class JudiDao {//extends TodoDao{
     private $db = null;
     
     private function getDb2() {
@@ -81,34 +81,22 @@ class JudiDao extends TodoDao{
     public function listacredito(JudiSearchCriteria $Judisearch = null) {
      $sql="SELECT * FROM certidao_cre_impressao";
      $rows = $this->query($sql) ->fetchAll();
-     //echo "<pre>";
-     //print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
             JudiMapper::map($judi, $row);
             $result[] = $judi;
         }
-        //echo "<pre>";
-        //print_r($result);die;
         return $result;
     }
     public function listaCreditoAdministrativo(JudiSearchCriteria $Judisearch = null) {
      $sql="SELECT * FROM certidao_cre_mon LEFT JOIN geral_henrique ON certidao_cre_mon.Segurado_mon = geral_henrique.TITULAR_h";
      //$sql="SELECT * FROM acoes_transitado_julgado2 INNER JOIN certidao_cre_mon_final ON acoes_transitado_julgado2.Numero_CNJ_Antigo = certidao_cre_mon_final.N_PROC_JUD_CNJ_mon";
      $rows = $this->query($sql) ->fetchAll();
-     //echo "<pre>";
-     //print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
-            //print_r($row['Vlr_Certidao_de_credito_mon']);
-            //echo "<br>";
             JudiMapper::map($judi, $row);
-            //ECHO "<pre>";
-            //print_r($judi);die;
             $result[] = $judi;
         }
-        //echo "<pre>";
-        //print_r($rows);die;
         return $result;
     }
     public function duplicadoTraPro(JudiSearchCriteria $Judisearch = null) {
@@ -125,6 +113,13 @@ class JudiDao extends TodoDao{
         }
         return $result;
     }
+    public function saveJd(Judi $judi) {
+     //print_r($judi);die;
+        if ($judi->getId() === null) {
+            return $this->insert($judi);
+        }
+        return $this->update($judi);
+    }
     public function query($sql) {
             set_time_limit(3600);
         $statement = $this->getDb2()->query($sql, PDO::FETCH_ASSOC);
@@ -132,6 +127,57 @@ class JudiDao extends TodoDao{
             self::throwDbError($this->getDb2()->errorInfo());
         }
         return $statement;
+    }
+    private function insert(Judi $judi) {
+        $now = new DateTime();
+        $judi->setId(null);
+        //$todo->setCreatedOn($now);
+        $judi->setAlteracao($now);
+        //$todo->setStatus(Todo::STATUS_PENDING);
+           
+        $sql = '
+            INSERT INTO `certidao_cre_impressao` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`, `Vlr_da_causa`, `Vlr_condenacao`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Vlr_da_causa, :Vlr_condenacao, :Honorarios, :Vlr_certidao_de_credito, :Aba, :id, :Alteracao)';
+        return $this->execute($sql, $judi);
+    }
+    public function execute($sql,$judi) {
+        $statement = $this->getDb2()->prepare($sql);
+        $this->executeStatement($statement, $this->getParams($judi));
+        if (!$judi->getId()) {
+            return $this->findById($this->getDb()->lastInsertId());
+        }
+        if (!$statement->rowCount()) {
+            //throw new NotFoundException('Processo com ID "' . $todo->getId() . '" nao existe.');
+        }
+        print_r($todo);die;
+        return $judi;
+    }
+    private function getParams(Judi $judi) {
+        $params = array(
+            ':Numero_CNJ_Antigo' => $judi->getNumero_CNJ_Antigo(),
+            ':Natureza' => $judi->getNatureza(),
+            ':UF' => $judi->getUF(),
+            ':Parte_contraria' => $judi->getParte_contraria(),
+            ':Segurado' => $judi->getSegurado(),
+            ':Vlr_deferido' => $judi->getVlr_deferido(),
+            ':Vlr_da_causa' => $judi->getVlr_da_causa(),
+            ':Vlr_condenacao' => $judi->getVlr_condenacao(),
+            ':Honorarios' => $judi->getHonorarios(),
+            ':Vlr_certidao_de_credito' => $judi->getVlr_certidao_de_credito(),
+            ':Aba' => $judi->getAba(),
+            ':id' => $judi->getid(),
+            ':Alteracao' => $judi->getAlteracao()
+            );
+        if ($judi->getId()) {
+            // unset created date, this one is never updated
+            unset($params[':created_on']);
+        }
+        print_r($params);die;
+        return $params;
+    }
+    private function executeStatement(PDOStatement $statement, array $params) {
+        if (!$statement->execute($params)) {
+            self::throwDbError($this->getDb2()->errorInfo());
+        }
     }
     private static function throwDbError(array $errorInfo) {
         // TODO log error, send email, etc.
