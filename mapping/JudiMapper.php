@@ -246,6 +246,19 @@ class JudiMapper {
         if (array_key_exists('Alteracao', $properties)){
             $judi->setAlteracao($properties['Alteracao']);
         }
+        if (array_key_exists('Valor_Pedido', $properties)){
+            $judi->setValor_Pedido($properties['Valor_Pedido']);
+        }
+        if (array_key_exists('OBS', $properties)){
+            $judi->setOBS($properties['OBS']);
+        }
+        if (array_key_exists('SINISTRO', $properties)){
+            $judi->setSINISTRO($properties['SINISTRO']);
+        }
+        if (array_key_exists('Faixa_de_Probabilidade', $properties)){
+            $judi->setFaixa_de_Probabilidade($properties['Faixa_de_Probabilidade']);
+        }
+        
     }
 }
 ?>

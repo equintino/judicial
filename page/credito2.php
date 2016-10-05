@@ -86,6 +86,7 @@ function conteudo($judi){
     $titulos=titulos(); 
     
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
+      echo "<caption><h1>CERTID&Otilde;ES DE CR&Eacute;DITO</h1></caption>";
       echo "<tr>";
       foreach($titulos as $titulo){
           echo "<th>";
@@ -152,7 +153,11 @@ function conteudo($judi){
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."'>";
                 break;
               case 10:
-                echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";
+                echo "&nbsp&nbsp ".$titulo.": ";
+                echo "<select name=".$titulo." >";
+                  echo "<option value='IMPRESS&Atilde;O'>Certid&atilde;o-Impress&atilde;o</option>";
+                //echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";
+                echo "</select>";
                 break;            
           }
           $x++;

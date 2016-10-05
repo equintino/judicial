@@ -1,4 +1,19 @@
+<style>
+    .gravando{
+        margin: 20% auto;
+        #position: absolute;
+        #top: 50px;
+        #left: 50px;
+    }
+</style>
 <?php
+    function redirecionar($tempo,$url, $mensagem){
+        header("Refresh: $tempo; url=$url");
+        echo "<div class=gravando>";
+        echo '<center>'.$mensagem.  '</center><br/>';
+        echo '<center><img src="../web/img/escrevendo.gif" alt="" height=50 /><br/><br/><tt><i>gravando...</i></tt></center>';
+        echo "</div>";
+    }
     $errors = array();
     $judi = null;
     $edit = array_key_exists('id', $_GET);
@@ -42,7 +57,15 @@
     $Judidao=new JudiDao();
     
     //print_r($judi);die;
-    var_dump($Judidao->saveJd($judi));
+    
+    $Judidao->saveJd($judi);
+    
+    //print_r(mysql_affected_rows()); 
+    redirecionar('1','index.php?page=credito2&act=cadastro','AGUARDE');
+    //echo "<img src='../web/carregando.gif' />";
+    //echo "Cadastro realizado com sucesso";
+    //sleep(10);
+    //echo "<script>history.go(-1)</script>";
     die;
 ?>
 

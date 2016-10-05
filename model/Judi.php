@@ -89,6 +89,11 @@ class Judi {
    private $Vlr_certidao_de_credito;
    private $Aba;
    private $Alteracao;
+   private $Valor_Pedido;
+   private $OBS;
+   private $SINISTRO;
+   private $Faixa_de_Probabilidade;
+  
    
 
     public function getNumero_CNJ_Antigo_con(){
@@ -581,4 +586,29 @@ class Judi {
     public function setALteracao($Alteracao){
         $this->Alteracao = $Alteracao;
     }
+    public function getValor_Pedido(){
+        return $this->Valor_Pedido;
+    }
+    public function setValor_Pedido($Valor_Pedido){
+        $this->Valor_Pedido = $Valor_Pedido;
+    }
+    public function getOBS(){
+        return $this->OBS;
+    }
+    public function setOBS($OBS){
+        $this->OBS = $OBS;
+    }
+    public function getSINISTRO(){
+        return $this->SINISTRO;
+    }
+    public function setSINISTRO($SINISTRO){
+        $this->SINISTRO = $SINISTRO;
+    }
+    public function getFaixa_de_Probabilidade(){
+        return $this->Faixa_de_Probabilidade;
+    }
+    public function setFaixa_de_Probabilidade($Faixa_de_Probabilidade){
+        $this->Faixa_de_Probabilidade = $Faixa_de_Probabilidade;
+    }
+    
 }

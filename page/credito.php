@@ -7,6 +7,47 @@
 <?php
 header('Content-type: text/html; charset=UTF-8');
 
+function titulos(){
+    $titulos=array(
+            'Numero_CNJ_Antigo',
+            'Natureza',
+            'UF',
+            'PARTE_CONTRARIA',
+            'Segurado',
+            'SINISTRO',
+            'Valor_Pedido',
+            'Vlr_deferido',
+            'Vlr_da_causa',
+            'Vlr_condenacao',
+            'Honorarios',
+            'Vlr_certidao_de_credito',
+            //'VALOR_ADMINISTRATIVO',
+            'Faixa_de_Probabilidade',
+            'OBS',
+       );
+    return $titulos;
+}
+function conteudo($judi){
+       $campos=array(
+            $judi->getNumero_CNJ_Antigo(),
+            $judi->getNatureza(),
+            $judi->getUF(),
+            $judi->getPARTE_CONTRARIA(),
+            $judi->getSegurado(),
+            $judi->getSINISTRO(),
+            $judi->getValor_Pedido(),
+            $judi->getVlr_deferido(),
+            $judi->getVlr_da_causa(),
+            $judi->getVlr_condenacao(),
+            $judi->getHonorarios(),
+            $judi->getVlr_certidao_de_credito(),
+            //$judi->getVALOR_ADMINISTRATIVO(),
+            $judi->getFaixa_de_Probabilidade(),
+            $judi->getOBS(),
+       );
+       return $campos;
+}
+
  /*
     @$filename=$_GET['arquivo'];
     $mode='r';
@@ -42,10 +83,41 @@ header('Content-type: text/html; charset=UTF-8');
     
     //$judis=$Judidao->listacredito($Judisearch);// tabela credito
     //if($Judisearch){
+    
        $judis=$Judidao->listaCreditoAdministrativo($Judisearch);// tabela transito x credito
+       //$judis=$Judidao->ajunta($Judisearch);
+       
     //}
     //echo "<pre>";
     //print_r($judis);die;
+       
+          
+    $titulos=titulos(); 
+    
+      echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
+      echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
+      echo "<tr>";
+      foreach($titulos as $titulo){
+          echo "<th>";
+          echo $titulo;
+          echo "</th>";
+      }
+      $x=0;
+      echo "<tr>";
+      foreach($judis as $judi){
+         
+       $campos=conteudo($judi);
+       foreach($campos as $campo){
+       echo "<td>";
+       echo $campo;
+       echo "</td>";
+       }
+       echo "</tr>";
+     }   
+     echo "</table>";
+     die;
+       
+       
     
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<tr><th>PASTA</th><th>SEGURADO_mon2</th><th>ASSINATURA_mon2</th><th>N_SIN_ADM_mon2</th><th>DT_SIN_mon2</th><th>N_PROC_JUD_CNJ_mon2</th><th>NATUREZA</th><th>UF_CIDADE_mon2</th><th>PARTE CONTR&AacuteRIA</th><th>FORO_mon2</th><th>VARA_mon2</th><th>HABILITANTE_mon2</th><th>VL_CERT_CRED_mon2</th><th>DT_CRED_mon2</th><th>OBSEVACAO_mon2</th>"
