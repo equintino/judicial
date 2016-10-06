@@ -1,9 +1,6 @@
 <style>
     .gravando{
-        margin: 20% auto;
-        #position: absolute;
-        #top: 50px;
-        #left: 50px;
+        margin: 15% auto;
     }
 </style>
 <?php
