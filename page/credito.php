@@ -14,6 +14,7 @@ function titulos(){
             'UF',
             'PARTE_CONTRARIA',
             'Segurado',
+            'TITULAR',
             'SINISTRO',
             'Valor_Pedido',
             'Vlr_deferido',
@@ -27,14 +28,16 @@ function titulos(){
        );
     return $titulos;
 }
-function conteudo($judi){
+function conteudo($judi,$listaAdmin){
        $campos=array(
             $judi->getNumero_CNJ_Antigo(),
             $judi->getNatureza(),
             $judi->getUF(),
             $judi->getPARTE_CONTRARIA(),
             $judi->getSegurado(),
-            $judi->getSINISTRO(),
+            @$listaAdmin['TITULAR'],
+            @$listaAdmin['SINISTRO'],
+            //$judi->getSINISTRO(),
             $judi->getValor_Pedido(),
             $judi->getVlr_deferido(),
             $judi->getVlr_da_causa(),
@@ -84,12 +87,15 @@ function conteudo($judi){
     //$judis=$Judidao->listacredito($Judisearch);// tabela credito
     //if($Judisearch){
     
-       $judis=$Judidao->listaCreditoAdministrativo($Judisearch);// tabela transito x credito
+       $judis=$Judidao->duplicadoTabelas($Judisearch,'acoes_transitado_julgado_05102016');// tabela transito x credito
        //$judis=$Judidao->ajunta($Judisearch);
        
     //}
     //echo "<pre>";
     //print_r($judis);die;
+    //echo "<pre>";
+    //print_r($seguradosAcaoes);
+    //die;
        
           
     $titulos=titulos(); 
@@ -102,18 +108,94 @@ function conteudo($judi){
           echo $titulo;
           echo "</th>";
       }
+      //echo "<tr>";
+      
+      ///// Compara com quadro administrativo //////
+      $contador=0;
+    foreach($judis as $judi){
+        //if($contador>50)die;
+        if($judi->getSegurado()){
+            $seguradoAcao=JudiValidator::tirarAcento($judi->getSegurado());
+            $listaAdmin=$Odbcdao->listaCampo('sinipend','TITULAR',$seguradoAcao);
+            //echo "<pre>";
+            //print_r(($listaAdmin));
+            //echo "<br>";
       $x=0;
-      echo "<tr>";
-      foreach($judis as $judi){
-         
-       $campos=conteudo($judi);
-       foreach($campos as $campo){
-       echo "<td>";
-       echo $campo;
-       echo "</td>";
-       }
-       echo "</tr>";
-     }   
+            //foreach($judis as $judi){ 
+              if(count($listaAdmin)>1){
+                  foreach($listaAdmin as $listaAdmin){
+                      $multsin[]=$listaAdmin['SINISTRO'];
+                      $multtitular[]=$listaAdmin['TITULAR'];
+                      //// acao transitado e julgado ////
+                      $Numero_CNJ_Antigo[]=$judi->getNumero_CNJ_Antigo();
+                      $Natureza[]=$judi->getNatureza();
+                      $UF[]=$judi->getUF();
+                      $PARTE_CONTRARIA[]=$judi->getPARTE_CONTRARIA();
+                      $Segurado[]=$judi->getSegurado();
+                      $Valor_Pedido[]=$judi->getValor_Pedido();
+                      $Vlr_deferido[]=$judi->getVlr_deferido();
+                      $Vlr_da_causa[]=$judi->getVlr_da_causa();
+                      $Vlr_condenacao[]=$judi->getVlr_condenacao();
+                      $Honorarios[]=$judi->getHonorarios();
+                      $Vlr_certidao_de_credito[]=$judi->getVlr_certidao_de_credito();
+                      $Faixa_de_Probabilidade[]=$judi->getFaixa_de_Probabilidade();
+                      $OBS[]=$judi->getOBS();
+                  }
+              }else{
+                if($listaAdmin){
+                    foreach($listaAdmin as $listaAdmin);
+                }
+                if(@$listaAdmin['TITULAR']){
+                    echo "<tr>";
+                    $campos=conteudo($judi,$listaAdmin); 
+                    foreach($campos as $campo){
+                        echo "<td>";
+                        echo $campo;
+                        echo "</td>";
+                    }
+                    echo "</tr>";
+                }
+                $contador++;
+              }
+        }
+    }  
+     echo "</table>";
+     //echo "<pre>";
+      echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
+      echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
+     for($z=0;$z<count($multtitular);$z++){
+        echo "<tr><td>";
+        echo $Numero_CNJ_Antigo[$z];
+        echo "</td><td>";
+        echo $Natureza[$z];
+        echo "</td><td>";
+        echo $UF[$z];
+        echo "</td><td>";
+        echo $PARTE_CONTRARIA[$z];
+        echo "</td><td>";
+        echo $Segurado[$z];
+        echo "</td><td>";
+        echo $multtitular[$z];
+        echo "</td><td>";
+        echo $multsin[$z];
+        echo "</td><td>";
+        echo $Valor_Pedido[$z];
+        echo "</td><td>";
+        echo $Vlr_deferido[$z];
+        echo "</td><td>";
+        echo $Vlr_da_causa[$z];
+        echo "</td><td>";
+        echo $Vlr_condenacao[$z];
+        echo "</td><td>";
+        echo $Honorarios[$z];
+        echo "</td><td>";
+        echo $Vlr_certidao_de_credito[$z];
+        echo "</td><td>";
+        echo $Faixa_de_Probabilidade[$z];
+        echo "</td><td>";
+        echo $OBS[$z];
+        echo "</td></tr>";
+     }
      echo "</table>";
      die;
        

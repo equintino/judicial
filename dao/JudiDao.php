@@ -136,6 +136,20 @@ class JudiDao {//extends TodoDao{
         }
         return $result;
     }
+    public function duplicadoTabelas(JudiSearchCriteria $Judisearch = null,$tabela) {
+     $sql="SELECT * FROM $tabela";// LEFT JOIN provavel_contabilizada_final ON certidao_cre_final.Nnmero_CNJ_Antigo_cre_fim = provavel_contabilizada_final.Numero_CNJ_Antigo_con_fim";
+     $rows = $this->query($sql) ->fetchAll();
+     
+     //echo "<pre>";
+     //print_r($rows);die;
+     
+        foreach($rows as $row){
+         $judi = new Judi();
+            JudiMapper::map($judi, $row);
+            $result[] = $judi;
+        }
+        return $result;
+    }
     public function saveJd(Judi $judi) {
      //print_r($judi);die;
         if ($judi->getId() === null) {
