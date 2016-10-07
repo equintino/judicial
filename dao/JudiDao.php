@@ -150,7 +150,19 @@ class JudiDao {//extends TodoDao{
         }
         return $result;
     }
+    public function findById($id) {
+     //print_r($id);die;
+        $row = $this->query('SELECT * FROM certidao_cre_impressao WHERE id = ' . (int) $id)->fetch();
+        //print_r($row);die;
+        if (!$row) {
+            return null;
+        }
+        $judi = new Judi();
+        JudiMapper::map($judi, $row);
+        return $judi;
+    }
     public function saveJd(Judi $judi) {
+     //echo "<pre>";
      //print_r($judi);die;
         if ($judi->getId() === null) {
          //echo "estou aqui";die;
@@ -179,6 +191,15 @@ class JudiDao {//extends TodoDao{
         $sql = '
             INSERT INTO `certidao_cre_impressao` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`, `Vlr_da_causa`, `Vlr_condenacao`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Vlr_da_causa, :Vlr_condenacao, :Honorarios, :Vlr_certidao_de_credito, :Aba, :id, :Alteracao)';
         //print_r($judi);die;
+        return $this->execute($sql, $judi);
+    }
+    private function update(Judi $judi) {
+        //$judi->setLastModifiedOn(new DateTime(), new DateTimeZone('America/Sao_Paulo'));
+        $sql = '
+            UPDATE certidao_cre_impressao SET
+                `Numero_CNJ_Antigo`=:Numero_CNJ_Antigo, `Natureza`=:Natureza, `UF`=:UF, `Parte_contraria`=:Parte_contraria, `Segurado`=:Segurado, `Vlr_deferido`=:Vlr_deferido, `Vlr_da_causa`=:Vlr_da_causa, `Vlr_condenacao`=:Vlr_condenacao, `Honorarios`=:Honorarios, `Vlr_certidao_de_credito`=:Vlr_certidao_de_credito, `Aba`=:Aba, , `Alteracao`=:Alteracao
+            WHERE
+                id = :id';
         return $this->execute($sql, $judi);
     }
     public function execute($sql,$judi) {

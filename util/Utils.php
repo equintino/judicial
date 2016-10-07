@@ -99,6 +99,23 @@ final class Utils {
         }
         return $odbc;
     }
+    public static function getJudiByGetId() {
+        $id = null;
+        try {
+            $id = self::getUrlParam('id');
+        } catch (Exception $ex) {
+            throw new NotFoundException('No JUDI identifier provided.');
+        }
+        if (!is_numeric($id)) {
+            throw new NotFoundException('Invalid JUDI identifier provided.');
+        }
+        $dao = new JudiDao();
+        $judi = $dao->findById($id);
+        if ($judi === null) {
+            throw new NotFoundException('Unknown JUDI identifier provided.');
+        }
+        return $judi;
+    }
 
     /**
      * Capitalize the first letter of the given string

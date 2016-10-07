@@ -32,6 +32,7 @@ class Judi {
    private $CORRECAO_TR_h;
    private $id_h;
    private $id;
+   private $Id;
    
    private $Numero_CNJ_Antigo_tra;
    private $Natureza_tra;

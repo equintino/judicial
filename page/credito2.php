@@ -30,8 +30,6 @@
 <body>
 <?php
 header('Content-type: text/html; charset=UTF-8');
-$act=$_GET['act'];
-
 function titulos(){
     $titulos=array(
             'Numero_CNJ_Antigo',
@@ -45,7 +43,7 @@ function titulos(){
             'Honorarios',
             'Vlr_certidao_de_credito',
             'Aba',
-            'id',
+            //'id',
        );
     return $titulos;
 }
@@ -62,12 +60,20 @@ function conteudo($judi){
             $judi->getHonorarios(),
             $judi->getVlr_certidao_de_credito(),
             $judi->getAba(),
-            $judi->getId(),
+            //$judi->getId(),
        );
        return $campos;
 }
+$act=$_GET['act'];
+$errors = array();
+$judi = null;
+$edit = array_key_exists('id', $_GET);
     
-    echo "<div id=total ></div>";
+   if ($edit) {
+     $judi = Utils::getJudiByGetId();
+     //echo "<pre>";
+     //print_r($judi);die;
+   } else {
     $Tododao=new TodoDao();
     $Todosearch=new TodoSearchCriteria();
     $Odbcdao=new OdbcDao();
@@ -77,7 +83,8 @@ function conteudo($judi){
     
     $Judidao=new JudiDao();
     $Judisearch=new JudiSearchCriteria();
-  
+   }
+    echo "<div id=total ></div>";
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){
@@ -99,10 +106,11 @@ function conteudo($judi){
          
        $campos=conteudo($judi);
        foreach($campos as $campo){
-       echo "<td>";
-       echo $campo;
-       echo "</td>";
+         echo "<td align=center>";
+          echo $campo;
+         echo "</td>";
        }
+       echo "<td><a href='index.php?page=credito2&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 /></a></td>";
        echo "</tr>";
      }   
      echo "</table>";
@@ -119,11 +127,16 @@ function conteudo($judi){
         $titulos=titulos();
   //echo "<pre>";
   //print_r($titulos);die;
+        //$judi->getNumero_CNJ_Antigo()=null;
         $x=0;
         foreach($titulos as $titulo){
           switch($x){
               case 0:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='".$titulo."' value='".Utils::escape($judi->getNumero_CNJ_Antigo())."'>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='".$titulo."'>";
+               }
                 break;
               case 1:
                 echo "&nbsp&nbsp ".$titulo.": <input type=text size=15 name='".$titulo."'>";

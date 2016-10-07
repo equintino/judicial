@@ -58,7 +58,7 @@
     $Judidao->saveJd($judi);
     
     //print_r(mysql_affected_rows()); 
-    redirecionar('1','index.php?page=credito2&act=cadastro','AGUARDE');
+    redirecionar('1','index.php?page=credito2&act=ver','AGUARDE');
     //echo "<img src='../web/carregando.gif' />";
     //echo "Cadastro realizado com sucesso";
     //sleep(10);
