@@ -16,9 +16,6 @@
     body{
         background-color: silver;
     }
-    fieldset{
-        #background-color: white;
-    }
     table th{
         background-color: green;
         color: white;
@@ -111,6 +108,7 @@ $edit = array_key_exists('id', $_GET);
          echo "</td>";
        }
        echo "<td><a href='index.php?page=credito2&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 /></a></td>";
+       echo "<td><a href='index.php?page=delete&id=".$judi->getId()."' ><img src='../web/img/excluir.png' height=13 /></a></td>";
        echo "</tr>";
      }   
      echo "</table>";
@@ -133,44 +131,90 @@ $edit = array_key_exists('id', $_GET);
           switch($x){
               case 0:
                if($edit){
+                echo "<input type=hidden name=id value=".Utils::escape($judi->getId()).">";
                 echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='".$titulo."' value='".Utils::escape($judi->getNumero_CNJ_Antigo())."'>";
                }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='".$titulo."'>";
                }
                 break;
               case 1:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text size=15 name='".$titulo."' value='".Utils::escape($judi->getNatureza())."'>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text size=15 name='".$titulo."'>";
+               }
                 break;
               case 2:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text size=2 maxlength=2 name='".$titulo."' value='".Utils::escape($judi->getUF())."'>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text size=2 maxlength=2 name='".$titulo."'>";
+               }
                 break;
               case 3:
+               if($edit){
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text size=50 name='".$titulo."' value='".Utils::escape($judi->getParte_contraria())."'>";
+               }else{
                 echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text size=50 name='".$titulo."'>";
+               }
                 break;
               case 4:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text size=50 name='".$titulo."' value='".Utils::escape($judi->getSegurado())."'>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text size=50 name='".$titulo."'>";
+               }
                 break;
               case 5:
+               if($edit){
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."' value='".Utils::escape($judi->getVlr_deferido())."'>";
+               }else{
                 echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."'>";
+               }
                 break;
               case 6:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."' value='".Utils::escape($judi->getVlr_da_causa())."'>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."'>";
+               }
                 break;
               case 7:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."' value='".Utils::escape($judi->getVlr_condenacao())."'>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."'>";
+               }
                 break;
               case 8:
+               if($edit){
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."' value='".Utils::escape($judi->getHonorarios())."'>";
+               }else{
                 echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."'>";
+               }
                 break;
               case 9:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."' value='".Utils::escape($judi->getVlr_certidao_de_credito())."'>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='".$titulo."'>";
+               }
                 break;
               case 10:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": ";
+                echo "<select name='".$titulo."' >";
+                  echo "<option selected value='".Utils::escape($judi->getAba())."'>";
+                    echo Utils::escape($judi->getAba());
+                    echo "</option>";
+                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
+               }else{
                 echo "&nbsp&nbsp ".$titulo.": ";
                 echo "<select name=".$titulo." >";
-                  echo "<option value='IMPRESS&Atilde;O'>Certid&atilde;o-Impress&atilde;o</option>";
+                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
                 //echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";
                 echo "</select>";
+               }
                 break;            
           }
           $x++;
@@ -178,8 +222,13 @@ $edit = array_key_exists('id', $_GET);
         echo "</fieldset>";
            echo "<input type=hidden name=Aba value='IMPRESS&Atilde;O'>";
         echo "<div class=botao>";
-        echo "<input type=reset name=limpa value=LIMPA>";
-        echo "<input type=submit name=grava value=GRAVAR>";
+        echo "<input type=submit name=cancel value=CANCELAR>";
+        echo "<input type=submit name=save value=";
+            if($edit){
+                echo " EDITAR>";
+            }else{
+                echo " GRAVAR>";
+            }
         echo "</div>";
      echo "</form>";
    echo "</div>";

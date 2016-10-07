@@ -17,9 +17,9 @@ class JudiDao {//extends TodoDao{
         return $this->db;
     }
     public function listaProvavel2(JudiSearchCriteria $Judisearch = null) {
-     $sql="SELECT * FROM provavel_contabilizada LEFT JOIN (levantamento_judicial INNER JOIN geral_henrique) ON provavel_contabilizada.SEGURADO_con = levantamento_judicial.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Segurado_con` ASC LIMIT 0,10";
-     $sql="SELECT * FROM levantamento_judicial INNER JOIN geral_henrique ON levantamento_judicial.SEGURADO_lev=geral_henrique.TITULAR_h ORDER BY `levantamento_judicial`.`SEGURADO_lev` ASC";
-     $sql="SELECT * FROM levantamento_henrique ORDER BY `SEGURADO_lev` ASC";
+     //$sql="SELECT * FROM provavel_contabilizada LEFT JOIN (levantamento_judicial INNER JOIN geral_henrique) ON provavel_contabilizada.SEGURADO_con = levantamento_judicial.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Segurado_con` ASC LIMIT 0,10";
+     //$sql="SELECT * FROM levantamento_judicial INNER JOIN geral_henrique ON levantamento_judicial.SEGURADO_lev=geral_henrique.TITULAR_h ORDER BY `levantamento_judicial`.`SEGURADO_lev` ASC";
+     //$sql="SELECT * FROM levantamento_henrique ORDER BY `SEGURADO_lev` ASC";
      $sql="SELECT * FROM provavel_contabilizada LEFT JOIN levantamento_henrique ON provavel_contabilizada.SEGURADO_con = levantamento_henrique.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Numero_CNJ_Antigo_con` ASC ";
      $rows = $this->query($sql) ->fetchAll();
  /*
@@ -93,8 +93,8 @@ class JudiDao {//extends TodoDao{
      //$sql="SELECT * FROM acoes_transitado_julgado2 INNER JOIN certidao_cre_mon_final ON acoes_transitado_julgado2.Numero_CNJ_Antigo = certidao_cre_mon_final.N_PROC_JUD_CNJ_mon";
      //$sql="SELECT * FROM suspenso LEFT JOIN geral_henrique ON suspenso.Segurado = geral_henrique.TITULAR_h";
      $rows = $this->query($sql) ->fetchAll();
-     echo "<pre>";
-     print_r($rows);die;
+     //echo "<pre>";
+    // print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
             JudiMapper::map($judi, $row);
@@ -103,7 +103,7 @@ class JudiDao {//extends TodoDao{
         return $result;
     }
     public function ajunta(JudiSearchCriteria $Judisearch = null) {
-     $sql="SELECT * FROM acoes_transitado_julgado_05102016 left JOIN suspenso ON acoes_transitado_julgado_05102016.Numero_CNJ_Antigo = suspenso.Numero_CNJ_Antigo";
+     //$sql="SELECT * FROM acoes_transitado_julgado_05102016 left JOIN suspenso ON acoes_transitado_julgado_05102016.Numero_CNJ_Antigo = suspenso.Numero_CNJ_Antigo";
      //$sql="SELECT * FROM acoes_transitado_julgado2 INNER JOIN certidao_cre_mon_final ON acoes_transitado_julgado2.Numero_CNJ_Antigo = certidao_cre_mon_final.N_PROC_JUD_CNJ_mon";
      //$sql="SELECT * FROM suspenso LEFT JOIN geral_henrique ON suspenso.Segurado = geral_henrique.TITULAR_h";
      //$sql="SELECT * FROM acoes_transitado_julgado_05102016";
@@ -168,6 +168,7 @@ class JudiDao {//extends TodoDao{
          //echo "estou aqui";die;
             return $this->insert($judi);
         }
+        //echo "estou aqui";die;
         return $this->update($judi);
     }
     public function query($sql) {
@@ -194,18 +195,36 @@ class JudiDao {//extends TodoDao{
         return $this->execute($sql, $judi);
     }
     private function update(Judi $judi) {
+        //echo "estou aqui";die;
         //$judi->setLastModifiedOn(new DateTime(), new DateTimeZone('America/Sao_Paulo'));
+        //$sql = 'UPDATE certidao_cre_impressao SET \'Numero_CNJ_Antigo\'=:Numero_CNJ_Antigo WHERE id = :id';
+        $sql = "UPDATE `certidao_cre_impressao` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza=:Natureza, UF=:UF, Parte_contraria=:Parte_contraria, Segurado=:Segurado, Vlr_deferido=:Vlr_deferido, Vlr_da_causa=:Vlr_da_causa, Vlr_condenacao=:Vlr_condenacao, Honorarios=:Honorarios, Vlr_certidao_de_credito=:Vlr_certidao_de_credito, Aba=:Aba, Alteracao=:Alteracao WHERE id = :id";
+        //print_r($sql);die;
+        return $this->execute($sql, $judi);
+        //
+    }
+    public function delete($id) {
         $sql = '
-            UPDATE certidao_cre_impressao SET
-                `Numero_CNJ_Antigo`=:Numero_CNJ_Antigo, `Natureza`=:Natureza, `UF`=:UF, `Parte_contraria`=:Parte_contraria, `Segurado`=:Segurado, `Vlr_deferido`=:Vlr_deferido, `Vlr_da_causa`=:Vlr_da_causa, `Vlr_condenacao`=:Vlr_condenacao, `Honorarios`=:Honorarios, `Vlr_certidao_de_credito`=:Vlr_certidao_de_credito, `Aba`=:Aba, , `Alteracao`=:Alteracao
+          delete from certidao_cre_impressao
             WHERE
                 id = :id';
-        return $this->execute($sql, $judi);
+        //echo $sql;die;
+            /*UPDATE todo SET
+                last_modified_on = :last_modified_on,
+                deleted = :deleted*/
+        $statement = $this->getDb2()->prepare($sql);
+        $this->executeStatement($statement, array(
+            ':id' => $id
+        ));
+        //':last_modified_on' => self::formatDateTime(new DateTime(), new DateTimeZone('America/Sao_Paulo')),':deleted' => true,
+        return $statement->rowCount() == 1;
     }
     public function execute($sql,$judi) {
      //die;
         $statement = $this->getDb2()->prepare($sql);
+        //print_r($statement);die;
         //print_r($this->getParams($judi));die;
+        //print_r($this->executeStatement($statement, $this->getParams($judi)));die;
         $this->executeStatement($statement, $this->getParams($judi));
         //echo "estou aqui<pre>";
         //print_r($judi);die;
@@ -237,7 +256,7 @@ class JudiDao {//extends TodoDao{
             ':Alteracao' => $judi->getAlteracao()
             );
         //echo "estou aqui";
-        //print_r($judi->getNumero_CNJ_Antigo());
+        //print_r($judi->getNumero_CNJ_Antigo());die;
         //print_r($params);die;
         if ($judi->getId()) {
             // unset created date, this one is never updated
@@ -246,7 +265,8 @@ class JudiDao {//extends TodoDao{
         //print_r($params);die;
         return $params;
     }
-    private function executeStatement(PDOStatement $statement, array $params) { 
+    private function executeStatement(PDOStatement $statement, array $params) {
+        //print_r($statement->execute($params));die;
         if (!$statement->execute($params)) {
             self::throwDbError($this->getDb2()->errorInfo());
         }

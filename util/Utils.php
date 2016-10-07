@@ -103,6 +103,7 @@ final class Utils {
         $id = null;
         try {
             $id = self::getUrlParam('id');
+        //echo $id;die;
         } catch (Exception $ex) {
             throw new NotFoundException('No JUDI identifier provided.');
         }
@@ -132,7 +133,7 @@ final class Utils {
      * @return string escaped string
      */
     public static function escape($string) {
-        print_r(htmlspecialchars($string, ENT_QUOTES));
+        //print_r(htmlspecialchars($string, ENT_QUOTES));
         return htmlspecialchars($string, ENT_QUOTES);
     }
 }

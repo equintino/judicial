@@ -1,10 +1,26 @@
+<style>
+    .gravando{
+        margin: 15% auto;
+    }
+</style>
 <?php
-$todo = Utils::getTodoByGetId();
 
-$dao = new TodoDao();
-$dao->delete($todo->getId());
+    function redirecionar($tempo,$url, $mensagem){
+        header("Refresh: $tempo; url=$url");
+        echo "<div class=gravando>";
+        echo '<center>'.$mensagem.  '</center><br/>';
+        echo '<center><img src="../web/img/escrevendo.gif" alt="" height=50 /><br/><br/><tt><i>gravando...</i></tt></center>';
+        echo "</div>";
+    }
+    
+$judi = Utils::getJudiByGetId();
+
+$dao = new JudiDao();
+$dao->delete($judi->getId());
 Flash::addFlash('RNC excluído com sucesso.');
 
-Utils::redirect('list', array('status' => $todo->getStatus()));
+
+redirecionar('1','index.php?page=credito2&act=ver','AGUARDE');
+//Utils::redirect('list', array('status' => $todo->getStatus()));
 
 ?>
