@@ -3,6 +3,13 @@
         var x='Total de processos encontrados ('+$x+')';
         document.getElementById('total').innerHTML=x;
     }
+    function excluir($id){
+       var y=confirm('Confirma a excusão?');
+       var id=$id;
+       if(y){
+         location.href='http://localhost/projetos/judicial/web/index.php?page=delete&id='+id;
+       }
+    }
 </script>
 <style>
     .formulario{
@@ -38,6 +45,9 @@
 }
 .edicao:hover{
     background-color: silver;
+}
+.moedas{   
+    padding: 0px 25px;
 }
 </style>
 <body>
@@ -110,7 +120,7 @@ $edit = array_key_exists('id', $_GET);
       echo "<tr>";
     echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=11 align=left> Total de linhs ".count($judis)."</th></tr>";
       foreach($titulos as $titulo){
-          echo "<th>";
+          echo "<th class=moedas>";
            echo mb_strtoupper($titulo);
           echo "</th>";
       }
@@ -150,12 +160,14 @@ $edit = array_key_exists('id', $_GET);
         }
         //print_r($key);die;
        }
+       $id=$judi->getId();
        echo "<td class=edicao ><a href='index.php?page=credito&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
-       echo "<td class=edicao ><a href='index.php?page=delete&id=".$judi->getId()."' ><img src='../web/img/excluir.png' height=13 title='Excluir Linha'/></a></td>";
+       echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
+       //echo "<td class=edicao ><a href='index.php?page=delete&id=".$judi->getId()."' ><img src='../web/img/excluir.png' height=13 title='Excluir Linha'/></a></td>";
        echo "</tr>";
        $x++;
      }   
-     echo "<tr><th style=\"background-color: black\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: black\" align=right>".number_format($deferido,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($causa,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($honorario,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: black\"></th></tr>";
+     echo "<tr><th style=\"background-color: #556B2F\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
      die;
