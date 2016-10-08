@@ -115,19 +115,47 @@ $edit = array_key_exists('id', $_GET);
           echo "</th>";
       }
       $x=0; 
+      $deferido=$causa=$condenacao=$honorario=$certidao=null;
       echo "<tr>";
       foreach($judis as $judi){         
        $campos=conteudo($judi);
-       foreach($campos as $campo){
+       //print_r($campos);
+       foreach($campos as $key => $campo){
+        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo){
+         echo "<td align=right>";
+          echo $campo;
+         echo "</td>";
+         $campo=JudiValidator::trocavirgula($campo);
+        }else{
          echo "<td align=center>";
           echo mb_strtoupper($campo);
          echo "</td>";
+        }
+        switch($key){
+          case 5:
+           $deferido=$deferido+$campo;
+           break;
+          case 6:
+           $causa=$causa+$campo;
+           break;
+          case 7:
+           $condenacao=$condenacao+$campo;
+           break;
+          case 8:
+           $honorario=$honorario+$campo;
+           break;
+          case 9:
+           $certidao=$certidao+$campo;
+           break;
+        }
+        //print_r($key);die;
        }
        echo "<td class=edicao ><a href='index.php?page=credito&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
        echo "<td class=edicao ><a href='index.php?page=delete&id=".$judi->getId()."' ><img src='../web/img/excluir.png' height=13 title='Excluir Linha'/></a></td>";
        echo "</tr>";
        $x++;
      }   
+     echo "<tr><th style=\"background-color: black\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: black\" align=right>".number_format($deferido,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($causa,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($honorario,'2',',','.')."</th><th style=\"background-color: black\" align=right>".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: black\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
      die;
