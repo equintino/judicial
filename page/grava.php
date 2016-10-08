@@ -37,7 +37,7 @@
     
     if (array_key_exists('cancel', $_POST)) {
     // redirect
-        Utils::redirect('credito2', array('id' => $judi->getId(),'act' => 'ver'));
+        Utils::redirect('credito', array('id' => $judi->getId(),'act' => 'ver'));
     }else{
         //echo "<pre>";
         //print_r($_POST);
@@ -65,7 +65,7 @@
         $Judidao->saveJd($judi);
     
         //print_r(mysql_affected_rows()); 
-        redirecionar('1','index.php?page=credito2&act=ver','AGUARDE');
+        redirecionar('1','index.php?page=credito&act=ver','AGUARDE');
         //echo "<img src='../web/carregando.gif' />";
         //echo "Cadastro realizado com sucesso";
         //sleep(10);

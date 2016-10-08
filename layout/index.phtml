@@ -32,16 +32,15 @@
                             <ul class="list">
                                 <li><span><a href="<?php echo Utils::createLink('home'); ?>">Home</a></span></li>
                                 <?php //$Odbc = new Odbc();$Odbc->setsinistro(81); ?>
-                                <li><span><a href="<?php echo Utils::createLink('list',array('sinistro' => 'lista')) ?>"  ><img src="img/status/PENDENTE.png" alt="" title="Precessos de Sinistro" class="icon" />Processos de Sinistro</a></span></li>
-                                <li><span><a href="<?php echo Utils::createLink('judiciais', array('status' => Todo::STATUS_DONE)); ?>" ><img src="img/status/RESOLVIDA.png" alt="" title="Processos Judiciais" class="icon" />Processos Judiciais Prov&aacute;veis</a></span></li>
-                                <li><span><a href="<?php echo Utils::createLink('transito', array('status' => Todo::STATUS_DONE)); ?>" ><img src="img/status/RESOLVIDA.png" alt="" title="Processos Judiciais Tr&acirc;nsito em Julgado" class="icon" />Processos Judiciais Tr&acirc;nsito em Julgado</a></span></li>
-                                <li><span><a href="<?php echo Utils::createLink2('judiciais', array('status' => Todo::STATUS_DONE)); ?>" target="_blank"><img src="img/status/RESOLVIDA.png" alt="" title="Processos Judiciais" class="icon" />Relat&oacuterios</a></span></li>
-                                <li><span><a href="<?php echo Utils::createLink2('credito', array('status' => Todo::STATUS_DONE)); ?>" ><img src="img/status/RESOLVIDA.png" alt="" title="Certidao de Credito" class="icon" />Certidao de Credito</a></span></li>
+                               <!-- <li><span><a href="<?php //echo Utils::createLink('list',array('sinistro' => 'lista')) ?>"  ><img src="img/status/PENDENTE.png" alt="" title="Precessos de Sinistro" class="icon" />Processos de Sinistro</a></span></li>-->
+                                <!--<li><span><a href="<?php //echo Utils::createLink('judiciais', array('status' => Todo::STATUS_DONE)); ?>" ><img src="img/status/RESOLVIDA.png" alt="" title="Processos Judiciais" class="icon" />Processos Judiciais Prov&aacute;veis</a></span></li>-->
+                                <!--<li><span><a href="<?php //echo Utils::createLink('transito', array('status' => Todo::STATUS_DONE)); ?>" ><img src="img/status/RESOLVIDA.png" alt="" title="Processos Judiciais Tr&acirc;nsito em Julgado" class="icon" />Processos Judiciais Tr&acirc;nsito em Julgado</a></span></li>-->
+                                <!--<li><span><a href="<?php //echo Utils::createLink2('judiciais', array('status' => Todo::STATUS_DONE)); ?>" target="_blank"><img src="img/status/RESOLVIDA.png" alt="" title="Processos Judiciais" class="icon" />Relat&oacuterios</a></span></li>-->
+                                <li><span><a href="<?php echo Utils::createLink('credito', array('act' => 'ver')); ?>" ><img src="img/status/RESOLVIDA.png" alt="" title="Certidao de Credito" class="icon" />Certidao de Credito</a></span></li>
                                 <!--<li><span><a href="<?php //echo Utils::createLink('list', array('status' => Todo::STATUS_VOIDED)); ?>"
                                              ><img src="img/status/VENCIDO.png" alt="" title="Prazos Vencidos" class="icon" />Prazos Vencidos</a></span></li>
                                 <li><span><a href="<?php //echo Utils::createLink('list', array('status' => Todo::STATUS_CANCELADO)); ?>"><img src="img/status/CANCELADO.png" alt="" title="Registros Cancelados" class="icon" />RNCs Cancelados </a></span></li>-->
-                                <li class="last"><span><a href="<?php echo Utils::createLink('add-edit'); ?>"
-                                             ><img src="img/action/add.png" alt="" title="Registrar Não Conformidade" class="icon" />Cadastro de Processos de Sinistro</a></span></li>
+                                <!--<li class="last"><span><a href="<?php //echo Utils::createLink('add-edit'); ?>"><img src="img/action/add.png" alt="" title="Registrar Não Conformidade" class="icon" />Cadastro de Processos de Sinistro</a></span></li>-->
                             </ul>
                         </div>
                     </div>
