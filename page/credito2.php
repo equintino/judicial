@@ -211,6 +211,7 @@ $edit = array_key_exists('id', $_GET);
                }else{
                 echo "&nbsp&nbsp ".$titulo.": ";
                 echo "<select name=".$titulo." >";
+                  echo "<option selected value=''></option>";
                   echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
                 //echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";
                 echo "</select>";
