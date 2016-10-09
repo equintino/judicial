@@ -258,6 +258,9 @@ class JudiMapper {
         if (array_key_exists('Faixa_de_Probabilidade', $properties)){
             $judi->setFaixa_de_Probabilidade($properties['Faixa_de_Probabilidade']);
         }
+        if (array_key_exists('login', $properties)){
+            $judi->setLogin($properties['login']);
+        }
         
     }
 }

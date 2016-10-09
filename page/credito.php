@@ -57,8 +57,8 @@ a:link,a:visited{
 <body>
 <?php
 header('Content-type: text/html; charset=UTF-8');
-echo getenv("USERNAME");
-phpinfo();die;
+//echo getenv("USERNAME");
+//phpinfo();die;
 function titulos(){
     $titulos=array(
             "Número CNJ / Antigo",
@@ -71,7 +71,7 @@ function titulos(){
             'Valor condenação',
             'Honorários',
             'Valor certidão de crédito',
-            'Aba',
+            'Login',
             //'id',
        );
     return $titulos;
@@ -88,7 +88,7 @@ function conteudo($judi){
             $judi->getVlr_condenacao(),
             $judi->getHonorarios(),
             $judi->getVlr_certidao_de_credito(),
-            $judi->getAba(),
+            $judi->getLogin(),
             //$judi->getId(),
        );
        return $campos;

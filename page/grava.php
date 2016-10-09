@@ -54,6 +54,7 @@
         $judi->setAba($_POST['Aba']);
         @$judi->setid($_POST['id']);
         //@$judi->setAlteracao($_POST['Alteracao']);
+        @$judi->setLogin(getenv("USERNAME"));
         //print_r($judi);die;
     
         $Tododao=new TodoDao();

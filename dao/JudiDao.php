@@ -199,25 +199,32 @@ class JudiDao {//extends TodoDao{
         return $statement;
     }
     private function insert(Judi $judi) {
+        //echo date("H:i d/m/Y",mktime(0));die;
+        //date_default_timezone_set('America/Sao_Paulo');
         //$now = new DateTime();
+        //get_
+        $now=date("d/m/Y H:i",mktime(0));
         $judi->setId(null);
+        
         //$todo->setCreatedOn($now);
         //echo "estou aqui -> ".date("H:i d/m/Y");
         //print_r($judi->getAlteracao($now));die;
-        //$judi->setAlteracao($now);
-        //print_r($judi->setAlteracao($now));die;
+        $judi->setAlteracao($now);
+        //print_r($judi->getAlteracao($now));die;
         //$todo->setStatus(Todo::STATUS_PENDING);
            
         $sql = '
-            INSERT INTO `certidao_cre_impressao` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`, `Vlr_da_causa`, `Vlr_condenacao`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Vlr_da_causa, :Vlr_condenacao, :Honorarios, :Vlr_certidao_de_credito, :Aba, :id, :Alteracao)';
+            INSERT INTO `certidao_cre_impressao` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`, `Vlr_da_causa`, `Vlr_condenacao`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Vlr_da_causa, :Vlr_condenacao, :Honorarios, :Vlr_certidao_de_credito, :Aba, :id, :Alteracao, :login)';
         //print_r($judi);die;
         return $this->execute($sql, $judi);
     }
     private function update(Judi $judi) {
+        $now=date("d/m/Y H:i",mktime(0));
+        $judi->setAlteracao($now);
         //echo "estou aqui";die;
         //$judi->setLastModifiedOn(new DateTime(), new DateTimeZone('America/Sao_Paulo'));
         //$sql = 'UPDATE certidao_cre_impressao SET \'Numero_CNJ_Antigo\'=:Numero_CNJ_Antigo WHERE id = :id';
-        $sql = "UPDATE `certidao_cre_impressao` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza=:Natureza, UF=:UF, Parte_contraria=:Parte_contraria, Segurado=:Segurado, Vlr_deferido=:Vlr_deferido, Vlr_da_causa=:Vlr_da_causa, Vlr_condenacao=:Vlr_condenacao, Honorarios=:Honorarios, Vlr_certidao_de_credito=:Vlr_certidao_de_credito, Aba=:Aba, Alteracao=:Alteracao WHERE id = :id";
+        $sql = "UPDATE `certidao_cre_impressao` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza=:Natureza, UF=:UF, Parte_contraria=:Parte_contraria, Segurado=:Segurado, Vlr_deferido=:Vlr_deferido, Vlr_da_causa=:Vlr_da_causa, Vlr_condenacao=:Vlr_condenacao, Honorarios=:Honorarios, Vlr_certidao_de_credito=:Vlr_certidao_de_credito, Aba=:Aba, Alteracao=:Alteracao, login=:login WHERE id = :id";
         //print_r($sql);die;
         return $this->execute($sql, $judi);
         //
@@ -272,7 +279,8 @@ class JudiDao {//extends TodoDao{
             ':Vlr_certidao_de_credito' => $judi->getVlr_certidao_de_credito(),
             ':Aba' => $judi->getAba(),
             ':id' => $judi->getid(),
-            ':Alteracao' => $judi->getAlteracao()
+            ':Alteracao' => $judi->getAlteracao(),
+            ':login' => $judi->getLogin()
             );
         //echo "estou aqui";
         //print_r($judi->getNumero_CNJ_Antigo());die;

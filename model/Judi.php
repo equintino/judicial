@@ -94,6 +94,7 @@ class Judi {
    private $OBS;
    private $SINISTRO;
    private $Faixa_de_Probabilidade;
+   private $login;
   
    
 
@@ -610,6 +611,12 @@ class Judi {
     }
     public function setFaixa_de_Probabilidade($Faixa_de_Probabilidade){
         $this->Faixa_de_Probabilidade = $Faixa_de_Probabilidade;
+    }
+    public function getLogin(){
+        return $this->login;
+    }
+    public function setLogin($login){
+        $this->login = $login;
     }
     
 }
