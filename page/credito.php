@@ -49,10 +49,16 @@
 .moedas{   
     padding: 0px 25px;
 }
+a:link,a:visited{
+    text-decoration: none;
+    color: white;
+}
 </style>
 <body>
 <?php
 header('Content-type: text/html; charset=UTF-8');
+echo getenv("USERNAME");
+phpinfo();die;
 function titulos(){
     $titulos=array(
             "Número CNJ / Antigo",
@@ -91,6 +97,7 @@ $act=$_GET['act'];
 $errors = array();
 $judi = null;
 $edit = array_key_exists('id', $_GET);
+@$ordem = $_GET['ordem'];
     
    if ($edit) {
      $judi = Utils::getJudiByGetId();
@@ -110,7 +117,8 @@ $edit = array_key_exists('id', $_GET);
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){
-    $judis=$Judidao->listacredito($Judisearch);// tabela transito x credito
+    //$ordem='Segurado asc';
+    $judis=$Judidao->listacredito($Judisearch,$ordem);// tabela transito x credito
        
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a>";
@@ -120,8 +128,11 @@ $edit = array_key_exists('id', $_GET);
       echo "<tr>";
     echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=11 align=left> Total de linhs ".count($judis)."</th></tr>";
       foreach($titulos as $titulo){
+       $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas>";
+           echo "<a href=index.php?page=credito&act=ver&ordem=".$titulo_.">";
            echo mb_strtoupper($titulo);
+           echo "</a>";
           echo "</th>";
       }
       $x=0; 

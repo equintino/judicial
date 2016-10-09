@@ -57,6 +57,7 @@ final class Utils {
         if (!array_key_exists($name, $_GET)) {
             throw new NotFoundException('URL parameter "' . $name . '" not found.');
         }
+        //print_r($_GET[$name]);die;
         return $_GET[$name];
     }
 

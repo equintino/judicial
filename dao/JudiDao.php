@@ -78,8 +78,27 @@ class JudiDao {//extends TodoDao{
         }
         return $result;
     }
-    public function listacredito(JudiSearchCriteria $Judisearch = null) {
-     $sql="SELECT * FROM certidao_cre_impressao";
+    public function listacredito(JudiSearchCriteria $Judisearch = null, $ordem) {
+     $sql="SELECT * FROM certidao_cre_impressao ";
+     //print_r($ordem);
+     if($ordem){
+       if("NúmeroCNJ/Antigo"==$ordem){
+        $ordem='Numero_CNJ_Antigo asc';
+       }elseif('Partecontrária'==$ordem){
+        $ordem='Parte_contraria asc';
+       }elseif('Honorários'==$ordem){
+        $ordem='Honorarios asc';
+       }elseif('ValorDeferido'==$ordem){
+        $ordem='Vlr_deferido asc';
+       }elseif('Valordacausa'==$ordem){
+        $ordem='Vlr_da_causa asc';
+       }elseif('Valorcondenação'==$ordem){
+        $ordem='Vlr_condenacao asc';
+       }elseif('Valorcertidãodecrédito'==$ordem){
+        $ordem='Vlr_certidao_de_credito asc';
+       }
+       $sql.="ORDER BY ".$ordem;
+     }
      $rows = $this->query($sql) ->fetchAll();
         foreach($rows as $row){
          $judi = new Judi();
