@@ -78,7 +78,7 @@ class JudiDao {//extends TodoDao{
         }
         return $result;
     }
-    public function listacredito(JudiSearchCriteria $Judisearch = null, $ordem) {
+    public function listacredito(JudiSearchCriteria $Judisearch = null, $ordem = null) {
      $sql="SELECT * FROM certidao_cre_impressao ";
      //print_r($ordem);
      if($ordem){
@@ -100,6 +100,7 @@ class JudiDao {//extends TodoDao{
        $sql.="ORDER BY ".$ordem;
      }
      $rows = $this->query($sql) ->fetchAll();
+     //print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
             JudiMapper::map($judi, $row);
