@@ -140,13 +140,11 @@ $edit = array_key_exists('id', $_GET);
       echo "<tr>";
       foreach($judis as $judi){         
        $campos=conteudo($judi);
-       //print_r($campos);
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo){
          echo "<td align=right>";
-          echo $campo;
+           echo number_format($campo,'2',',','.');
          echo "</td>";
-         $campo=JudiValidator::trocavirgula($campo);
         }else{
          echo "<td align=center>";
           echo mb_strtoupper($campo);

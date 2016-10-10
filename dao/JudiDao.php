@@ -188,7 +188,7 @@ class JudiDao {//extends TodoDao{
          //echo "estou aqui";die;
             return $this->insert($judi);
         }
-        //echo "estou aqui";die;
+        //print_r($judi);die;
         return $this->update($judi);
     }
     public function query($sql) {

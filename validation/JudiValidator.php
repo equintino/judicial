@@ -113,7 +113,16 @@ final class JudiValidator {
         return $dado_;
     }
     public static function trocavirgula($dado){
-        $dado_=str_replace(',','.',preg_replace('#[.]#', '', $dado));
+     //echo "<pre>";
+     //print_r($dado);
+        $dado_=str_replace(',','.',preg_replace('#[.]#', '', $dado));      
+     //echo "<pre>";
+     //print_r($dado_);
+        return $dado_;
+    }
+    public static function colocavirgula($dado){
+        $dado_=str_replace('.',',',$dado);
+        //echo number_format($dado_,'2',',','.');die;
         return $dado_;
     }   
 }
