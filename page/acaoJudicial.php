@@ -7,7 +7,7 @@
        var y=confirm('Confirma a excusão?');
        var id=$id;
        if(y){
-         location.href='index.php?page=delete&id='+id;
+         location.href='index.php?page=delete2&id='+id;
        }
     }
 </script>
@@ -46,7 +46,7 @@
     background-color: silver;
 }
 .moedas{   
-    padding: 0px 25px;
+    #padding: 0px 28px;
 }
 a:link,a:visited{
     text-decoration: none;
@@ -56,8 +56,6 @@ a:link,a:visited{
 <body>
 <?php
 header('Content-type: text/html; charset=UTF-8');
-//echo getenv("USERNAME");
-//phpinfo();die;
 function titulos(){
     $titulos=array(
             "Número CNJ / Antigo",
@@ -65,12 +63,14 @@ function titulos(){
             'UF',
             'Parte contrária',
             'Segurado',
+            'Faixa de Probabilidade',
             'Valor Deferido',
             'Valor da causa',
             'Valor condenação',
+            'Valor Pedido',
             'Honorários',
-            'Valor certidão de crédito',
-            'Login',
+            //'Valor certidão de crédito',
+            'OBS',
             //'id',
        );
     return $titulos;
@@ -82,17 +82,19 @@ function conteudo($judi){
             $judi->getUF(),
             $judi->getParte_contraria(),
             $judi->getSegurado(),
+            $judi->getFaixa_de_Probabilidade(),
             $judi->getVlr_deferido(),
             $judi->getVlr_da_causa(),
             $judi->getVlr_condenacao(),
+            $judi->getValor_Pedido(),
             $judi->getHonorarios(),
-            $judi->getVlr_certidao_de_credito(),
-            $judi->getLogin(),
+            //$judi->getVlr_certidao_de_credito(),
+            $judi->getOBS(),
             //$judi->getId(),
        );
        return $campos;
 }
-$act=$_GET['act'];
+@$act=$_GET['act'];
 $errors = array();
 $judi = null;
 $edit = array_key_exists('id', $_GET);
@@ -117,28 +119,36 @@ $edit = array_key_exists('id', $_GET);
     //////// Exibe tabela /////////
   if(@$act=='ver'){
     //$ordem='Segurado asc';
-    $judis=$Judidao->listacredito($Judisearch,$ordem);// tabela transito x credito
+    $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
+    //echo "<pre>";
+    //print_r($judis);die;
        
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a>";
-      echo "<a href='index.php?page=credito&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
+      //echo "<a href='index.php?page=acaoJudicial&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<caption><h1>CERTID&Otilde;ES DE CR&Eacute;DITO</h1></caption>";
-      echo "<tr>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=11 align=left> Total de linhs ".count($judis)."</th></tr>";
+      echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
+      //echo "<tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".count($judis)."</th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
-          echo "<th class=moedas>";
-           echo "<a href=index.php?page=credito&act=ver&ordem=".$titulo_.">";
+          echo "<th class=moedas style= \"white-space: nowrap;\">";
+           echo "<a href=index.php?page=acaoJudicial&act=ver&ordem=".$titulo_.">";
            echo mb_strtoupper($titulo);
            echo "</a>";
           echo "</th>";
       }
       $x=0; 
-      $deferido=$causa=$condenacao=$honorario=$certidao=null;
+      $deferido=$causa=$condenacao=$honorario=$certidao=$pedido=null;
+      
+      //echo "<pre>";
+      //print_r($judis);die;
+      
       echo "<tr>";
       foreach($judis as $judi){         
        $campos=conteudo($judi);
+       //echo "<pre>";
+       //print_r($campos);die;
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo){
          echo "<td align=right>";
@@ -150,32 +160,32 @@ $edit = array_key_exists('id', $_GET);
          echo "</td>";
         }
         switch($key){
-          case 5:
+          case 6:
            $deferido=$deferido+$campo;
            break;
-          case 6:
+          case 7:
            $causa=$causa+$campo;
            break;
-          case 7:
+          case 8:
            $condenacao=$condenacao+$campo;
            break;
-          case 8:
+          case 9:
            $honorario=$honorario+$campo;
            break;
-          case 9:
-           $certidao=$certidao+$campo;
+          case 10:
+           $pedido=$pedido+$campo;
            break;
         }
         //print_r($key);die;
        }
        $id=$judi->getId();
-       echo "<td class=edicao ><a href='index.php?page=credito&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
-       echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
+       //echo "<td class=edicao ><a href='index.php?page=acaoJudicial&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
+       //echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
        //echo "<td class=edicao ><a href='index.php?page=delete&id=".$judi->getId()."' ><img src='../web/img/excluir.png' height=13 title='Excluir Linha'/></a></td>";
        echo "</tr>";
        $x++;
      }   
-     echo "<tr><th style=\"background-color: #556B2F\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
+     echo "<tr><th style=\"background-color: #556B2F\" colspan=6 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
      die;

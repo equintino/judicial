@@ -4,7 +4,6 @@
     }
 </style>
 <?php
-
     function redirecionar($tempo,$url, $mensagem){
         header("Refresh: $tempo; url=$url");
         echo "<div class=gravando>";

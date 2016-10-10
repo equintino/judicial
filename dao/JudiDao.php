@@ -108,6 +108,51 @@ class JudiDao {//extends TodoDao{
         }
         return $result;
     }
+    public function listaAcao(JudiSearchCriteria $Judisearch = null, $ordem = null) {
+     $sql="SELECT * FROM acoes_transitado_julgado_10102016 ";
+     //print_r($ordem);
+     if($ordem){
+       if("NúmeroCNJ/Antigo"==$ordem){
+        $ordem='Numero_CNJ_Antigo asc';
+       }elseif('Partecontrária'==$ordem){
+        $ordem='Parte_contraria asc';
+       }elseif('Honorários'==$ordem){
+        $ordem='Honorarios';
+       }elseif('ValorDeferido'==$ordem){
+        $ordem='Vlr_deferido asc';
+       }elseif('Valordacausa'==$ordem){
+        $ordem='Vlr_da_causa asc';
+       }elseif('Valorcondenação'==$ordem){
+        $ordem='Vlr_condenacao asc';
+       }elseif('ValorPedido'==$ordem){
+        $ordem='`Valor_Pedido`';
+       }elseif('OBS'==$ordem){
+        $ordem='OBS';
+       }elseif('Segurado'==$ordem){
+        $ordem='Segurado';
+       }elseif('Faixa_de_Probabilidade'==$ordem){
+        $ordem='Faixa_de_Probabilidade';
+       }elseif('Natureza'==$ordem){
+        $ordem='Natureza';
+       }elseif('UF'==$ordem){
+        $ordem='UF';
+       }elseif('FaixadeProbabilidade'==$ordem){
+        $ordem='Faixa_de_Probabilidade';
+       }
+       $sql.="ORDER BY ".$ordem;
+     }
+     $rows = $this->query($sql) ->fetchAll();
+     //print_r($sql);die;
+     //echo "<pre>";
+     //print_r($rows);die;
+        foreach($rows as $row){
+         $judi = new Judi();
+            JudiMapper::map($judi, $row);
+            $result[] = $judi;
+        }
+        //print_r($judi);die;
+        return $result;
+    }
     public function listaCreditoAdministrativo(JudiSearchCriteria $Judisearch = null) {
      $sql="SELECT * FROM acoes_transitado_julgado_05102016 INNER JOIN geral_henrique ON acoes_transitado_julgado_05102016.Segurado = geral_henrique.TITULAR_h";
      //$sql="SELECT * FROM acoes_transitado_julgado2 INNER JOIN certidao_cre_mon_final ON acoes_transitado_julgado2.Numero_CNJ_Antigo = certidao_cre_mon_final.N_PROC_JUD_CNJ_mon";
@@ -182,14 +227,16 @@ class JudiDao {//extends TodoDao{
         return $judi;
     }
     public function saveJd(Judi $judi) {
-     //echo "<pre>";
-     //print_r($judi);die;
         if ($judi->getId() === null) {
-         //echo "estou aqui";die;
             return $this->insert($judi);
         }
-        //print_r($judi);die;
         return $this->update($judi);
+    }
+    public function saveJd2(Judi $judi) {
+        if ($judi->getId() === null) {
+            return $this->insert2($judi);
+        }
+        return $this->update2($judi);
     }
     public function query($sql) {
             set_time_limit(3600);
@@ -200,35 +247,37 @@ class JudiDao {//extends TodoDao{
         return $statement;
     }
     private function insert(Judi $judi) {
-        //echo date("H:i d/m/Y",mktime(0));die;
-        //date_default_timezone_set('America/Sao_Paulo');
-        //$now = new DateTime();
-        //get_
         $now=date("d/m/Y H:i",mktime(0));
         $judi->setId(null);
         
-        //$todo->setCreatedOn($now);
-        //echo "estou aqui -> ".date("H:i d/m/Y");
-        //print_r($judi->getAlteracao($now));die;
         $judi->setAlteracao($now);
-        //print_r($judi->getAlteracao($now));die;
-        //$todo->setStatus(Todo::STATUS_PENDING);
-           
-        $sql = '
-            INSERT INTO `certidao_cre_impressao` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`, `Vlr_da_causa`, `Vlr_condenacao`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Vlr_da_causa, :Vlr_condenacao, :Honorarios, :Vlr_certidao_de_credito, :Aba, :id, :Alteracao, :login)';
-        //print_r($judi);die;
+        //print_r($judi);die;   
+        $sql = 'INSERT INTO `certidao_cre_impressao` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`, `Vlr_da_causa`, `Vlr_condenacao`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Vlr_da_causa, :Vlr_condenacao, :Honorarios, :Vlr_certidao_de_credito, :Aba, :id, :Alteracao, :login)';
         return $this->execute($sql, $judi);
     }
     private function update(Judi $judi) {
         $now=date("d/m/Y H:i",mktime(0));
         $judi->setAlteracao($now);
-        //echo "estou aqui";die;
-        //$judi->setLastModifiedOn(new DateTime(), new DateTimeZone('America/Sao_Paulo'));
-        //$sql = 'UPDATE certidao_cre_impressao SET \'Numero_CNJ_Antigo\'=:Numero_CNJ_Antigo WHERE id = :id';
         $sql = "UPDATE `certidao_cre_impressao` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza=:Natureza, UF=:UF, Parte_contraria=:Parte_contraria, Segurado=:Segurado, Vlr_deferido=:Vlr_deferido, Vlr_da_causa=:Vlr_da_causa, Vlr_condenacao=:Vlr_condenacao, Honorarios=:Honorarios, Vlr_certidao_de_credito=:Vlr_certidao_de_credito, Aba=:Aba, Alteracao=:Alteracao, login=:login WHERE id = :id";
-        //print_r($sql);die;
         return $this->execute($sql, $judi);
-        //
+    }
+    private function insert2(Judi $judi) {
+        $now=date("d/m/Y H:i",mktime(0));
+        $judi->setId(null);
+        
+        $judi->setAlteracao($now);
+           
+        $sql = 'INSERT INTO `acoes_transitado_julgado_10102016` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`,`Faixa_de_Probabilidade`, `Vlr_da_causa`, `Vlr_condenacao`, `Valor_Pedido`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Faixa_de_Probabilidade, :Vlr_da_causa, :Vlr_condenacao, :Valor_Pedido, :Honorarios, :OBS, :id, :Alteracao, :login)';
+
+        return $this->execute($sql, $judi);
+    }
+    private function update2(Judi $judi) {
+        $now=date("d/m/Y H:i",mktime(0));
+        $judi->setAlteracao($now);
+        $sql = "UPDATE `acoes_transitado_julgado_10102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login WHERE id = :id";
+        //echo "<pre>";
+        //print_r($sql);die;
+        return $this->execute2($sql, $judi);
     }
     public function delete($id) {
         $sql = '
@@ -247,26 +296,22 @@ class JudiDao {//extends TodoDao{
         return $statement->rowCount() == 1;
     }
     public function execute($sql,$judi) {
-     //die;
         $statement = $this->getDb2()->prepare($sql);
-        //print_r($statement);die;
-        //print_r($this->getParams($judi));die;
-        //print_r($this->executeStatement($statement, $this->getParams($judi)));die;
         $this->executeStatement($statement, $this->getParams($judi));
-        //echo "estou aqui<pre>";
-        //print_r($judi);die;
-        //print_r($judi->getId());die;
-        //if (!$judi->getId()) {
-            //return $this->findById($this->getDb()->lastInsertId());
-        //}
         if (!$statement->rowCount()) {
             //throw new NotFoundException('Processo com ID "' . $todo->getId() . '" nao existe.');
         }
-        //print_r($judi);die;
+        return $judi;
+    }
+    public function execute2($sql,$judi) {
+        $statement = $this->getDb2()->prepare($sql);
+        $this->executeStatement($statement, $this->getParams2($judi));
+        if (!$statement->rowCount()) {
+            //throw new NotFoundException('Processo com ID "' . $todo->getId() . '" nao existe.');
+        }
         return $judi;
     }
     private function getParams(Judi $judi) {
-     //print_r($judi);die;
         $params = array(
             ':Numero_CNJ_Antigo' => $judi->getNumero_CNJ_Antigo(),
             ':Natureza' => $judi->getNatureza(),
@@ -281,20 +326,38 @@ class JudiDao {//extends TodoDao{
             ':Aba' => $judi->getAba(),
             ':id' => $judi->getid(),
             ':Alteracao' => $judi->getAlteracao(),
-            ':login' => $judi->getLogin()
+            ':login' => $judi->getLogin(),
+            //':OBS' => $judi->getOBS()
             );
-        //echo "estou aqui";
-        //print_r($judi->getNumero_CNJ_Antigo());die;
-        //print_r($params);die;
         if ($judi->getId()) {
-            // unset created date, this one is never updated
             unset($params[':created_on']);
         }
-        //print_r($params);die;
+        return $params;
+    }
+    private function getParams2(Judi $judi) {
+        $params = array(
+            ':Numero_CNJ_Antigo' => $judi->getNumero_CNJ_Antigo(),
+            ':Natureza' => $judi->getNatureza(),
+            ':UF' => $judi->getUF(),
+            ':Parte_contraria' => $judi->getParte_contraria(),
+            ':Segurado' => $judi->getSegurado(),
+            ':Faixa_de_Probabilidade' => $judi->getFaixa_de_Probabilidade(),
+            ':Vlr_deferido' => $judi->getVlr_deferido(),
+            ':Vlr_da_causa' => $judi->getVlr_da_causa(),
+            ':Vlr_condenacao' => $judi->getVlr_condenacao(),
+            ':Valor_Pedido' => $judi->getValor_Pedido(),
+            ':Honorarios' => $judi->getHonorarios(),
+            ':OBS' => $judi->getOBS(),
+            ':Alteracao' => $judi->getAlteracao(),
+            ':login' => $judi->getLogin(),
+            ':id' => $judi->getid()
+            );
+        if ($judi->getId()) {
+            unset($params[':created_on']);
+        }
         return $params;
     }
     private function executeStatement(PDOStatement $statement, array $params) {
-        //print_r($statement->execute($params));die;
         if (!$statement->execute($params)) {
             self::throwDbError($this->getDb2()->errorInfo());
         }
