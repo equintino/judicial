@@ -79,7 +79,7 @@ class JudiDao {//extends TodoDao{
         return $result;
     }
     public function listacredito(JudiSearchCriteria $Judisearch = null, $ordem = null) {
-     $sql="SELECT * FROM certidao_cre_impressao ";
+     $sql="SELECT * FROM certidao_cre_impressao WHERE exclui=0";
      //print_r($ordem);
      if($ordem){
        if("NúmeroCNJ/Antigo"==$ordem){
@@ -94,7 +94,7 @@ class JudiDao {//extends TodoDao{
         $ordem='Vlr_da_causa asc';
        }elseif('Valorcondenação'==$ordem){
         $ordem='Vlr_condenacao asc';
-       }elseif('Valorcertidãodecrédito'==$ordem){
+       }elseif('Certidãodecrédito'==$ordem){
         $ordem='Vlr_certidao_de_credito asc';
        }
        $sql.="ORDER BY ".$ordem;
@@ -280,10 +280,8 @@ class JudiDao {//extends TodoDao{
         return $this->execute2($sql, $judi);
     }
     public function delete($id) {
-        $sql = '
-          delete from certidao_cre_impressao
-            WHERE
-                id = :id';
+        //$sql = 'delete from certidao_cre_impressao WHERE id = :id';
+        $sql='UPDATE certidao_cre_impressao set exclui=1  WHERE id = :id';
         //echo $sql;die;
             /*UPDATE todo SET
                 last_modified_on = :last_modified_on,

@@ -46,7 +46,13 @@
     background-color: silver;
 }
 .moedas{   
-    padding: 0px 25px;
+    padding: 5px 10px;
+}
+.tituloCertidao{
+    padding: 10px 20px;
+}
+.tituloSegurado{
+    padding: 0 100px;
 }
 a:link,a:visited{
     text-decoration: none;
@@ -69,7 +75,7 @@ function titulos(){
             'Valor da causa',
             'Valor condenação',
             'Honorários',
-            'Valor certidão de crédito',
+            'Certidão de crédito',
             'Login',
             //'id',
        );
@@ -122,17 +128,31 @@ $edit = array_key_exists('id', $_GET);
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a>";
       echo "<a href='index.php?page=credito&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
-      echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
+      echo "<table border=1 cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h1>CERTID&Otilde;ES DE CR&Eacute;DITO</h1></caption>";
       echo "<tr>";
     echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=11 align=left> Total de linhs ".count($judis)."</th></tr>";
-      foreach($titulos as $titulo){
+      foreach($titulos as $chave => $titulo){
        $titulo_=(str_replace(' ','',$titulo));
-          echo "<th class=moedas>";
+        if($chave == 9){
+          echo "<th class=tituloCertidao style= \"white-space: normal;\">";
            echo "<a href=index.php?page=credito&act=ver&ordem=".$titulo_.">";
            echo mb_strtoupper($titulo);
            echo "</a>";
           echo "</th>";
+        }elseif($chave == 3 || $chave == 4){
+          echo "<th class=tituloSegurado style= \"white-space: nowrap;\">";
+           echo "<a href=index.php?page=credito&act=ver&ordem=".$titulo_.">";
+           echo mb_strtoupper($titulo);
+           echo "</a>";
+          echo "</th>";
+        }else{
+          echo "<th class=moedas style= \"white-space: nowrap;\">";
+           echo "<a href=index.php?page=credito&act=ver&ordem=".$titulo_.">";
+           echo mb_strtoupper($titulo);
+           echo "</a>";
+          echo "</th>";
+        }
       }
       $x=0; 
       $deferido=$causa=$condenacao=$honorario=$certidao=null;
@@ -175,7 +195,7 @@ $edit = array_key_exists('id', $_GET);
        echo "</tr>";
        $x++;
      }   
-     echo "<tr><th style=\"background-color: #556B2F\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
+     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
      die;
@@ -275,7 +295,7 @@ $edit = array_key_exists('id', $_GET);
                     echo "</option>";
                   echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
                }else{
-                echo "&nbsp&nbsp ".$titulo.": ";
+                echo "&nbsp&nbsp Aba: ";
                 echo "<select name=Aba >";
                   echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
                 //echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";

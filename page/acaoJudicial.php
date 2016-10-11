@@ -46,7 +46,7 @@
     background-color: silver;
 }
 .moedas{   
-    #padding: 0px 28px;
+    padding: 5px 10px;
 }
 a:link,a:visited{
     text-decoration: none;
@@ -129,7 +129,7 @@ $edit = array_key_exists('id', $_GET);
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
       //echo "<tr>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".count($judis)."</th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
@@ -185,7 +185,7 @@ $edit = array_key_exists('id', $_GET);
        echo "</tr>";
        $x++;
      }   
-     echo "<tr><th style=\"background-color: #556B2F\" colspan=6 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
+     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
      die;
