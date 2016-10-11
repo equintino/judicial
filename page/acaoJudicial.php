@@ -157,7 +157,7 @@ $edit = array_key_exists('id', $_GET);
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          if($x==50)die;
+          //if($x==50)die;
        if(!$judi->getSINISTRO()){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
          $sinistrado=$Odbcdao->busca3($Odbcsearch);
