@@ -52,7 +52,12 @@ a:link,a:visited{
     text-decoration: none;
     color: white;
 }
+.topo{
+    position: absolute;
+    right: 10px;
+}
 </style>
+<head><a id="topo"></a></head>
 <body>
 <?php
 header('Content-type: text/html; charset=UTF-8');
@@ -71,6 +76,8 @@ function titulos(){
             'Honorários',
             //'Valor certidão de crédito',
             'OBS',
+            'SINISTRO',
+            'TITULAR',
             //'id',
        );
     return $titulos;
@@ -91,6 +98,8 @@ function conteudo($judi){
             //$judi->getVlr_certidao_de_credito(),
             $judi->getOBS(),
             //$judi->getId(),
+            $judi->getSINISTRO(),
+            $judi->getTITULAR_h(),
        );
        return $campos;
 }
@@ -145,12 +154,30 @@ $edit = array_key_exists('id', $_GET);
       //print_r($judis);die;
       
       echo "<tr>";
-      foreach($judis as $judi){         
-       $campos=conteudo($judi);
+      $titularOld='inicial';
+      $titular_=null;
+      foreach($judis as $judi){
+          if($x==50)die;
+       if(!$judi->getSINISTRO()){
+         $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
+         $sinistrado=$Odbcdao->busca3($Odbcsearch);
+         foreach($sinistrado as $keys => $item){
+            $sinistro_=$item->getsinistro();
+            $titular_=$item->getTITULAR();
+         }
+         if($titular_ != $titularOld){
+            $judi->setTITULAR_h($titular_);
+            $judi->setSINISTRO($sinistro_);
+         }
+       }
        //echo "<pre>";
-       //print_r($campos);die;
+       //echo ($sinistro_);
+           $titularOld=$titular_;          
+          
+       $campos=conteudo($judi);
+       
        foreach($campos as $key => $campo){
-        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo){
+        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[12] != $campo){
          echo "<td align=right>";
            echo number_format($campo,'2',',','.');
          echo "</td>";
@@ -183,11 +210,16 @@ $edit = array_key_exists('id', $_GET);
        //echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
        //echo "<td class=edicao ><a href='index.php?page=delete&id=".$judi->getId()."' ><img src='../web/img/excluir.png' height=13 title='Excluir Linha'/></a></td>";
        echo "</tr>";
+       //$Odbcsearch->setSINISTRO(null);
+       //$Odbcsearch->setTITULAR(null);
+       //$judi->setTITULAR_h(null);
+       unset($sinistro,$titular);
        $x++;
      }   
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
+     echo "<a href='#topo' class=topo><img src='img/setacima.png' height=30px title='Voltar ao Topo'></a>";
      die;
   }
      //////// Fim Exibição /////////

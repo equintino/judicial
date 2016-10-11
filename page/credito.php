@@ -11,6 +11,7 @@
        }
     }
 </script>
+<head><a id="topo"></a></head>
 <style>
     .formulario{
         margin: 50px auto;
@@ -58,6 +59,10 @@ a:link,a:visited{
     text-decoration: none;
     color: white;
 }
+.topo{
+    position: absolute;
+    right: 10px;
+}
 </style>
 <body>
 <?php
@@ -103,12 +108,15 @@ $errors = array();
 $judi = null;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
-    
-   if ($edit) {
+
+//echo "<pre>";
+//print_r($_GET);
+
+   if($edit){
      $judi = Utils::getJudiByGetId();
      //echo "<pre>";
      //print_r($judi);die;
-   } else {
+   }else{
     $Tododao=new TodoDao();
     $Todosearch=new TodoSearchCriteria();
     $Odbcdao=new OdbcDao();
@@ -198,6 +206,7 @@ $edit = array_key_exists('id', $_GET);
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
+     echo "<a href='#topo' class=topo><img src='img/setacima.png' height=30px title='Voltar ao Topo'></a>";
      die;
   }
      //////// Fim Exibição /////////
@@ -212,6 +221,10 @@ $edit = array_key_exists('id', $_GET);
   //echo "<pre>";
   //print_r($titulos);die;
         //$judi->getNumero_CNJ_Antigo()=null;
+        //echo "<pre>";
+        //$judi = Utils::getJudiByGetId();
+        //print_r($judi);die;
+         
         $x=0;
         foreach($titulos as $titulo){
           switch($x){
@@ -253,35 +266,35 @@ $edit = array_key_exists('id', $_GET);
                 break;
               case 5:
                if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido' value='".Utils::escape($judi->getVlr_deferido())."'>";
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido' value='".JudiValidator::colocavirgula(Utils::escape($judi->getVlr_deferido()))."'>";
                }else{
                 echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido'>";
                }
                 break;
               case 6:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa' value='".Utils::escape($judi->getVlr_da_causa())."'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa' value='".JudiValidator::colocavirgula(Utils::escape(Utils::escape($judi->getVlr_da_causa())))."'>";
                }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa'>";
                }
                 break;
               case 7:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_condenacao' value='".Utils::escape($judi->getVlr_condenacao())."'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_condenacao' value='".JudiValidator::colocavirgula(Utils::escape(Utils::escape($judi->getVlr_condenacao())))."'>";
                }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_condenacao'>";
                }
                 break;
               case 8:
                if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Honorarios' value='".Utils::escape($judi->getHonorarios())."'>";
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Honorarios' value='".JudiValidator::colocavirgula(Utils::escape(Utils::escape($judi->getHonorarios())))."'>";
                }else{
                 echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Honorarios'>";
                }
                 break;
               case 9:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_certidao_de_credito' value='".Utils::escape($judi->getVlr_certidao_de_credito())."'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_certidao_de_credito' value='".JudiValidator::colocavirgula(Utils::escape(Utils::escape($judi->getVlr_certidao_de_credito())))."'>";
                }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_certidao_de_credito'>";
                }

@@ -1,11 +1,11 @@
-<script>
+<!--<script>
     function total($x){
         var x='Total de processos encontrados ('+$x+')';
         document.getElementById('total').innerHTML=x;
     }
-</script>
+</script>-->
 <?php
-header('Content-type: text/html; charset=UTF-8');
+//header('Content-type: text/html; charset=UTF-8');
 
  /*
     @$filename=$_GET['arquivo'];
@@ -17,32 +17,48 @@ header('Content-type: text/html; charset=UTF-8');
     
     @fclose($handle);
  
- */   
-    echo "<div id=total ></div>";
-    $Tododao=new TodoDao();
-    $Todosearch=new TodoSearchCriteria();
-    $Odbcdao=new OdbcDao();
-    $Odbcsearch=new OdbcSearchCriteria();
+ */  
+//echo "estou aqui";die;
+    //echo "<div id=total ></div>";
+    //$Tododao=new TodoDao();
+    //$Todosearch=new TodoSearchCriteria();
+    //$Odbcdao=new OdbcDao();
+    //$Odbcsearch=new OdbcSearchCriteria();
     //$Todo=new Todo();
     //$odbc=new Odbc();
-    $Oracledao=new OracleDao();
-    $Oraclesearch=new OracleSearchCriteria();
+    //$Oracledao=new OracleDao();
+    //$Oraclesearch=new OracleSearchCriteria();
     
-    $Judidao=new JudiDao();
-    $Judisearch=new JudiSearchCriteria();
+    //$Judidao=new JudiDao();
+    //$Judisearch=new JudiSearchCriteria();
     //$oracle=new Odbc();die;
     
     //print_r($Odbcsearch);die;
     
     //print_r(get_class_methods($Judidao));die;
-            
-    //print_r(get_class_methods($Odbcdao));die;
-    //print_r($Judisearch);die;
+    //echo "<pre>";
+     $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
+     
+     //echo "<br>";
+    //print_r(get_class_methods($Odbcdao));
+    //$Odbcdao->listaCampo($tabela,$campo,$busca);
+    $sinistrado=$Odbcdao->busca3($Odbcsearch);
+    //$dao->busca3($search)
+    //print_r($Odbcsearch);
+    //echo "<pre>";
+    foreach($sinistrado as $keys => $item){
+       $sinistro[]=$item->getsinistro();
+       $titular[]=$item->getTITULAR();
+    }
+    //echo "<pre>";
+    //print_r($titular);
+    //die;
+    /*
     //die;
     
     //$judis=$Judidao->listacredito($Judisearch);// tabela credito
     //if($Judisearch){
-       $judis=$Judidao->duplicadoTraPro($Judisearch);// tabela transito x credito
+       $duplicado=$Judidao->duplicadoTraPro($Judisearch);// tabela transito x credito
     //}
     //echo "<pre>";
     //print_r($judis);die;
@@ -108,7 +124,7 @@ header('Content-type: text/html; charset=UTF-8');
             //die;
                 //echo "<pre>";
                 //print_r($judi);die;
-            
+       /*     
                     echo "<tr><td>";
                     echo $judi->getNumero_CNJ_Antigo_cre();
                     echo "</td><td>";
@@ -143,4 +159,6 @@ header('Content-type: text/html; charset=UTF-8');
      }
      
      echo "</table>";
+        * 
+        */
 ?>

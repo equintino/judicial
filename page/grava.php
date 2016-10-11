@@ -12,28 +12,48 @@
         echo "</div>";
     }
     $errors = array();
-    $judi = null;
+    $judi = new Judi();
+    //$judi = null;
     $edit = array_key_exists('id', $_GET);
     //echo "<pre>";
     //print_r($_POST);die;
+    //die;
     
-    if ($edit) {
+    //if ($edit) {
+        //die;
         //print_r($judi);die;
-        $judi = Utils::getOdbcByGetId();
-    } else {
+        //$judi = Utils::getJudiByGetId();
+        //print_r($judi);die;
+    //} else {die;
         // set defaults
-        $judi = new Judi();
+    //    $judi = new Judi();
         //$odbc->setPriority(Todo::PRIORITY_MEDIUM);
-        $alteracao = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
-        $alteracao=(mktime(0,date("H")));
+        //$alteracao_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
+        //$alteracao=$alteracao_->getTimestamp();
+        //echo "<pre>";
+        //print_r($alteracao);die;
+        //foreach($alteracao as $data){
+            //$data_[]=$data;
+        //}
+        //print_r($data_[0]);
+        //die;
+        //print_r(get_class_methods($alteracao));
+        //print_r($alteracao->getTimezone());
+        //$alteracao->setTimezone(new DateTimeZone('America/Sao_Paulo'));
+        //print_r(date("H:i d/m/Y",$alteracao->getTimestamp()));
+        //die;
+        //echo "<br>";
+        //print_r($alteracao->getdate());die;
+        //$alteracao=(mktime($alteracao->getdate()));
+        //print_r(date("H:i d/m/Y",$alteracao));die;
         //$dueOn->setTime(0, 0, 0);
-        $judi->setAlteracao($alteracao);
+        //$judi->setAlteracao($alteracao);
         //echo "<pre>";
         //print_r($judi);die;
         //$odbc->setEliminacao($todo->getCreatedOn());
         //$todo->setEliminacao_novo($todo->getCreatedOn());
         //$odbc->setEficazData($odbc->getCreatedOn());
-    }
+    //}
     
     if (array_key_exists('cancel', $_POST)) {
     // redirect

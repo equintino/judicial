@@ -79,7 +79,7 @@ class JudiDao {//extends TodoDao{
         return $result;
     }
     public function listacredito(JudiSearchCriteria $Judisearch = null, $ordem = null) {
-     $sql="SELECT * FROM certidao_cre_impressao WHERE exclui=0";
+     $sql="SELECT * FROM certidao_cre_impressao WHERE excluido=0";
      //print_r($ordem);
      if($ordem){
        if("NúmeroCNJ/Antigo"==$ordem){
@@ -97,10 +97,10 @@ class JudiDao {//extends TodoDao{
        }elseif('Certidãodecrédito'==$ordem){
         $ordem='Vlr_certidao_de_credito asc';
        }
-       $sql.="ORDER BY ".$ordem;
+       $sql.=" ORDER BY ".$ordem;
      }
+     //print_r($sql);die;
      $rows = $this->query($sql) ->fetchAll();
-     //print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
             JudiMapper::map($judi, $row);
@@ -247,7 +247,9 @@ class JudiDao {//extends TodoDao{
         return $statement;
     }
     private function insert(Judi $judi) {
-        $now=date("d/m/Y H:i",mktime(0));
+        $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
+        $now=$now_->getTimestamp();
+        //$now=date("d/m/Y H:i",mktime(0));
         $judi->setId(null);
         
         $judi->setAlteracao($now);
@@ -256,7 +258,9 @@ class JudiDao {//extends TodoDao{
         return $this->execute($sql, $judi);
     }
     private function update(Judi $judi) {
-        $now=date("d/m/Y H:i",mktime(0));
+        $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
+        $now=$now_->getTimestamp();
+        //$now=date("d/m/Y H:i",mktime(0));
         $judi->setAlteracao($now);
         $sql = "UPDATE `certidao_cre_impressao` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza=:Natureza, UF=:UF, Parte_contraria=:Parte_contraria, Segurado=:Segurado, Vlr_deferido=:Vlr_deferido, Vlr_da_causa=:Vlr_da_causa, Vlr_condenacao=:Vlr_condenacao, Honorarios=:Honorarios, Vlr_certidao_de_credito=:Vlr_certidao_de_credito, Aba=:Aba, Alteracao=:Alteracao, login=:login WHERE id = :id";
         return $this->execute($sql, $judi);
@@ -281,7 +285,7 @@ class JudiDao {//extends TodoDao{
     }
     public function delete($id) {
         //$sql = 'delete from certidao_cre_impressao WHERE id = :id';
-        $sql='UPDATE certidao_cre_impressao set exclui=1  WHERE id = :id';
+        $sql='UPDATE certidao_cre_impressao set excluido=1  WHERE id = :id';
         //echo $sql;die;
             /*UPDATE todo SET
                 last_modified_on = :last_modified_on,
@@ -299,6 +303,8 @@ class JudiDao {//extends TodoDao{
         if (!$statement->rowCount()) {
             //throw new NotFoundException('Processo com ID "' . $todo->getId() . '" nao existe.');
         }
+        //echo "<pre>";
+        //print_r($judi);die;
         return $judi;
     }
     public function execute2($sql,$judi) {
@@ -316,11 +322,11 @@ class JudiDao {//extends TodoDao{
             ':UF' => $judi->getUF(),
             ':Parte_contraria' => $judi->getParte_contraria(),
             ':Segurado' => $judi->getSegurado(),
-            ':Vlr_deferido' => $judi->getVlr_deferido(),
-            ':Vlr_da_causa' => $judi->getVlr_da_causa(),
-            ':Vlr_condenacao' => $judi->getVlr_condenacao(),
-            ':Honorarios' => $judi->getHonorarios(),
-            ':Vlr_certidao_de_credito' => $judi->getVlr_certidao_de_credito(),
+            ':Vlr_deferido' => JudiValidator::trocavirgula($judi->getVlr_deferido()),
+            ':Vlr_da_causa' => JudiValidator::trocavirgula($judi->getVlr_da_causa()),
+            ':Vlr_condenacao' => JudiValidator::trocavirgula($judi->getVlr_condenacao()),
+            ':Honorarios' => JudiValidator::trocavirgula($judi->getHonorarios()),
+            ':Vlr_certidao_de_credito' => JudiValidator::trocavirgula($judi->getVlr_certidao_de_credito()),
             ':Aba' => $judi->getAba(),
             ':id' => $judi->getid(),
             ':Alteracao' => $judi->getAlteracao(),
@@ -330,6 +336,7 @@ class JudiDao {//extends TodoDao{
         if ($judi->getId()) {
             unset($params[':created_on']);
         }
+        //print_r($params);die;
         return $params;
     }
     private function getParams2(Judi $judi) {

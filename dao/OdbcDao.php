@@ -11,6 +11,7 @@ final class OdbcDao {
             return $this->db;
         }
         $config = Config::getConfig("odbc");
+        //print_r($config);die;
         try {
             $this->db = odbc_connect($config['dsn'],$config['username'],$config['password']) or die (odbc_errormsg());
             //odbc_exec($this->db , "SET NAMES 'UTF8'");
@@ -19,6 +20,7 @@ final class OdbcDao {
         } catch (Exception $ex) {
             throw new Exception('DB connection error: ' . $ex->getMessage());
         }
+        //print_r($this->db);die;
         return $this->db;
     }
     public function query($sql) {
@@ -35,10 +37,11 @@ final class OdbcDao {
              */
         //var_dump($this->getDb(),$sql);die;
         //$sql = "SELECT * FROM Beneficiarios WHERE exclui like 0";
-     //print_r($sql);
+     //print_r($sql);die;
        //odbc_exec($conn, "SET names utf8"); 
       $statement = odbc_exec($this->getDb(),$sql);
-      while($linha = odbc_fetch_array($statement)){
+      //print_r($statement);die;
+      while(@$linha = odbc_fetch_array($statement)){
         $result[]=$linha;
       }
       //print_r(utf8_decode($result));die;
@@ -254,14 +257,16 @@ final class OdbcDao {
       //$odbc = odbc_fetch_array($busca);
       //var_dump($odbc);
          //echo "<br><br>";
-        foreach ($busca as $row) {
+        if(@$busca){
+            foreach ($busca as $row) {
          //echo "<br><br>";
-            $odbc = new Odbc();
+                $odbc = new Odbc();
             //print_r($row);
-            OdbcMapper::map($odbc, $row);
-            $result[$odbc->getidbenefi()] = $odbc;
+                OdbcMapper::map($odbc, $row);
+                $result[$odbc->getidbenefi()] = $odbc;
             //print_r($result);die;
             //$idbenefi = $odbc->getidbenefi();
+            }
         }
         //die;
             //echo '<br>';
@@ -284,18 +289,22 @@ final class OdbcDao {
     public function buscaSinistrado(OdbcSearchCriteria $search = null){
         $odbc = new Odbc();
         $result=array();
-        $sql="SELECT * FROM sinipend WHERE idtitular=".$search->getidtitular()." ORDER BY idtitular";
+        //$sql="SELECT * FROM sinipend WHERE idtitular=".$search->getidtitular()." ORDER BY idtitular";
+        $sql="SELECT * FROM sinipend WHERE TITULAR=".$search->getTITULAR()." ORDER BY idtitular";
+        //print_r($this->query($sql));die;
         if($this->query($sql)){
-        $busca = $this->query($sql);
-        if(@$busca){
-         foreach ($busca as $key => $row) {
-            OdbcMapper::map($odbc, $row);
-            $result[$odbc->getidtitular()] = $odbc;
-         }
-        }
+            $busca = $this->query($sql);
+            if(@$busca){
+                foreach ($busca as $key => $row) {
+                    OdbcMapper::map($odbc, $row);
+                    $result[$odbc->getidtitular()] = $odbc;
+                }
+            }
         }else{
          return $result="nulo";
         }
+        //echo "estou aqui";
+        //print_r($result);die;
         return @$result;
     }
     public function busca(OdbcSearchCriteria $search = null){
