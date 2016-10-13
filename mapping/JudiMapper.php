@@ -261,6 +261,9 @@ class JudiMapper {
         if (array_key_exists('login', $properties)){
             $judi->setLogin($properties['login']);
         }
+        if (array_key_exists('ok', $properties)){
+            $judi->setOk($properties['ok']);
+        }
         
     }
 }

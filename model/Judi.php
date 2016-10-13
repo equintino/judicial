@@ -95,6 +95,7 @@ class Judi {
    private $SINISTRO;
    private $Faixa_de_Probabilidade;
    private $login;
+   private $ok;
   
    
 
@@ -617,6 +618,12 @@ class Judi {
     }
     public function setLogin($login){
         $this->login = $login;
+    }
+    public function getOk(){
+        return $this->ok;
+    }
+    public function setOk($ok){
+        $this->ok = $ok;
     }
     
 }

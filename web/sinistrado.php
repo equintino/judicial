@@ -40,8 +40,8 @@
       }
        
       $odbcs=$dao->busca3($search);
-      echo "<pre>";
-      print_r($odbcs);die;
+      //echo "<pre>";
+      //print_r($odbcs);die;
       
       echo "<div class='busca_tabela'>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";

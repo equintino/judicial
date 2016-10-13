@@ -56,6 +56,9 @@ a:link,a:visited{
     position: absolute;
     right: 10px;
 }
+.btn{
+    width: 100%;
+}
 </style>
 <head><a id="topo"></a></head>
 <body>
@@ -76,7 +79,7 @@ function titulos(){
             'Honorários',
             //'Valor certidão de crédito',
             'OBS',
-            'SINISTRO',
+            'STATUS',
             'TITULAR',
             //'id',
        );
@@ -108,6 +111,7 @@ $errors = array();
 $judi = null;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
+@$atualiza = $_GET['atualiza'];
     
    if ($edit) {
      $judi = Utils::getJudiByGetId();
@@ -138,7 +142,7 @@ $edit = array_key_exists('id', $_GET);
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
       //echo "<tr>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=location.href='".Utils::createLink('acaoJudicial', array('act' => 'ver', 'atualiza' => '1'))."' title='Clique aqui para atualizar'><img src=img/atualizar.png height=20px></button></th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
@@ -157,7 +161,7 @@ $edit = array_key_exists('id', $_GET);
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          //if($x==50)die;
+          if($x==10)die;
        if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
          //print_r($Odbcsearch);die;
@@ -169,13 +173,13 @@ $edit = array_key_exists('id', $_GET);
          }
          if($titular_ != $titularOld){
             $judi->setTITULAR_h($titular_);
-            $judi->setSINISTRO($sinistro_);
+            @$judi->setSINISTRO($sinistro_);
          }
        }
-       //echo "<pre>";
-       //echo ($sinistro_);
-           $titularOld=$titular_;          
-          
+           $titularOld=$titular_; 
+           
+      
+           ///// Construindo a tabela ////
        $campos=conteudo($judi);
        
        foreach($campos as $key => $campo){
@@ -185,19 +189,62 @@ $edit = array_key_exists('id', $_GET);
          echo "</td>";
         }elseif(($campo == $judi->getSegurado() || $campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null && $campo != $judi->getParte_contraria()){
          if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
-          echo "<td bgcolor=yellow>";
-           //echo strlen($judi->getSegurado())." - ".strlen($campo);
-           echo mb_strtoupper($campo);
-          echo "</td>";
-         }else{        
-          echo "<td bgcolor=white>";
-           echo mb_strtoupper($campo);
+          if($campo == $judi->getSINISTRO()){
+            echo "<td align=center bgcolor=white>";
+                echo "<img src=img/interrogacao.png height=25px title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o\">";
+                //echo mb_strtoupper($campo);
+            echo "</td>";
+          }else{
+            echo "<td bgcolor=yellow>";
+                //echo "<img src=img/interrogacao.png height=20px>";
+                echo mb_strtoupper($campo);
+            echo "</td>";  
+          }
+         }else{
+           ///// Gravando Sinistro em Acoes /////
+           $Judidao->saveJd2($judi);
+           
+          echo "<td align=center bgcolor=white>";
+           echo "<img src=img/exclamacao.png height=20px title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
+           //echo mb_strtoupper($campo);
           echo "</td>";
          }
+        }elseif($campo == $judi->getSINISTRO () && $campo != null){
+         echo "<td align=center bgcolor=white>";
+            if($atualiza == 1){
+                $confereExclusao=new OdbcSearchCriteria();
+                $confereExclusao->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
+                //print_r($Odbcsearch);die;
+                $sinistrado=$Odbcdao->busca3($confereExclusao);
+                if($sinistrado){
+                    echo "<img src=img/exclamacao.png height=20px title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                    echo $judi->getSINISTRO();
+                    //echo "ainda está lá";die;
+                    //echo "<pre>";
+                    //print_r($sinistrado);die;
+                }else{
+                    echo "<img src=img/ok.png height=20 title=OK>";
+                    //echo $judi->getSINISTRO();
+                    $judi->setOk(1);
+                    //echo "<pre>";
+                    //print_r($judi);die;
+                    $Judidao->saveJd2($judi);
+                    //echo "<pre>";
+                    //print_r($sinistrado);
+                }
+            }else{
+                if($judi->getOk() == 1){
+                    echo "<img src=img/ok.png height=20 title=OK>";                
+                }else{
+                    echo "<img src=img/exclamacao.png height=20px title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
+                }
+            }
+          //echo mb_strtoupper($campo);
+         echo "</td>";
         }else{
          echo "<td bgcolor=white>";
           echo mb_strtoupper($campo);
-         echo "</td>";
+         echo "</td>";  
         }
         switch($key){
           case 6:
