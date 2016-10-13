@@ -31,7 +31,7 @@
         color: white;
     }
     table td{
-        background-color: white;
+        #background-color: white;
     }
 .add:hover {
     background: blanchedalmond;
@@ -158,9 +158,11 @@ $edit = array_key_exists('id', $_GET);
       $titular_=null;
       foreach($judis as $judi){
           //if($x==50)die;
-       if(!$judi->getSINISTRO()){
+       if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
+         //print_r($Odbcsearch);die;
          $sinistrado=$Odbcdao->busca3($Odbcsearch);
+         //print_r($sinistrado);die;
          foreach($sinistrado as $keys => $item){
             $sinistro_=$item->getsinistro();
             $titular_=$item->getTITULAR();
@@ -178,11 +180,22 @@ $edit = array_key_exists('id', $_GET);
        
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[12] != $campo){
-         echo "<td align=right>";
+         echo "<td align=right bgcolor=white>";
            echo number_format($campo,'2',',','.');
          echo "</td>";
+        }elseif(($campo == $judi->getSegurado() || $campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null && $campo != $judi->getParte_contraria()){
+         if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
+          echo "<td bgcolor=yellow>";
+           //echo strlen($judi->getSegurado())." - ".strlen($campo);
+           echo mb_strtoupper($campo);
+          echo "</td>";
+         }else{        
+          echo "<td bgcolor=white>";
+           echo mb_strtoupper($campo);
+          echo "</td>";
+         }
         }else{
-         echo "<td align=center>";
+         echo "<td bgcolor=white>";
           echo mb_strtoupper($campo);
          echo "</td>";
         }
