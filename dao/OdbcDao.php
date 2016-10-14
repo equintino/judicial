@@ -11,7 +11,7 @@ final class OdbcDao {
             return $this->db;
         }
         $config = Config::getConfig("odbc");
-        //print_r($config);die;
+        print_r($config);
         try {
             $this->db = odbc_connect($config['dsn'],$config['username'],$config['password']) or die (odbc_errormsg());
             //odbc_exec($this->db , "SET NAMES 'UTF8'");
