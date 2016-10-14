@@ -79,7 +79,7 @@ function titulos(){
             'Honorários',
             //'Valor certidão de crédito',
             'OBS',
-            'STATUS',
+            'DUPLICADO',
             //'TITULAR',
             //'id',
        );
@@ -146,7 +146,7 @@ $edit = array_key_exists('id', $_GET);
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
-          if($titulo != 'STATUS'){
+          if($titulo != 'DUPLICADO'){
            echo "<a href=index.php?page=acaoJudicial&act=ver&ordem=".$titulo_.">";
             echo mb_strtoupper($titulo);
            echo "</a>";
@@ -165,7 +165,7 @@ $edit = array_key_exists('id', $_GET);
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          //if($x==10)die;
+          //if($x==110)die;
        if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
          //print_r($Odbcsearch);die;
@@ -191,26 +191,29 @@ $edit = array_key_exists('id', $_GET);
          echo "<td align=right bgcolor=white>";
            echo number_format($campo,'2',',','.');
          echo "</td>";
-        }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null && $campo != $judi->getParte_contraria()){
+        }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null && $campo != $judi->getParte_contraria()){
          if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
-          if($campo == $judi->getSINISTRO()){
-            echo "<td align=center bgcolor=white>";
-                echo "<img src=img/interrogacao.png height=25px title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
+            if($campo == $judi->getSINISTRO()){
+                echo "<td align=center bgcolor=white>";
+                    echo "<img src=img/interroga.png height=20 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
                 //echo mb_strtoupper($campo);
-            echo "</td>";
-          }else{
-            echo "<td bgcolor=yellow>";
-                //echo "<img src=img/interrogacao.png height=20px>";
-                echo mb_strtoupper($campo);
-            echo "</td>";  
-          }
+                echo "</td>";
+            }elseif($campo == $judi->getSegurado()){
+               echo "<td bgcolor=yellow>";
+                //echo "<img src=img/interroga.png height=20px>";
+                  echo mb_strtoupper($campo); 
+               echo "</td>"; 
+            }
          }else{
            ///// Gravando Sinistro em Acoes /////
            $Judidao->saveJd2($judi);
-           
           echo "<td align=center bgcolor=white>";
-           echo "<img src=img/exclamacao.png height=20px title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
+          if($campo == $judi->getSINISTRO()){ 
+           echo "<img src=img/atencao.png height=20 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
            //echo mb_strtoupper($campo);
+          }else{
+            echo mb_strtoupper($campo);  
+          }
           echo "</td>";
          }
         }elseif($campo == $judi->getSINISTRO () && $campo != null){
@@ -227,13 +230,13 @@ $edit = array_key_exists('id', $_GET);
                 if($sinistrado){
                  foreach($sinistrado as $item2);
                  $judi->setSINISTRO($item2->getsinistro());
-                    echo "<img src=img/exclamacao.png height=20px title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                    echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
                     //echo $judi->getSINISTRO();
                     //echo "ainda está lá";die;
                     //echo "<pre>";
                     //print_r($sinistrado);die;
                 }else{
-                    echo "<img src=img/ok.png height=20 title=OK>";
+                    echo "<img src=img/confirmado.png heght=20 title='Exclus&atilde;o Condirmada'>";
                     //echo $judi->getSINISTRO();
                     $judi->setOk(1);
                     //echo "<pre>";
@@ -244,9 +247,9 @@ $edit = array_key_exists('id', $_GET);
                 }
             }else{
                 if($judi->getOk() == 1){
-                    echo "<img src=img/ok.png height=20 title=OK>";                
+                    echo "<img src=img/confirmado.png title='Exclus&atilde;o Condirmada'>";                
                 }else{
-                    echo "<img src=img/exclamacao.png height=20px title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
+                    echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
                 }
             }
           //echo mb_strtoupper($campo);
@@ -289,7 +292,7 @@ $edit = array_key_exists('id', $_GET);
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=2 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
-     echo "<a href='#topo' class=topo><img src='img/setacima.png' height=30px title='Voltar ao Topo'></a>";
+     echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo'></a>";
      die;
   }
      //////// Fim Exibição /////////

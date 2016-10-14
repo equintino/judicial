@@ -20,7 +20,7 @@ class JudiDao {//extends TodoDao{
      //$sql="SELECT * FROM provavel_contabilizada LEFT JOIN (levantamento_judicial INNER JOIN geral_henrique) ON provavel_contabilizada.SEGURADO_con = levantamento_judicial.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Segurado_con` ASC LIMIT 0,10";
      //$sql="SELECT * FROM levantamento_judicial INNER JOIN geral_henrique ON levantamento_judicial.SEGURADO_lev=geral_henrique.TITULAR_h ORDER BY `levantamento_judicial`.`SEGURADO_lev` ASC";
      //$sql="SELECT * FROM levantamento_henrique ORDER BY `SEGURADO_lev` ASC";
-     $sql="SELECT * FROM provavel_contabilizada LEFT JOIN levantamento_henrique ON provavel_contabilizada.SEGURADO_con = levantamento_henrique.SEGURADO_lev ORDER BY `provavel_contabilizada`.`Numero_CNJ_Antigo_con` ASC ";
+     $sql="SELECT * FROM duplicidade_06102016 LEFT JOIN geral_henrique ON duplicidade_06102016.SINISTRO = geral_henrique.SINISTRO_h ORDER BY `duplicidade_06102016`.`Segurado` ASC ";
      $rows = $this->query($sql) ->fetchAll();
  /*
         /// Criando arquivo com segurados administratativo ///

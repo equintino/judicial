@@ -36,6 +36,8 @@ and open the template in the editor.
     $Judisearch=new JudiSearchCriteria();
     
     $judis=$Judidao->listaProvavel2($Judisearch);
+    //echo "<pre>";
+    //print_r($judis);die;
 ?>
         
     </head>
@@ -43,36 +45,36 @@ and open the template in the editor.
         <div class="relatorio">
             <?php 
                   $array=array(
-                      'N&uacute;mero CNJ Antigo',
-                      'Natureza',
-                      'UF',
-                      'PARTE CONTR&Aacute;RIA',
-                      'Segurado',
-                      'Valor',
-                      'Honor&aacute;rios',
+                      //'Natureza',
+                      //'UF',
+                      //'PARTE CONTR&Aacute;RIA',
+                      //'Segurado',
+                      //'Valor',
+                      //'Honor&aacute;rios',
                       'SINISTRO',
-                      'SEGURADO',
-                      'PARTE CONTR&Aacute;RIA',
-                      'VALOR PEDIDO',
-                      'VALOR ADMINISTRATIVO',
-                      'HONOR&Aacute;RIOS',
-                      'PROV&Aacute;VEL',
-                      'DIGITADOR',
-                      'AP&Oacute;LICE',
-                      'CERTIFICADO',
-                      'SINISTRO',
-                      'DATA AVISO',
                       'TITULAR',
-                      'CPF',
-                      'IMPORT&Acirc;NCIA SEGURADA',
-                      'CORRE&Ccedil;&Atilde;O IGPM',
-                      'CORRE&Ccedil;&Atilde;O TR'
+                      'SEGURADO',
+                      'N&uacute;mero CNJ Antigo',
+                      'PARTE CONTR&Aacute;RIA',
+                      //'VALOR PEDIDO',
+                      'VALOR ADMINISTRATIVO',
+                      //'HONOR&Aacute;RIOS',
+                      //'PROV&Aacute;VEL',
+                      //'DIGITADOR',
+                      //'AP&Oacute;LICE',
+                      //'CERTIFICADO',
+                      //'SINISTRO',
+                      //'DATA AVISO',
+                      //'CPF',
+                      //'IMPORT&Acirc;NCIA SEGURADA',
+                      //'CORRE&Ccedil;&Atilde;O IGPM',
+                      //'CORRE&Ccedil;&Atilde;O TR'
                       );
     echo "<div id=total ></div>";
                   echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
                   //print_r(count($array));
                   echo "<tr>";
-                for ($x=0;$x < 24;$x++){
+                for ($x=0;$x < count($array);$x++){
                    echo "<th>".$array[$x]."</th>";
                 }
                   echo "</tr>";
@@ -81,6 +83,21 @@ and open the template in the editor.
                   $Segurado_con_old=null;
                 foreach($judis as $provavel){
                      echo "<tr><td>";
+                     echo $provavel->getSINISTRO();
+                     echo "</td><td>";
+                     echo $provavel->getTITULAR_h();
+                     echo "</td><td>";
+                     echo $provavel->getSegurado();
+                     echo "</td><td>";
+                     echo $provavel->getNumero_CNJ_Antigo();
+                     echo "</td><td>";
+                     echo $provavel->getParte_contraria();
+                     echo "</td><td>";
+                     echo $provavel->getCORRECAO_TR_h();
+                     echo "</td>"; 
+                     
+                     
+                     /*
                      echo $provavel->getNumero_CNJ_Antigo_con();
                      echo "</td><td>";
                      echo $provavel->getNatureza_con();
@@ -134,6 +151,7 @@ and open the template in the editor.
                      echo $provavel->getCORRECAO_TR_h();
                      echo "</td>"; 
                      $Segurado_con_old=$provavel->getSegurado_con();
+                     */
                 }
                 echo "</tr></table>";
             ?>
