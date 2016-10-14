@@ -10,6 +10,13 @@
          location.href='index.php?page=delete2&id='+id;
        }
     }
+    function atualiza(){
+        var x=confirm('Esta ação levará alguns minutos. Confirma?');
+        if(x){
+            //alert('você confirmou');
+            location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
+        }
+    }
 </script>
 <style>
     .formulario{
@@ -112,6 +119,7 @@ $judi = null;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
 @$atualiza = $_GET['atualiza'];
+//echo "<h1>$atualiza</h1>";
     
    if ($edit) {
      $judi = Utils::getJudiByGetId();
@@ -142,7 +150,7 @@ $edit = array_key_exists('id', $_GET);
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
       //echo "<tr>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=location.href='".Utils::createLink('acaoJudicial', array('act' => 'ver', 'atualiza' => '1'))."' title='Clique aqui para atualizar'><img src=img/atualizar.png height=20px></button></th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=20px></button></th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
@@ -166,7 +174,8 @@ $edit = array_key_exists('id', $_GET);
       $titular_=null;
       foreach($judis as $judi){
           //if($x==110)die;
-       if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
+       if($atualiza == 1){
+        if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
          //print_r($Odbcsearch);die;
          $sinistrado=$Odbcdao->busca3($Odbcsearch);
@@ -179,8 +188,9 @@ $edit = array_key_exists('id', $_GET);
             $judi->setTITULAR_h($titular_);
             @$judi->setSINISTRO($sinistro_);
          }
-       }
+        }
            $titularOld=$titular_; 
+       }
            
       
            ///// Construindo a tabela ////
