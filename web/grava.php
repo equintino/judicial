@@ -34,8 +34,8 @@
          //$sql="select * from $tabela2 where IMPORTANCIA_SEGURADA=0.00";
           //$sql="DELETE * from $tabela where sinistro='88888888888888888'";
           
-          $sql="DELETE * FROM $tabela2 WHERE SINISTRO like '0152.93.03.00000265'" ;
-          $result=odbc_exec($conn,$sql);
+          //$sql="DELETE * FROM $tabela2 WHERE SINISTRO like '0152.93.03.00000264'" ;
+          //$result=odbc_exec($conn,$sql);
           
           //$sql="select * from $tabela where idbenefi=3845";
           //$sql="delete * from $tabela where idbenefi=3845";
@@ -46,7 +46,7 @@
           //$sql="select * from $tabela2 where idtitular=5788";
           //$sql="select * from $tabela where idbenefi=9067";
           
-          $sql="select * from $tabela2 where SINISTRO='0152.93.03.00000265'";
+          $sql="select * from $tabela2 where TITULAR='AQUINO JOSE DE ALMEIDA'";
           
           //$sql="select * from $tabela2 where 1";
           $result=odbc_exec($conn,$sql);

@@ -11,7 +11,7 @@ final class OdbcDao {
             return $this->db;
         }
         $config = Config::getConfig("odbc");
-        print_r($config);
+        //print_r($config);
         try {
             $this->db = odbc_connect($config['dsn'],$config['username'],$config['password']) or die (odbc_errormsg());
             //odbc_exec($this->db , "SET NAMES 'UTF8'");
@@ -39,7 +39,7 @@ final class OdbcDao {
         //$sql = "SELECT * FROM Beneficiarios WHERE exclui like 0";
      //print_r($sql);die;
        //odbc_exec($conn, "SET names utf8"); 
-      $statement = odbc_exec($this->getDb(),$sql);
+      @$statement = odbc_exec($this->getDb(),$sql);
       //print_r($statement);die;
       while(@$linha = odbc_fetch_array($statement)){
         $result[]=$linha;
