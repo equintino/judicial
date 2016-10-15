@@ -1,4 +1,19 @@
+<html>
+<head>
 <script>
+ /// ocultando ate tudo carregado
+function id(el) {
+	return document.getElementById(el);
+}
+function hide(el) {
+	id(el).style.display = 'none';//escondendo tudo
+}
+window.onload = function() {
+	//id('all').style.display = 'block';//liberando quando terminar
+	hide('loading');
+}
+
+
     function total($x){
         var x='Total de processos encontrados ('+$x+')';
         document.getElementById('total').innerHTML=x;
@@ -14,15 +29,23 @@
         var x=confirm('Esta ação levará alguns minutos. Confirma?');
         if(x){
             //alert('você confirmou');
-            location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
+            location.href='index.php?page=carregando&act=ver&atualiza=1';
             //location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
         }
     }
-function id(el) {
-	return document.getElementById(el);
-}
 </script>
 <style>
+#loading { 
+	display: block;
+	width: 200px;
+}
+.content { margin: 0 auto; }
+#all {
+	width: 1280px; overflow: hidden;
+}
+    
+    
+    
     .formulario{
         margin: 50px auto;
         width: 90%;
@@ -44,9 +67,9 @@ function id(el) {
     table td{
         #background-color: white;
     }
-.add:hover {
-    background: blanchedalmond;
-}
+    .add:hover {
+      background: blanchedalmond;
+    }
 .voltar button{
     background: transparent; 
 }
@@ -70,20 +93,22 @@ a:link,a:visited{
 .btn{
     width: 100%;
 }
-.conteudo{
-    position: absolute;
-    top:1px;
-}
 .carregando{
-    position: relative;
-    left: 39%;
-    top: 130px;
+    position: fixed;
+    top: 120px;
+    left: 50%;
 }
 </style>
-<head><a id="topo"></a></head>
-<body>
+<a id="topo"></a>
 <?php
 header('Content-type: text/html; charset=UTF-8');
+function redirecionar($tempo,$url, $mensagem){
+ header("Refresh: $tempo; url=$url");
+ echo "<div class=carregando>";
+ echo '<center>'.$mensagem.  '</center><br/>';
+ echo '<center><img src="img/carregando.gif" alt="" /><br/><br/><tt><i>lendo...</i></tt></center>';
+ echo "</div>";
+}
 function titulos(){
     $titulos=array(
             "Número CNJ / Antigo",
@@ -126,6 +151,11 @@ function conteudo($judi){
        );
        return $campos;
 }
+?>
+</head>
+<body>
+<section id="all">
+<?php
 @$act=$_GET['act'];
 $errors = array();
 $judi = null;
@@ -133,6 +163,13 @@ $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
 @$atualiza = $_GET['atualiza'];
 //echo "<h1>$atualiza</h1>";
+ /////////
+
+ if($act=='ver'){
+  redirecionar('10','index.php?page=acaoJudicial&act=ver&atualiza=1','AGUARDE'); 
+ }
+ 
+ ////////
     
    if ($edit) {
      $judi = Utils::getJudiByGetId();
@@ -149,24 +186,16 @@ $edit = array_key_exists('id', $_GET);
     $Judidao=new JudiDao();
     $Judisearch=new JudiSearchCriteria();
    }
-   
-   
-        echo "<div class=carregando>";
-	echo '<img src="img/loading.gif" alt="" id="loading" />';
-        echo "<i>POR FAVOR AGUARDE...</i>";
-        echo "</div>";
-                
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){
-        echo "<div id=mostra class=conteudo style='display:none'>";
     //$ordem='Segurado asc';
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
     //echo "<pre>";
     //print_r($judis);die;
-       
+    
     $titulos=titulos(); 
-      echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a></div>";
+      echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a>";
       //echo "<a href='index.php?page=acaoJudicial&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
@@ -324,128 +353,18 @@ $edit = array_key_exists('id', $_GET);
      echo "</table>";
      echo "<script>total($x)</script>";
      echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo'></a>";
-        echo "<script>id('mostra').style.display = 'block';</script>";
      die;
   }
      //////// Fim Exibição /////////
-     
-     /////// Cadastro /////// 
-  if(@$act=='cadastro'){
-   echo "<div class=formulario>";
-   echo "<form action='index.php?page=grava' method=POST>";
-    echo "<fieldset>";
-    echo "<legend><h2>CERTID&Atilde;O DE CR&Eacute;DITO PARA IMPRESS&Atilde;O</h2></legend>";
-        $titulos=titulos();
-  //echo "<pre>";
-  //print_r($titulos);die;
-        //$judi->getNumero_CNJ_Antigo()=null;
-        $x=0;
-        foreach($titulos as $titulo){
-          switch($x){
-              case 0:
-               if($edit){
-                echo "<input type=hidden name=id value=".Utils::escape($judi->getId()).">";
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='Numero_CNJ_Antigo' value='".Utils::escape($judi->getNumero_CNJ_Antigo())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='Numero_CNJ_Antigo'>";
-               }
-                break;
-              case 1:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=15 name='Natureza' value='".Utils::escape($judi->getNatureza())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=15 name='Natureza'>";
-               }
-                break;
-              case 2:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=2 maxlength=2 name='UF' value='".Utils::escape($judi->getUF())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=2 maxlength=2 name='UF'>";
-               }
-                break;
-              case 3:
-               if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Parte_contraria' value='".Utils::escape($judi->getParte_contraria())."'>";
-               }else{
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Parte_contraria'>";
-               }
-                break;
-              case 4:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Segurado' value='".Utils::escape($judi->getSegurado())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Segurado'>";
-               }
-                break;
-              case 5:
-               if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido' value='".Utils::escape($judi->getVlr_deferido())."'>";
-               }else{
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido'>";
-               }
-                break;
-              case 6:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa' value='".Utils::escape($judi->getVlr_da_causa())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa'>";
-               }
-                break;
-              case 7:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_condenacao' value='".Utils::escape($judi->getVlr_condenacao())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_condenacao'>";
-               }
-                break;
-              case 8:
-               if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Honorarios' value='".Utils::escape($judi->getHonorarios())."'>";
-               }else{
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Honorarios'>";
-               }
-                break;
-              case 9:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_certidao_de_credito' value='".Utils::escape($judi->getVlr_certidao_de_credito())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_certidao_de_credito'>";
-               }
-                break;
-              case 10:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": ";
-                echo "<select name='Aba' >";
-                  echo "<option selected value='".Utils::escape($judi->getAba())."'>";
-                    echo Utils::escape($judi->getAba());
-                    echo "</option>";
-                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": ";
-                echo "<select name=Aba >";
-                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
-                //echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";
-                echo "</select>";
-               }
-                break;            
-          }
-          $x++;
-        }
-        echo "</fieldset>";
-           echo "<input type=hidden name=Aba value='IMPRESS&Atilde;O'>";
-        echo "<div class=botao>";
-        echo "<input type=submit name=cancel value=CANCELAR>";
-        echo "<input type=submit name=save value=";
-            if($edit){
-                echo " EDITAR>";
-            }else{
-                echo " GRAVAR>";
-            }
-        echo "</div>";
-     echo "</form>";
-   echo "</div>";
-  }
-  /////// Fim cadastro ///////
-?>
+  ?>
+ </section>
+
+
+<img src="http://3.bp.blogspot.com/-Bo2GNAVNb90/URkAlN-0V_I/AAAAAAAACfs/VHFT6oP1ZTk/s1600/Loading+-+Carregando+%252826%2529.gif" alt="" id="loading" class="content"/>
+
+
+<script type="text/javascript">
+	hide('all');
+      </script>
 </body>
+</html>

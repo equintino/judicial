@@ -1,90 +1,36 @@
-<script>
-    function total($x){
-        var x='Total de processos encontrados ('+$x+')';
-        document.getElementById('total').innerHTML=x;
-    }
-    function excluir($id){
-       var y=confirm('Confirma a excusão?');
-       var id=$id;
-       if(y){
-         location.href='index.php?page=delete2&id='+id;
-       }
-    }
-    function atualiza(){
-        var x=confirm('Esta ação levará alguns minutos. Confirma?');
-        if(x){
-            //alert('você confirmou');
-            location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
-            //location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
-        }
-    }
+<?php
+?>
+<!doctype html>
+<!--<html lang="en">-->
+<head>
+	<meta charset="UTF-8">
+
+<script type="text/javascript">
 function id(el) {
 	return document.getElementById(el);
 }
+function hide(el) {
+	id(el).style.display = 'none';//escondendo tudo
+}
+window.onload = function() {
+	id('all').style.display = 'block';//liberando quando terminar
+	hide('loading');
+}
 </script>
 <style>
-    .formulario{
-        margin: 50px auto;
-        width: 90%;
-    }
-    .botao{
-        margin: 10px;
-        float: right;
-    }
-    body{
-        background-color: silver;
-    }
-    table{
-         width: 100%;
-    }
-    table th{
-        background-color: green;
-        color: white;
-    }
-    table td{
-        #background-color: white;
-    }
-.add:hover {
-    background: blanchedalmond;
+#loading { 
+	display: block;
+	width: 200px;
 }
-.voltar button{
-    background: transparent; 
-}
-.voltar button:hover{
-    background-color: white;
-}
-.edicao:hover{
-    background-color: silver;
-}
-.moedas{   
-    padding: 5px 10px;
-}
-a:link,a:visited{
-    text-decoration: none;
-    color: white;
-}
-.topo{
-    position: absolute;
-    right: 10px;
-}
-.btn{
-    width: 100%;
-}
-.conteudo{
-    position: absolute;
-    top:1px;
-}
-.carregando{
-    position: relative;
-    left: 39%;
-    top: 130px;
+.content { margin: 0 auto; }
+#all {
+	width: 1680px; overflow: hidden;
 }
 </style>
-<head><a id="topo"></a></head>
+</head>
 <body>
-<?php
-header('Content-type: text/html; charset=UTF-8');
-function titulos(){
+            <?php 
+ function titulos(){
     $titulos=array(
             "Número CNJ / Antigo",
             'Natureza',
@@ -125,20 +71,14 @@ function conteudo($judi){
             //$judi->getTITULAR_h(),
        );
        return $campos;
-}
+} 
 @$act=$_GET['act'];
 $errors = array();
 $judi = null;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
 @$atualiza = $_GET['atualiza'];
-//echo "<h1>$atualiza</h1>";
-    
-   if ($edit) {
-     $judi = Utils::getJudiByGetId();
-     //echo "<pre>";
-     //print_r($judi);die;
-   } else {
+
     $Tododao=new TodoDao();
     $Todosearch=new TodoSearchCriteria();
     $Odbcdao=new OdbcDao();
@@ -148,24 +88,18 @@ $edit = array_key_exists('id', $_GET);
     
     $Judidao=new JudiDao();
     $Judisearch=new JudiSearchCriteria();
-   }
-   
-   
-        echo "<div class=carregando>";
-	echo '<img src="img/loading.gif" alt="" id="loading" />';
-        echo "<i>POR FAVOR AGUARDE...</i>";
-        echo "</div>";
-                
- 
-    //////// Exibe tabela /////////
-  if(@$act=='ver'){
-        echo "<div id=mostra class=conteudo style='display:none'>";
+	//echo '<section id="all" class="content">';
+    
+if(@$act=='ver'){
     //$ordem='Segurado asc';
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
     //echo "<pre>";
-    //print_r($judis);die;
-       
+    //print_r($judis);
+    //echo '<img src="http://3.bp.blogspot.com/-Bo2GNAVNb90/URkAlN-0V_I/AAAAAAAACfs/VHFT6oP1ZTk/s1600/Loading+-+Carregando+%252826%2529.gif" alt="" id="loading" class="content"/>';
+        echo "<div id=esconde style='display:none'>";
+    
     $titulos=titulos(); 
+    
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a></div>";
       //echo "<a href='index.php?page=acaoJudicial&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -194,7 +128,7 @@ $edit = array_key_exists('id', $_GET);
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          //if($x==110)die;
+          //if($x==10)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
@@ -319,133 +253,40 @@ $edit = array_key_exists('id', $_GET);
        //$judi->setTITULAR_h(null);
        unset($sinistro,$titular);
        $x++;
-     }   
+     }
+      
+      //echo '</section>';
+      
+      
+      
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=2 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
      echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo'></a>";
-        echo "<script>id('mostra').style.display = 'block';</script>";
-     die;
-  }
-     //////// Fim Exibição /////////
+     echo "<script>id('esconde').style.display = 'block';</script>";
      
-     /////// Cadastro /////// 
-  if(@$act=='cadastro'){
-   echo "<div class=formulario>";
-   echo "<form action='index.php?page=grava' method=POST>";
-    echo "<fieldset>";
-    echo "<legend><h2>CERTID&Atilde;O DE CR&Eacute;DITO PARA IMPRESS&Atilde;O</h2></legend>";
-        $titulos=titulos();
-  //echo "<pre>";
-  //print_r($titulos);die;
-        //$judi->getNumero_CNJ_Antigo()=null;
-        $x=0;
-        foreach($titulos as $titulo){
-          switch($x){
-              case 0:
-               if($edit){
-                echo "<input type=hidden name=id value=".Utils::escape($judi->getId()).">";
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='Numero_CNJ_Antigo' value='".Utils::escape($judi->getNumero_CNJ_Antigo())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='Numero_CNJ_Antigo'>";
-               }
-                break;
-              case 1:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=15 name='Natureza' value='".Utils::escape($judi->getNatureza())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=15 name='Natureza'>";
-               }
-                break;
-              case 2:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=2 maxlength=2 name='UF' value='".Utils::escape($judi->getUF())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=2 maxlength=2 name='UF'>";
-               }
-                break;
-              case 3:
-               if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Parte_contraria' value='".Utils::escape($judi->getParte_contraria())."'>";
-               }else{
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Parte_contraria'>";
-               }
-                break;
-              case 4:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Segurado' value='".Utils::escape($judi->getSegurado())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text size=50 name='Segurado'>";
-               }
-                break;
-              case 5:
-               if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido' value='".Utils::escape($judi->getVlr_deferido())."'>";
-               }else{
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido'>";
-               }
-                break;
-              case 6:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa' value='".Utils::escape($judi->getVlr_da_causa())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa'>";
-               }
-                break;
-              case 7:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_condenacao' value='".Utils::escape($judi->getVlr_condenacao())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_condenacao'>";
-               }
-                break;
-              case 8:
-               if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Honorarios' value='".Utils::escape($judi->getHonorarios())."'>";
-               }else{
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Honorarios'>";
-               }
-                break;
-              case 9:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_certidao_de_credito' value='".Utils::escape($judi->getVlr_certidao_de_credito())."'>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_certidao_de_credito'>";
-               }
-                break;
-              case 10:
-               if($edit){
-                echo "&nbsp&nbsp ".$titulo.": ";
-                echo "<select name='Aba' >";
-                  echo "<option selected value='".Utils::escape($judi->getAba())."'>";
-                    echo Utils::escape($judi->getAba());
-                    echo "</option>";
-                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
-               }else{
-                echo "&nbsp&nbsp ".$titulo.": ";
-                echo "<select name=Aba >";
-                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
-                //echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";
-                echo "</select>";
-               }
-                break;            
-          }
-          $x++;
-        }
-        echo "</fieldset>";
-           echo "<input type=hidden name=Aba value='IMPRESS&Atilde;O'>";
-        echo "<div class=botao>";
-        echo "<input type=submit name=cancel value=CANCELAR>";
-        echo "<input type=submit name=save value=";
-            if($edit){
-                echo " EDITAR>";
-            }else{
-                echo " GRAVAR>";
-            }
-        echo "</div>";
-     echo "</form>";
-   echo "</div>";
-  }
-  /////// Fim cadastro ///////
-?>
+}
+  echo '</section';
+            ?>
+            <!--<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a>
+               <table border=1 align=center cellspacing=0 spanspacing=0 class="tabela">
+                   <caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>
+                   <tr><th style="background-color: rgba(123, 123, 123, 0.5)" colspan=12 align=left> Total de linhs "<?php  //number_format(count($judis),'0','','.') ?>"</th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=20px></button></th></tr>
+               </table>
+            </div>-->
+		<!--<img src="http://fc03.deviantart.net/fs25/f/2009/250/e/5/Within_Temptation___Utopia_by_KigaMistriver.jpg" alt="">
+		<img src="http://images.fanpop.com/images/image_uploads/within-temptation-within-temptation-595989_1672_1417.jpg" alt="">
+		<img src="http://images4.alphacoders.com/247/247868.gif" alt="">-->
+		<!--<img src="http://www.withinforever.xpg.com.br/within_temptation_wallpaper_3_1024x768.jpg" alt="">
+	<!-- #all -->
+
+	<img src="http://3.bp.blogspot.com/-Bo2GNAVNb90/URkAlN-0V_I/AAAAAAAACfs/VHFT6oP1ZTk/s1600/Loading+-+Carregando+%252826%2529.gif" alt="" id="loading" class="content"/>
+
+
+<script type="text/javascript">
+	hide('all');
+</script>
+
 </body>
+</html>
+
