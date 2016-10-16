@@ -1,8 +1,8 @@
 <script>
     function total($x){
-        var x='Total de processos encontrados ('+$x+')';
+        var x='Total de duplicidades encontradas ('+$x+')';
         document.getElementById('total').innerHTML=x;
-    }
+    }  
     function excluir($id){
        var y=confirm('Confirma a excusão?');
        var id=$id;
@@ -159,6 +159,7 @@ $judi = null;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
 @$atualiza = $_GET['atualiza'];
+$totalDuplicidade=0;
 //echo "<h1>$atualiza</h1>";
     
    if ($edit) {
@@ -198,7 +199,7 @@ $edit = array_key_exists('id', $_GET);
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
       //echo "<tr>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=20px></button></th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=9 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th align=right colspan=3 style=\"background-color: rgba(123, 123, 123, 0.5)\"><div id='total'></div></th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=20px></button></th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
@@ -289,6 +290,7 @@ $edit = array_key_exists('id', $_GET);
                  foreach($sinistrado as $item2);
                  $judi->setSINISTRO($item2->getsinistro());
                     echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                    $totalDuplicidade++;
                     //echo $judi->getSINISTRO();
                     //echo "ainda está lá";die;
                     //echo "<pre>";
@@ -308,6 +310,7 @@ $edit = array_key_exists('id', $_GET);
                     echo "<img src=img/confirmado.png title='Exclus&atilde;o Confirmada'>";                
                 }else{
                     echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
+                    $totalDuplicidade++;
                 }
             }
           //echo mb_strtoupper($campo);
@@ -349,7 +352,9 @@ $edit = array_key_exists('id', $_GET);
      }   
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=2 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
-     echo "<script>total($x)</script>";
+     echo "<script>
+            total($totalDuplicidade);            
+           </script>";
      echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo'></a>";
         echo "<script>id('mostra').style.display = 'block';</script>";
      die;
