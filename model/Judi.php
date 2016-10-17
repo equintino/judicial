@@ -96,6 +96,8 @@ class Judi {
    private $Faixa_de_Probabilidade;
    private $login;
    private $ok;
+   private $TITULAR;
+   private $VALOR_ADMINISTRATIVO;
   
    
 
@@ -625,5 +627,16 @@ class Judi {
     public function setOk($ok){
         $this->ok = $ok;
     }
-    
+    public function getTITULAR(){
+        return $this->TITULAR;
+    }
+    public function setTITULAR($TITULAR){
+        $this->TITULAR = $TITULAR;
+    }
+    public function getVALOR_ADMINISTRATIVO(){
+        return $this->VALOR_ADMINISTRATIVO;
+    }
+    public function setVALOR_ADMINISTRATIVO($VALOR_ADMINISTRATIVO){
+        $this->VALOR_ADMINISTRATIVO = $VALOR_ADMINISTRATIVO;
+    }    
 }

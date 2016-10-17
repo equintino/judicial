@@ -1,6 +1,6 @@
 <script>
     function total($x){
-        var x='Total de duplicidades encontradas ('+$x+')';
+        var x='Clique aqui para ver duplicidades';
         document.getElementById('total').innerHTML=x;
     }  
     function excluir($id){
@@ -126,7 +126,7 @@ function titulos(){
             'Honorários',
             //'Valor certidão de crédito',
             'OBS',
-            'DUPLICADO',
+            'DUPLICIDADE',
             //'TITULAR',
             //'id',
        );
@@ -182,11 +182,10 @@ $totalDuplicidade=0;
         echo "<div class=carregando>";
 	echo '<img src="img/loading.gif" alt="" id="loading" />';
         echo "<i>POR FAVOR AGUARDE...</i>";
-        echo "</div>";
-                
+        echo "</div>";          
  
     //////// Exibe tabela /////////
-  if(@$act=='ver'){
+  if(@$act=='ver'){ 
         echo "<div id=mostra class=conteudo style='display:none'>";
     //$ordem='Segurado asc';
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
@@ -203,7 +202,7 @@ $totalDuplicidade=0;
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
-          if($titulo != 'DUPLICADO'){
+          if($titulo != 'DUPLICIDADE'){
            echo "<a href=index.php?page=acaoJudicial&act=ver&ordem=".$titulo_.">";
             echo mb_strtoupper($titulo);
            echo "</a>";
@@ -222,12 +221,13 @@ $totalDuplicidade=0;
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          //if($x==110)die;
+          //if($x==10)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
          //print_r($Odbcsearch);die;
          $sinistrado=$Odbcdao->busca3($Odbcsearch);
+         //echo "<pre>";
          //print_r($sinistrado);die;
          foreach($sinistrado as $keys => $item){
             $sinistro_=$item->getsinistro();
@@ -251,6 +251,7 @@ $totalDuplicidade=0;
            echo number_format($campo,'2',',','.');
          echo "</td>";
         }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null && $campo != $judi->getParte_contraria()){
+            //echo "estou aqui";die;
          if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
             if($campo == $judi->getSINISTRO()){
                 echo "<td align=center bgcolor=white>";
@@ -264,8 +265,13 @@ $totalDuplicidade=0;
                echo "</td>"; 
             }
          }else{
-           ///// Gravando Sinistro em Acoes /////
+           ///// Gravando Sinistro e Titular em Acoes /////
+             $judi->setTITULAR($judi->getTITULAR_h());
+             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
+             //echo "<pre>";
+             //print_r($judi);die;
            $Judidao->saveJd2($judi);
+           
           echo "<td align=center bgcolor=white>";
           if($campo == $judi->getSINISTRO()){ 
            echo "<img src=img/atencao.png height=20 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
@@ -297,13 +303,11 @@ $totalDuplicidade=0;
                     //print_r($sinistrado);die;
                 }else{
                     echo "<img src=img/confirmado.png heght=20 title='Exclus&atilde;o Confirmada'>";
-                    //echo $judi->getSINISTRO();
+                    /// Salvando confirmação de exclusão em ações ///
                     $judi->setOk(1);
                     //echo "<pre>";
                     //print_r($judi);die;
                     $Judidao->saveJd2($judi);
-                    //echo "<pre>";
-                    //print_r($sinistrado);
                 }
             }else{
                 if($judi->getOk() == 1){

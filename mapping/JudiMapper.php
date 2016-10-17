@@ -24,6 +24,9 @@ class JudiMapper {
         if (array_key_exists('TITULAR_h', $properties)) {
             $judi->setTITULAR_h($properties['TITULAR_h']);
         }
+        if (array_key_exists('TITULAR', $properties)) {
+            $judi->setTITULAR($properties['TITULAR']);
+        }
         if (array_key_exists('DT_AVISO_h', $properties)) {
             $judi->setDT_AVISO_h($properties['DT_AVISO_h']);
         }
@@ -264,7 +267,9 @@ class JudiMapper {
         if (array_key_exists('ok', $properties)){
             $judi->setOk($properties['ok']);
         }
-        
+        if (array_key_exists('VALOR_ADMINISTRATIVO', $properties)){
+            $judi->setVALOR_ADMINISTRATIVO($properties['VALOR_ADMINISTRATIVO']);
+        }       
     }
 }
 ?>

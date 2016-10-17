@@ -93,13 +93,13 @@ a:link,a:visited{
 header('Content-type: text/html; charset=UTF-8');
 function titulos(){
     $titulos=array(
-            //"Número CNJ / Antigo",
             //'Natureza',
             //'UF',
-            //'Parte contrária',
             'SINISTRO',
-            'Segurado',
             'TITULAR',
+            'Segurado',
+            'Número CNJ / Antigo',
+            'Parte contrária',
             'CPF',
             'VALOR ADMINISTRATIVO',
             //'Faixa de Probabilidade',
@@ -118,14 +118,15 @@ function titulos(){
 }
 function conteudo($judi){
        $campos=array(
-            //$judi->getNumero_CNJ_Antigo(),
             //$judi->getNatureza(),
             //$judi->getUF(),
-            $judi->getSINISTRO_h(),
-            $judi->getSegurado(),
-            $judi->getTITULAR_h(),
-            $judi->getCPF_h(),
-            $judi->getCORRECAO_TR_h(),
+            $judi->getSINISTRO(),
+            $judi->getTITULAR(),
+            $judi->getnome(),
+            $judi->getNumero_CNJ_Antigo(),
+            $judi->getParte_contraria(),
+            $judi->getCPF(),
+            $judi->getIMPORTANCIA_SEGURADA(),
             //$judi->getFaixa_de_Probabilidade(),
             //$judi->getVlr_deferido(),
             //$judi->getVlr_da_causa(),
@@ -165,15 +166,20 @@ function conteudo($judi){
     
     $Judidao=new JudiDao();
     $Judisearch=new JudiSearchCriteria();
+    $Odbcsearch=new OdbcSearchCriteria();
+    $Odbcdao=new OdbcDao();
     //$oracle=new Odbc();die;
+    $ordem='TITULAR';
     
-    $judis=$Judidao->dupliciadeAcaoAdmin($Judisearch,'SINISTRO');
+    $segurados=$Judidao->listaSegurados($Judisearch, $ordem);
+    //$judis=$Judidao->dupliciadeAcaoAdmin($Judisearch,'SINISTRO');
     $sinistro_old=null;
     $contador=0;
     $totalAdm=0;
+    $seguradoOld=null;
     
     //echo "<pre>";
-    //print_r($judis);
+    //print_r($segurados);die;
     
     //print_r(get_class_methods($Judidao));die;
     //echo "<pre>";
@@ -214,8 +220,8 @@ function conteudo($judi){
     //echo "<div id=total></div>";
       echo "<div class=voltar><button title='Voltar' onclick=history.go(-1);><img src='../web/img/action/back.png' height=20 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<caption><h1>DUPLICIDADE</h1></caption>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=5 align=left><div id=total></div></th></tr>";
+      echo "<caption><h1>DUPLICADO NO ADMINSTRATIVO (COM A&Ccedil;&Otilde;ES JUDICIAIS JULGADAS)</h1></caption>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=7 align=left><div id=total></div></th></tr>";
     echo "<tr>";
     $titulos=  titulos();
       foreach($titulos as $titulo){
@@ -227,38 +233,68 @@ function conteudo($judi){
           echo "</th>";
       }
       echo "</tr><tr>";
+      
+    foreach($segurados as $item){
+          //echo "<pre>";       
+       if($seguradoOld != $item->getTITULAR()){
+          $segurado=JudiValidator::tirarAcento($item->getTITULAR());
+          $Odbcsearch->setTITULAR($segurado);
+          $odbcs=$Odbcdao->busca3($Odbcsearch);
+          //echo "<pre>";
+          //PRINT_R($Odbcsearch);
+          //print_r($odbcs);die;
+          //$item->setSegurado($segurado);
+          //print_r($item);
+           //echo $segurado;
+             //echo "<br>";
+             //die;
+      //}
+      //die;
       //echo "<pre>";
-      //print_r($campos);die;
-       foreach($judis as $key => $judi){
-        $campos=conteudo($judi);
-        if($campos[0] != $sinistro_old) {
-         $contador++;
+      //print_r($segurado);die;   
+        foreach($odbcs as $key => $judi){
+          if(mb_strlen($segurado,'utf8') == mb_strlen($judi->getTITULAR(),'utf8')){
+            $judi->setnome($item->getSegurado());
+            $judi->setIMPORTANCIA_SEGURADA($item->getCORRECAO_TR_h());
+            $judi->setNumero_CNJ_Antigo($item->getNumero_CNJ_Antigo());
+            $judi->setParte_contraria($item->getParte_contraria());
+            //echo "<pre>";
+            //print_r($item);
+            //print_r($judi);die;
+            $campos=conteudo($judi);
+            if($campos[0] != $sinistro_old) {
+                $contador++;
         //echo "<pre>";
         //print_r($campos);die;
-        foreach($campos as $chaves => $campo){
+                foreach($campos as $chaves => $campo){
          //print_r($campos);die;
         //echo $campo->getSINISTRO();die;
-          if($chaves == 4){
-           echo "<td align=right bgcolor=white>";
-            echo $campo;
-            $totalAdm=JudiValidator::trocavirgula($campo)+$totalAdm;
-           echo "</td>";
-          }elseif($chaves == 0){
-           echo "<td align=center bgcolor=white>";
-            echo "$campo";
-            $sinistro_old=$campos[0];
-           echo "</td>";
-          }else{
-           echo "<td bgcolor=white>";
-            echo mb_strtoupper($campo);
-           echo "</td>";  
-          }
+                    if($chaves == 6){
+                        echo "<td align=right bgcolor=white>";
+                            echo $campo;
+                            $totalAdm=JudiValidator::trocavirgula($campo)+$totalAdm;
+                        echo "</td>";
+                    }elseif($chaves == 5){
+                        echo "<td align=center bgcolor=white>";
+                            $campo_=JudiValidator::removePonto($campo);
+                            echo JudiValidator::mask($campo_, '###.###.###-##');
+                            //$sinistro_old=$campos[0];
+                        echo "</td>";
+                    }else{
+                        echo "<td bgcolor=white>";
+                            echo mb_strtoupper($campo);
+                        echo "</td>";  
+                    }
         //print_r($key);die;
-         }
-        echo "</tr>";
-       }
+                }
+                echo "</tr>";
+            }
+          }
+        }
       }
-     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=4 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
+          $seguradoOld=$segurado;
+    }
+     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
      echo "</table>";
       echo "<script>total($contador);</script>";
        die;

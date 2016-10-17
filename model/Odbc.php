@@ -20,7 +20,6 @@ final class Odbc {
     private $cep;
     private $vlindeniza = 0;
     private $tpcobertura;
-    private $cpf;
     private $identidade;
     private $percentual;
     private $tel_fixo;
@@ -48,6 +47,9 @@ final class Odbc {
     private $DT_AVISO;
     private $DT_DOC_OK;
     private $DT_SINISTRO;
+    private $CPF;
+    private $Numero_CNJ_Antigo;
+    private $Parte_contraria;
     //private $APOLICE;
     
     //private $status;
@@ -442,13 +444,7 @@ final class Odbc {
     }
     public function settpcobertura($tpcobertura){
         $this->tpcobertura = $tpcobertura;
-    }     
-    public function getcpf(){
-        return $this->cpf;
-    }
-    public function setcpf($cpf){
-        $this->cpf = $cpf;
-    }      
+    }       
     public function getidentidade(){
         return $this->identidade;
     }
@@ -538,6 +534,24 @@ final class Odbc {
     }
     public function setDT_SINISTRO($DT_SINISTRO){
         $this->DT_SINISTRO = $DT_SINISTRO;
+    }
+    public function getCPF(){
+        return $this->CPF;
+    }
+    public function setCPF($CPF){
+        $this->CPF = $CPF;
+    }
+    public function getNumero_CNJ_Antigo(){
+        return $this->Numero_CNJ_Antigo;
+    }
+    public function setNumero_CNJ_Antigo($Numero_CNJ_Antigo){
+        $this->Numero_CNJ_Antigo = $Numero_CNJ_Antigo;
+    }
+    public function getParte_contraria(){
+        return $this->Parte_contraria;
+    }
+    public function setParte_contraria($Parte_contraria){
+        $this->Parte_contraria = $Parte_contraria;
     }
 }
 ?>

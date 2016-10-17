@@ -86,6 +86,9 @@ class OdbcMapper {
         if (array_key_exists('cpf', $properties)) {
             $odbc->setcpf($properties['cpf']);
         }
+        if (array_key_exists('CPF', $properties)) {
+            $odbc->setCPF($properties['CPF']);
+        }
         if (array_key_exists('identidade', $properties)) {
             $odbc->setidentidade($properties['identidade']);
         }
@@ -116,6 +119,12 @@ class OdbcMapper {
         }
         if (array_key_exists('COBERTURA', $properties)) {
             $odbc->setCOBERTURA($properties['COBERTURA']);
+        }
+        if (array_key_exists('Numero_CNJ_Antigo', $properties)) {
+            $odbc->setNumero_CNJ_Antigo($properties['Numero_CNJ_Antigo']);
+        }
+        if (array_key_exists('Parte_contraria', $properties)) {
+            $odbc->setParte_contraria($properties['Parte_contraria']);
         }
         /*
         if (array_key_exists('priority', $properties)) {
