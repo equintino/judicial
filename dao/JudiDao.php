@@ -153,6 +153,51 @@ class JudiDao {//extends TodoDao{
         //print_r($judi);die;
         return $result;
     }
+    public function dupliciadeAcaoAdmin(JudiSearchCriteria $Judisearch = null, $ordem = null) {
+     $sql="SELECT * FROM acoes_transitado_julgado_10102016 LEFT JOIN geral_henrique ON acoes_transitado_julgado_10102016.SINISTRO = geral_henrique.SINISTRO_h WHERE acoes_transitado_julgado_10102016.SINISTRO != ''";
+     //print_r($ordem);
+     if($ordem){
+       if("NúmeroCNJ/Antigo"==$ordem){
+        $ordem='Numero_CNJ_Antigo asc';
+       }elseif('Partecontrária'==$ordem){
+        $ordem='Parte_contraria asc';
+       }elseif('Honorários'==$ordem){
+        $ordem='Honorarios';
+       }elseif('ValorDeferido'==$ordem){
+        $ordem='Vlr_deferido asc';
+       }elseif('Valordacausa'==$ordem){
+        $ordem='Vlr_da_causa asc';
+       }elseif('Valorcondenação'==$ordem){
+        $ordem='Vlr_condenacao asc';
+       }elseif('ValorPedido'==$ordem){
+        $ordem='`Valor_Pedido`';
+       }elseif('OBS'==$ordem){
+        $ordem='OBS';
+       }elseif('Segurado'==$ordem){
+        $ordem='Segurado';
+       }elseif('Faixa_de_Probabilidade'==$ordem){
+        $ordem='Faixa_de_Probabilidade';
+       }elseif('Natureza'==$ordem){
+        $ordem='Natureza';
+       }elseif('UF'==$ordem){
+        $ordem='UF';
+       }elseif('FaixadeProbabilidade'==$ordem){
+        $ordem='Faixa_de_Probabilidade';
+       }
+       $sql.="ORDER BY ".$ordem;
+     }
+     $rows = $this->query($sql) ->fetchAll();
+     //print_r($sql);die;
+     //echo "<pre>";
+     //print_r($rows);die;
+        foreach($rows as $row){
+         $judi = new Judi();
+            JudiMapper::map($judi, $row);
+            $result[] = $judi;
+        }
+        //print_r($judi);die;
+        return $result;
+    }
     public function listaCreditoAdministrativo(JudiSearchCriteria $Judisearch = null) {
      $sql="SELECT * FROM acoes_transitado_julgado_05102016 INNER JOIN geral_henrique ON acoes_transitado_julgado_05102016.Segurado = geral_henrique.TITULAR_h";
      //$sql="SELECT * FROM acoes_transitado_julgado2 INNER JOIN certidao_cre_mon_final ON acoes_transitado_julgado2.Numero_CNJ_Antigo = certidao_cre_mon_final.N_PROC_JUD_CNJ_mon";

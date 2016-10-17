@@ -1,94 +1,9 @@
-<script>
+<!--<script>
     function total($x){
-        var x='Total de linhas encontradas ('+$x+')';
+        var x='Total de processos encontrados ('+$x+')';
         document.getElementById('total').innerHTML=x;
     }
-</script>
-<style>
-    .formulario{
-        margin: 50px auto;
-        width: 90%;
-    }
-    .botao{
-        margin: 10px;
-        float: right;
-    }
-    body{
-        background-color: silver;
-    }
-    table{
-         width: 100%;
-    }
-    table th{
-        background-color: green;
-        color: white;
-    }
-    table td{
-        #background-color: white;
-    }
-.add:hover {
-    background: blanchedalmond;
-}
-.voltar button{
-    background: transparent; 
-}
-.voltar button:hover{
-    background-color: white;
-}
-.edicao:hover{
-    background-color: silver;
-}
-.moedas{   
-    padding: 5px 10px;
-}
-a:link,a:visited{
-    text-decoration: none;
-    color: white;
-}
-.topo{
-    position: absolute;
-    right: 10px;
-}
-.btn{
-     width: 100%;
-     #background: -webkit-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #background: -o-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #background: -ms-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #background: linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #border: 1px solid #CCCCCE;
-     #border-radius: 3px;
-     box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
-                   0 2px 7px rgba(0, 0, 0, 0.2);
- /*    color: #616165;
-     display: block;
-     font-family: "Trebuchet MS";
-     font-size: 14px;
-     font-weight: bold;
-     line-height: 25px;
-     text-align: center;
-     text-decoration: none;
-     text-transform: uppercase;
-     text-shadow:1px 1px 0 #FFF;
-     #padding: 5px 15px;
-     #position: relative;
-     #width: 80px; 
-  */
-}
-.btn:hover{
-    width: 100%;
-    background: -moz-linear-gradient(bottom, #efedd3, #fdfdf8 70%);
-}
-.conteudo{
-    position: absolute;
-    top:1px;
-}
-.carregando{
-    position: relative;
-    left: 39%;
-    top: 130px;
-}
-</style>
+</script>-->
 <?php
 header('Content-type: text/html; charset=UTF-8');
 function titulos(){
@@ -167,10 +82,7 @@ function conteudo($judi){
     $Judisearch=new JudiSearchCriteria();
     //$oracle=new Odbc();die;
     
-    $judis=$Judidao->dupliciadeAcaoAdmin($Judisearch,'SINISTRO');
-    $sinistro_old=null;
-    $contador=0;
-    $totalAdm=0;
+    $campos=$Judidao->dupliciadeAcaoAdmin($Judisearch,'SINISTRO');
     
     //echo "<pre>";
     //print_r($judis);
@@ -211,56 +123,116 @@ function conteudo($judi){
     //print_r($judis);die;
      * 
      */
-    //echo "<div id=total></div>";
-      echo "<div class=voltar><button title='Voltar' onclick=history.go(-1);><img src='../web/img/action/back.png' height=20 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<caption><h1>DUPLICIDADE</h1></caption>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=5 align=left><div id=total></div></th></tr>";
-    echo "<tr>";
     $titulos=  titulos();
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
-           //echo "<a href=index.php?page=acaoJudicial&act=ver&ordem=".$titulo_.">";
+          if($titulo != 'DUPLICADO'){
+           echo "<a href=index.php?page=acaoJudicial&act=ver&ordem=".$titulo_.">";
             echo mb_strtoupper($titulo);
-           //echo "</a>";
+           echo "</a>";
+          }else{
+            echo mb_strtoupper($titulo);
+          }
           echo "</th>";
       }
-      echo "</tr><tr>";
-      //echo "<pre>";
-      //print_r($campos);die;
-       foreach($judis as $key => $judi){
-        $campos=conteudo($judi);
-        if($campos[0] != $sinistro_old) {
-         $contador++;
-        //echo "<pre>";
-        //print_r($campos);die;
-        foreach($campos as $chaves => $campo){
-         //print_r($campos);die;
-        //echo $campo->getSINISTRO();die;
-          if($chaves == 4){
-           echo "<td align=right bgcolor=white>";
-            echo $campo;
-            $totalAdm=JudiValidator::trocavirgula($campo)+$totalAdm;
-           echo "</td>";
-          }elseif($chaves == 0){
-           echo "<td align=center bgcolor=white>";
-            echo "$campo";
-            $sinistro_old=$campos[0];
-           echo "</td>";
+      //$campos=conteudo($judi);
+       
+       foreach($campos as $key => $campo){
+        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[12] != $campo){
+         echo "<td align=right bgcolor=white>";
+           echo number_format($campo,'2',',','.');
+         echo "</td>";
+        }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null && $campo != $judi->getParte_contraria()){
+         if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
+            if($campo == $judi->getSINISTRO()){
+                echo "<td align=center bgcolor=white>";
+                    echo "<img src=img/interroga.png height=20 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
+                //echo mb_strtoupper($campo);
+                echo "</td>";
+            }elseif($campo == $judi->getSegurado()){
+               echo "<td bgcolor=yellow>";
+                //echo "<img src=img/interroga.png height=20px>";
+                  echo mb_strtoupper($campo); 
+               echo "</td>"; 
+            }
+         }else{
+           ///// Gravando Sinistro em Acoes /////
+           $Judidao->saveJd2($judi);
+          echo "<td align=center bgcolor=white>";
+          if($campo == $judi->getSINISTRO()){ 
+           echo "<img src=img/atencao.png height=20 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
+           //echo mb_strtoupper($campo);
           }else{
-           echo "<td bgcolor=white>";
-            echo mb_strtoupper($campo);
-           echo "</td>";  
+            echo mb_strtoupper($campo);  
           }
-        //print_r($key);die;
+          echo "</td>";
          }
-        echo "</tr>";
+        }elseif($campo == $judi->getSINISTRO () && $campo != null){
+         echo "<td align=center bgcolor=white>";
+            if($atualiza == 1){
+                $confereExclusao=new OdbcSearchCriteria();
+                $confereExclusao->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
+                //print_r($Odbcsearch);die;
+                $sinistrado=$Odbcdao->busca3($confereExclusao);
+                //echo "<pre>";
+                //print_r($sinistrado);
+                //}
+                //die;
+                if($sinistrado){
+                 foreach($sinistrado as $item2);
+                 $judi->setSINISTRO($item2->getsinistro());
+                    echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                    $totalDuplicidade++;
+                    //echo $judi->getSINISTRO();
+                    //echo "ainda está lá";die;
+                    //echo "<pre>";
+                    //print_r($sinistrado);die;
+                }else{
+                    echo "<img src=img/confirmado.png heght=20 title='Exclus&atilde;o Confirmada'>";
+                    //echo $judi->getSINISTRO();
+                    $judi->setOk(1);
+                    //echo "<pre>";
+                    //print_r($judi);die;
+                    $Judidao->saveJd2($judi);
+                    //echo "<pre>";
+                    //print_r($sinistrado);
+                }
+            }else{
+                if($judi->getOk() == 1){
+                    echo "<img src=img/confirmado.png title='Exclus&atilde;o Confirmada'>";                
+                }else{
+                    echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
+                    $totalDuplicidade++;
+                }
+            }
+          //echo mb_strtoupper($campo);
+         echo "</td>";
+        }else{
+         echo "<td bgcolor=white>";
+          echo mb_strtoupper($campo);
+         echo "</td>";  
+        }
+        switch($key){
+          case 6:
+           $deferido=$deferido+$campo;
+           break;
+          case 7:
+           $causa=$causa+$campo;
+           break;
+          case 8:
+           $condenacao=$condenacao+$campo;
+           break;
+          case 9:
+           $honorario=$honorario+$campo;
+           break;
+          case 10:
+           $pedido=$pedido+$campo;
+           break;
+        }
+        //print_r($key);die;
        }
-      }
-     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=4 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
-     echo "</table>";
-      echo "<script>total($contador);</script>";
        die;
     /*
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
