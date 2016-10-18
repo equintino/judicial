@@ -21,11 +21,62 @@
         margin: 10px;
         float: right;
     }
+    .botao input{
+        font-size: 10px;
+      background: -webkit-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     background: -o-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     background: -ms-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     background: linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     border: 1px solid #CCCCCE;
+     border-radius: 3px;
+     box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
+                   0 2px 7px rgba(0, 0, 0, 0.2);
+      color: #616165;
+     //display: block;
+     font-family: "Trebuchet MS";
+     //font-size: 14px;
+     font-weight: bold;
+     line-height: 15px;
+     text-align: center;
+     text-decoration: none;
+     text-transform: uppercase;
+     text-shadow:1px 1px 0 #FFF;
+     #padding: 5px 15px;
+     #position: relative;
+     #width: 80px;
+    }
+    .botao input:hover{
+      font-size: 10px;
+      background: -webkit-linear-gradient(bottom, #E0E0E0, #F9F9F9 10%);
+     background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 10%);
+     background: -o-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     background: -ms-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     background: linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+     border: 1px solid #CCCCCE;
+     border-radius: 3px;
+     box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
+                   0 2px 7px rgba(0, 0, 0, 0.2);
+      color: #616165;
+     //display: block;
+     font-family: "Trebuchet MS";
+     //font-size: 14px;
+     font-weight: bold;
+     line-height: 15px;
+     text-align: center;
+     text-decoration: none;
+     text-transform: uppercase;
+     text-shadow:1px 1px 0 #FFF;
+     #padding: 5px 15px;
+     #position: relative;
+     #width: 80px;
+    }
     body{
         background-color: silver;
     }
     table{
          width: 100%;
+         font-size: 10px;
     }
     table th{
         background-color: green;
@@ -39,6 +90,8 @@
 }
 .voltar button{
     background: transparent; 
+    //height: 14px;
+    //width: 20px;
 }
 .voltar button:hover{
     background-color: white;
@@ -62,6 +115,12 @@ a:link,a:visited{
 .topo{
     position: absolute;
     right: 10px;
+}
+form {
+    font-size: 15px;
+}
+select{
+    font-size: 11px;
 }
 </style>
 <body>
@@ -134,8 +193,8 @@ $edit = array_key_exists('id', $_GET);
     $judis=$Judidao->listacredito($Judisearch,$ordem);// tabela transito x credito
        
     $titulos=titulos(); 
-      echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a>";
-      echo "<a href='index.php?page=credito&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
+      echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a>";
+      echo "<a href='index.php?page=credito&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=15 title='Adcionar Linha' class=add></button></a></div>";
       echo "<table border=1 cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h1>CERTID&Otilde;ES DE CR&Eacute;DITO</h1></caption>";
       echo "<tr>";
@@ -206,7 +265,7 @@ $edit = array_key_exists('id', $_GET);
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=5 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($certidao,'2',',','.')."</th><th colspan=3 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";
      echo "<script>total($x)</script>";
-     echo "<a href='#topo' class=topo><img src='img/setacima.png' height=30px title='Voltar ao Topo'></a>";
+     echo "<a href='#topo' class=topo><img src='img/setacima.png' height=20px title='Voltar ao Topo'></a>";
      die;
   }
      //////// Fim Exibição /////////
@@ -216,7 +275,7 @@ $edit = array_key_exists('id', $_GET);
    echo "<div class=formulario>";
    echo "<form action='index.php?page=grava' method=POST>";
     echo "<fieldset>";
-    echo "<legend><h2>CERTID&Atilde;O DE CR&Eacute;DITO PARA IMPRESS&Atilde;O</h2></legend>";
+    echo "<legend><h3>CERTID&Atilde;O DE CR&Eacute;DITO PARA IMPRESS&Atilde;O</h3></legend>";
         $titulos=titulos();
   //echo "<pre>";
   //print_r($titulos);die;
@@ -321,7 +380,7 @@ $edit = array_key_exists('id', $_GET);
         echo "</fieldset>";
            echo "<input type=hidden name=Aba value='IMPRESS&Atilde;O'>";
         echo "<div class=botao>";
-        echo "<input type=submit name=cancel value=CANCELAR>";
+        echo "<input type=submit name=cancel value=CANCELAR>&nbsp";
         echo "<input type=submit name=save value=";
             if($edit){
                 echo " EDITAR>";

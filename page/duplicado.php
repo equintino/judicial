@@ -3,6 +3,9 @@
         var x='Total de linhas encontradas ('+$x+')';
         document.getElementById('total').innerHTML=x;
     }
+function id(el) {
+	return document.getElementById(el);
+}
 </script>
 <style>
     .formulario{
@@ -18,6 +21,7 @@
     }
     table{
          width: 100%;
+         font-size: 10px;
     }
     table th{
         background-color: green;
@@ -91,6 +95,7 @@ a:link,a:visited{
 </style>
 <?php
 header('Content-type: text/html; charset=UTF-8');
+echo "<div id=topo></div>";
 function titulos(){
     $titulos=array(
             //'Natureza',
@@ -218,9 +223,15 @@ function conteudo($judi){
      * 
      */
     //echo "<div id=total></div>";
-      echo "<div class=voltar><button title='Voltar' onclick=history.go(-1);><img src='../web/img/action/back.png' height=20 title='Voltar'></button></div>";
+        echo "<div class=carregando>";
+	echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
+        echo "<i>POR FAVOR AGUARDE...</i>";
+        echo "</div>";
+        
+        echo "<div id=mostra class=conteudo style='display:none'>";
+      echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<caption><h1>DUPLICADO NO ADMINSTRATIVO (COM A&Ccedil;&Otilde;ES JUDICIAIS JULGADAS)</h1></caption>";
+      echo "<caption><h2>DUPLICADO NO ADMINSTRATIVO (COM A&Ccedil;&Otilde;ES JUDICIAIS JULGADAS)</h2></caption>";
     echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=7 align=left><div id=total></div></th></tr>";
     echo "<tr>";
     $titulos=  titulos();
@@ -297,6 +308,9 @@ function conteudo($judi){
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
      echo "</table>";
       echo "<script>total($contador);</script>";
+     echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo' height=20px ></a>";
+     echo "</div>";
+        echo "<script>id('mostra').style.display = 'block';</script>";
        die;
     /*
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";

@@ -36,6 +36,7 @@ function id(el) {
     }
     table{
          width: 100%;
+         font-size: 10px;
     }
     table th{
         background-color: green;
@@ -180,7 +181,7 @@ $totalDuplicidade=0;
    
    
         echo "<div class=carregando>";
-	echo '<img src="img/loading.gif" alt="" id="loading" />';
+	echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
         echo "<i>POR FAVOR AGUARDE...</i>";
         echo "</div>";          
  
@@ -193,12 +194,12 @@ $totalDuplicidade=0;
     //print_r($judis);die;
        
     $titulos=titulos(); 
-      echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=20 title='Voltar'></button></a></div>";
+      echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a></div>";
       //echo "<a href='index.php?page=acaoJudicial&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
-      echo "<caption><h1>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h1></caption>";
+      echo "<caption><h2>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h2></caption>";
       //echo "<tr>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=9 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th align=right colspan=3 style=\"background-color: rgba(123, 123, 123, 0.5)\"><a href='index.php?page=duplicado'><div id='total'></div></a></th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=20px></button></th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=9 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th align=right colspan=3 style=\"background-color: rgba(123, 123, 123, 0.5)\"><a href='index.php?page=duplicado'><div id='total'></div></a></th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=13px></button></th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
@@ -221,7 +222,7 @@ $totalDuplicidade=0;
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          //if($x==10)die;
+          //if($x==50)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
@@ -255,12 +256,12 @@ $totalDuplicidade=0;
          if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
             if($campo == $judi->getSINISTRO()){
                 echo "<td align=center bgcolor=white>";
-                    echo "<img src=img/interroga.png height=20 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
+                    echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
                 //echo mb_strtoupper($campo);
                 echo "</td>";
             }elseif($campo == $judi->getSegurado()){
                echo "<td bgcolor=yellow>";
-                //echo "<img src=img/interroga.png height=20px>";
+                //echo "<img src=img/interroga.png height=15>";
                   echo mb_strtoupper($campo); 
                echo "</td>"; 
             }
@@ -274,7 +275,7 @@ $totalDuplicidade=0;
            
           echo "<td align=center bgcolor=white>";
           if($campo == $judi->getSINISTRO()){ 
-           echo "<img src=img/atencao.png height=20 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
+           echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
            //echo mb_strtoupper($campo);
           }else{
             echo mb_strtoupper($campo);  
@@ -295,14 +296,14 @@ $totalDuplicidade=0;
                 if($sinistrado){
                  foreach($sinistrado as $item2);
                  $judi->setSINISTRO($item2->getsinistro());
-                    echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                    echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
                     $totalDuplicidade++;
                     //echo $judi->getSINISTRO();
                     //echo "ainda está lá";die;
                     //echo "<pre>";
                     //print_r($sinistrado);die;
                 }else{
-                    echo "<img src=img/confirmado.png heght=20 title='Exclus&atilde;o Confirmada'>";
+                    echo "<img src=img/confirmado.png heght=15 title='Exclus&atilde;o Confirmada'>";
                     /// Salvando confirmação de exclusão em ações ///
                     $judi->setOk(1);
                     //echo "<pre>";
@@ -311,9 +312,9 @@ $totalDuplicidade=0;
                 }
             }else{
                 if($judi->getOk() == 1){
-                    echo "<img src=img/confirmado.png title='Exclus&atilde;o Confirmada'>";                
+                    echo "<img src=img/confirmado.png heght=15 title='Exclus&atilde;o Confirmada'>";                
                 }else{
-                    echo "<img src=img/atencao.png height=20 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
+                    echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
                     $totalDuplicidade++;
                 }
             }
@@ -359,7 +360,7 @@ $totalDuplicidade=0;
      echo "<script>
             total($totalDuplicidade);            
            </script>";
-     echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo'></a>";
+     echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo' height=20px ></a>";
         echo "<script>id('mostra').style.display = 'block';</script>";
      die;
   }
