@@ -131,8 +131,8 @@ function conteudo($judi){
             $judi->getNumero_CNJ_Antigo(),
             $judi->getParte_contraria(),
             $judi->getCPF(),
-            $judi->getIMPORTANCIA_SEGURADA(),
-            //$judi->getCORRECAO_TR_h(),
+            $judi->getCORRECAO_TR_h(),
+            //$judi->getIMPORTANCIA_SEGURADA(),
             //$judi->getFaixa_de_Probabilidade(),
             //$judi->getVlr_deferido(),
             //$judi->getVlr_da_causa(),
@@ -229,7 +229,7 @@ function conteudo($judi){
         echo "<i>POR FAVOR AGUARDE...</i>";
         echo "</div>";
         
-        //echo "<div id=mostra class=conteudo style='display:none'>";
+        echo "<div id=mostra class=conteudo style='display:none'>";
         
       echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -279,21 +279,24 @@ function conteudo($judi){
             if($campos[0] != $sinistro_old) {
                 $contador++;
                     $vlrCorrigido=$Judidao->findBySinistro($campos[0]);
-                    echo "<pre>";
-                    print_r($vlrCorrigido);
-                    //if($vlrCorrigido){
-                        $judi->setIMPORTANCIA_SEGURADA($vlrCorrigido->getCORRECAO_TR_h());//die;
-                    //}
-                    print_r($judi);
+                    //echo "<pre>";
+                    //print_r($vlrCorrigido);
+                    if($vlrCorrigido){
+                        $judi->setCORRECAO_TR_h($vlrCorrigido->getCORRECAO_TR_h());//die;
+                    }
+                    //print_r($judi);
         //echo "<pre>";
         //print_r($campos);die;
                 foreach($campos as $chaves => $campo){
-         print_r($campos);die;
+                  $campos[6]=$judi->getCORRECAO_TR_h();
+         //print_r($campos);die;
         //echo $campo->getSINISTRO();die;
                     if($chaves == 6){
                         echo "<td align=right bgcolor=white>";
-                            echo number_format($campo,'2',',','.');
-                            $totalAdm=$campo+$totalAdm;
+                            echo $campos[6];
+                            $valor=JudiValidator::trocavirgula($campos[6]);
+                            //echo $valor;die;
+                            $totalAdm=$valor+$totalAdm;
                         echo "</td>";
                     }elseif($chaves == 5){
                         echo "<td align=center bgcolor=white>";

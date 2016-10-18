@@ -51,6 +51,7 @@ final class Odbc {
     private $Numero_CNJ_Antigo;
     private $Parte_contraria;
     //private $APOLICE;
+    private $CORRECAO_TR_h;
     
     //private $status;
     
@@ -552,6 +553,12 @@ final class Odbc {
     }
     public function setParte_contraria($Parte_contraria){
         $this->Parte_contraria = $Parte_contraria;
+    }
+    public function getCORRECAO_TR_h(){
+        return $this->CORRECAO_TR_h;
+    }
+    public function setCORRECAO_TR_h($CORRECAO_TR_h){
+        $this->CORRECAO_TR_h = $CORRECAO_TR_h;
     }
 }
 ?>

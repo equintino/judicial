@@ -158,7 +158,10 @@ class OdbcMapper {
         }
         if (array_key_exists('DT_VIG_FINAL', $properties)) {
             $odbc->setDT_VIG_FINAL($properties['DT_VIG_FINAL']);
-        }      
+        }    
+        if (array_key_exists('CORRECAO_TR_h', $properties)) {
+            $odbc->setCORRECAO_TR_h($properties['CORRECAO_TR_h']);
+        }   
     }
     private static function createDateTime($input) {
         //return DateTime::createFromFormat('j-n-Y H:i:s', $input);
