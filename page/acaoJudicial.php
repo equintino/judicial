@@ -187,7 +187,7 @@ $totalDuplicidade=0;
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
-        echo "<div id=mostra class=conteudo style='display:none'>";
+        //echo "<div id=mostra class=conteudo style='display:none'>";
     //$ordem='Segurado asc';
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
     //echo "<pre>";
@@ -222,21 +222,38 @@ $totalDuplicidade=0;
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          //if($x==50)die;
+          if($x==330)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
-         //print_r($Odbcsearch);die;
+         //$Odbcsearch->setTITULAR('jos_ pereira');
+         //ECHO "<pre>";
+         //print_r($Odbcsearch);
+         //print_r($Odbcsearch);
          $sinistrado=$Odbcdao->busca3($Odbcsearch);
          //echo "<pre>";
-         //print_r($sinistrado);die;
+         //print_r($sinistrado);
          foreach($sinistrado as $keys => $item){
-            $sinistro_=$item->getsinistro();
-            $titular_=$item->getTITULAR();
+             //echo "$sinistro_ -> ".$item->getTITULAR();
+             //echo "<br>";
+            if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($item->getTITULAR(),'utf8')){
+                echo "<pre>";
+                print_r($sinistrado);
+                echo "é igual ";
+                echo $judi->getSegurado()." - ".$item->getTITULAR();
+                echo "<br>";
+                $judi->setSINISTRO($item->getsinistro());
+                $judi->setTITULAR_h($item->getTITULAR());
+                //die;
+             //echo "$sinistro_ -> $titular_";
+             //echo "<br>";
+            }
          }
+         //echo "COMPARA = ";
+         //echo $titular_." -. ".$titularOld."<br>";
          if($titular_ != $titularOld){
-            $judi->setTITULAR_h($titular_);
-            @$judi->setSINISTRO($sinistro_);
+            //$judi->setTITULAR_h($titular_);
+            //@$judi->setSINISTRO($sinistro_);
          }
         }
            $titularOld=$titular_; 
@@ -255,7 +272,7 @@ $totalDuplicidade=0;
             //echo "estou aqui";die;
          if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
             if($campo == $judi->getSINISTRO()){
-                echo "<td align=center bgcolor=white>";
+                echo "<td bgcolor=white>";
                     echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
                 //echo mb_strtoupper($campo);
                 echo "</td>";

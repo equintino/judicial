@@ -132,6 +132,7 @@ function conteudo($judi){
             $judi->getParte_contraria(),
             $judi->getCPF(),
             $judi->getIMPORTANCIA_SEGURADA(),
+            //$judi->getCORRECAO_TR_h(),
             //$judi->getFaixa_de_Probabilidade(),
             //$judi->getVlr_deferido(),
             //$judi->getVlr_da_causa(),
@@ -228,7 +229,8 @@ function conteudo($judi){
         echo "<i>POR FAVOR AGUARDE...</i>";
         echo "</div>";
         
-        echo "<div id=mostra class=conteudo style='display:none'>";
+        //echo "<div id=mostra class=conteudo style='display:none'>";
+        
       echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h2>DUPLICADO NO ADMINSTRATIVO (COM A&Ccedil;&Otilde;ES JUDICIAIS JULGADAS)</h2></caption>";
@@ -249,6 +251,7 @@ function conteudo($judi){
           //echo "<pre>";       
        if($seguradoOld != $item->getTITULAR()){
           $segurado=JudiValidator::tirarAcento($item->getTITULAR());
+          //$segurado='francisco da silva';
           $Odbcsearch->setTITULAR($segurado);
           $odbcs=$Odbcdao->busca3($Odbcsearch);
           //echo "<pre>";
@@ -266,7 +269,7 @@ function conteudo($judi){
         foreach($odbcs as $key => $judi){
           if(mb_strlen($segurado,'utf8') == mb_strlen($judi->getTITULAR(),'utf8')){
             $judi->setnome($item->getSegurado());
-            $judi->setIMPORTANCIA_SEGURADA($item->getCORRECAO_TR_h());
+            //$judi->setIMPORTANCIA_SEGURADA($item->getCORRECAO_TR_h());
             $judi->setNumero_CNJ_Antigo($item->getNumero_CNJ_Antigo());
             $judi->setParte_contraria($item->getParte_contraria());
             //echo "<pre>";
@@ -275,26 +278,33 @@ function conteudo($judi){
             $campos=conteudo($judi);
             if($campos[0] != $sinistro_old) {
                 $contador++;
+                    $vlrCorrigido=$Judidao->findBySinistro($campos[0]);
+                    echo "<pre>";
+                    print_r($vlrCorrigido);
+                    //if($vlrCorrigido){
+                        $judi->setIMPORTANCIA_SEGURADA($vlrCorrigido->getCORRECAO_TR_h());//die;
+                    //}
+                    print_r($judi);
         //echo "<pre>";
         //print_r($campos);die;
                 foreach($campos as $chaves => $campo){
-         //print_r($campos);die;
+         print_r($campos);die;
         //echo $campo->getSINISTRO();die;
                     if($chaves == 6){
                         echo "<td align=right bgcolor=white>";
-                            echo $campo;
-                            $totalAdm=JudiValidator::trocavirgula($campo)+$totalAdm;
+                            echo number_format($campo,'2',',','.');
+                            $totalAdm=$campo+$totalAdm;
                         echo "</td>";
                     }elseif($chaves == 5){
                         echo "<td align=center bgcolor=white>";
                             $campo_=JudiValidator::removePonto($campo);
                             echo JudiValidator::mask($campo_, '###.###.###-##');
-                            //$sinistro_old=$campos[0];
                         echo "</td>";
                     }else{
                         echo "<td bgcolor=white>";
                             echo mb_strtoupper($campo);
-                        echo "</td>";  
+                        echo "</td>";
+                            $sinistro_old=$campos[0];  
                     }
         //print_r($key);die;
                 }
@@ -303,7 +313,7 @@ function conteudo($judi){
           }
         }
       }
-          $seguradoOld=$segurado;
+       $seguradoOld=$segurado;
     }
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
      echo "</table>";
