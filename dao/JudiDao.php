@@ -258,14 +258,15 @@ class JudiDao {//extends TodoDao{
         return $result;
     }
     public function ajunta(JudiSearchCriteria $Judisearch = null) {
+     $sql="SELECT * FROM acoes_transitado_julgado_18102016 LEFT JOIN transito_julgado_original ON acoes_transitado_julgado_18102016.Numero_CNJ_Antigo = transito_julgado_original.Numero_de_CNJ";
      //$sql="SELECT * FROM acoes_transitado_julgado_05102016 left JOIN suspenso ON acoes_transitado_julgado_05102016.Numero_CNJ_Antigo = suspenso.Numero_CNJ_Antigo";
      //$sql="SELECT * FROM acoes_transitado_julgado2 INNER JOIN certidao_cre_mon_final ON acoes_transitado_julgado2.Numero_CNJ_Antigo = certidao_cre_mon_final.N_PROC_JUD_CNJ_mon";
      //$sql="SELECT * FROM suspenso LEFT JOIN geral_henrique ON suspenso.Segurado = geral_henrique.TITULAR_h";
      //$sql="SELECT * FROM acoes_transitado_julgado_05102016";
-     $sql="SELECT * FROM acoes_transitado_julgado_05102016,suspenso WHERE 1";
+     //$sql="SELECT * FROM acoes_transitado_julgado_05102016,suspenso WHERE 1";
      $rows = $this->query($sql) ->fetchAll();
-     //echo "<pre>";
-     //print_r($rows);die;
+     echo "<pre>";
+     print_r($rows);die;
         foreach($rows as $row){
             //print_r($row);
             //echo $row['Numero_CNJ_Antigo'];

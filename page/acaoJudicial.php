@@ -187,7 +187,7 @@ $totalDuplicidade=0;
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
-        //echo "<div id=mostra class=conteudo style='display:none'>";
+        echo "<div id=mostra class=conteudo style='display:none'>";
     //$ordem='Segurado asc';
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
     //echo "<pre>";
@@ -222,7 +222,7 @@ $totalDuplicidade=0;
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
-          if($x==330)die;
+          //if($x==330)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
@@ -237,11 +237,11 @@ $totalDuplicidade=0;
              //echo "$sinistro_ -> ".$item->getTITULAR();
              //echo "<br>";
             if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($item->getTITULAR(),'utf8')){
-                echo "<pre>";
-                print_r($sinistrado);
-                echo "é igual ";
-                echo $judi->getSegurado()." - ".$item->getTITULAR();
-                echo "<br>";
+                //echo "<pre>";
+                //print_r($sinistrado);
+                //echo "é igual ";
+                //echo $judi->getSegurado()." - ".$item->getTITULAR();
+                //echo "<br>";
                 $judi->setSINISTRO($item->getsinistro());
                 $judi->setTITULAR_h($item->getTITULAR());
                 //die;
