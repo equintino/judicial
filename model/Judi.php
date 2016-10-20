@@ -98,6 +98,7 @@ class Judi {
    private $ok;
    private $TITULAR;
    private $VALOR_ADMINISTRATIVO;
+   private $beneficiario;
   
    
 
@@ -638,5 +639,11 @@ class Judi {
     }
     public function setVALOR_ADMINISTRATIVO($VALOR_ADMINISTRATIVO){
         $this->VALOR_ADMINISTRATIVO = $VALOR_ADMINISTRATIVO;
-    }    
+    }   
+    public function getbeneficiario(){
+        return $this->beneficiario;
+    }
+    public function setbeneficiario($beneficiario){
+        $this->beneficiario = $beneficiario;
+    }  
 }

@@ -356,7 +356,7 @@ final class OdbcDao {
         $busca = $this->query($this->getBuscaSql3($search));
         //print_r($this->getBuscaSql3($search));
         //echo "<pre>";
-        //print_r($busca);die;
+        //print_r($search);die;
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
@@ -376,7 +376,8 @@ final class OdbcDao {
         //print_r($this->getBuscaSql4($search));die;
         $result=array();
         $busca = $this->query($this->getBuscaSql4($search));
-        //print_r($busca);die;
+        //print_r($search);
+        //print_r($busca);
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
@@ -388,7 +389,7 @@ final class OdbcDao {
             $result[$odbc->getidbenefi()] = $odbc;
          }
         }else{
-         echo "<p>*Nao foi encontrado nenhum registro</p>"; 
+         //echo "<p>*Nao foi encontrado nenhum registro</p>"; 
         }
         return @$result;
     }

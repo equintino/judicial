@@ -286,10 +286,10 @@ function conteudo($judi){
                     }
                     //print_r($judi);
         //echo "<pre>";
-        //print_r($campos);die;
-                foreach($campos as $chaves => $campo){
                   $campos[6]=$judi->getCORRECAO_TR_h();
-         //print_r($campos);die;
+        //print_r($campos);
+                foreach($campos as $chaves => $campo){
+                 //print_r($campos);
         //echo $campo->getSINISTRO();die;
                     if($chaves == 6){
                         echo "<td align=right bgcolor=white>";

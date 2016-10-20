@@ -269,7 +269,10 @@ class JudiMapper {
         }
         if (array_key_exists('VALOR_ADMINISTRATIVO', $properties)){
             $judi->setVALOR_ADMINISTRATIVO($properties['VALOR_ADMINISTRATIVO']);
-        }       
+        }   
+        if (array_key_exists('beneficiario', $properties)){
+            $judi->setbeneficiario($properties['beneficiario']);
+        }    
     }
 }
 ?>

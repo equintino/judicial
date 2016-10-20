@@ -13,9 +13,7 @@
     function atualiza(){
         var x=confirm('Esta ação levará alguns minutos. Confirma?');
         if(x){
-            //alert('você confirmou');
             location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
-            //location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
         }
     }
 function id(el) {
@@ -70,29 +68,9 @@ a:link,a:visited{
 }
 .btn{
      width: 100%;
-     #background: -webkit-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
      background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #background: -o-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #background: -ms-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #background: linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     #border: 1px solid #CCCCCE;
-     #border-radius: 3px;
      box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
                    0 2px 7px rgba(0, 0, 0, 0.2);
- /*    color: #616165;
-     display: block;
-     font-family: "Trebuchet MS";
-     font-size: 14px;
-     font-weight: bold;
-     line-height: 25px;
-     text-align: center;
-     text-decoration: none;
-     text-transform: uppercase;
-     text-shadow:1px 1px 0 #FFF;
-     #padding: 5px 15px;
-     #position: relative;
-     #width: 80px; 
-  */
 }
 .btn:hover{
     width: 100%;
@@ -119,17 +97,15 @@ function titulos(){
             'UF',
             'Parte contrária',
             'Segurado',
+            'Beneficiário',
             'Faixa de Probabilidade',
             'Valor Deferido',
             'Valor da causa',
             'Valor condenação',
             'Valor Pedido',
             'Honorários',
-            //'Valor certidão de crédito',
             'OBS',
             'DUPLICIDADE',
-            //'TITULAR',
-            //'id',
        );
     return $titulos;
 }
@@ -140,17 +116,15 @@ function conteudo($judi){
             $judi->getUF(),
             $judi->getParte_contraria(),
             $judi->getSegurado(),
+            $judi->getbeneficiario(),
             $judi->getFaixa_de_Probabilidade(),
             $judi->getVlr_deferido(),
             $judi->getVlr_da_causa(),
             $judi->getVlr_condenacao(),
             $judi->getValor_Pedido(),
             $judi->getHonorarios(),
-            //$judi->getVlr_certidao_de_credito(),
             $judi->getOBS(),
-            //$judi->getId(),
             $judi->getSINISTRO(),
-            //$judi->getTITULAR_h(),
        );
        return $campos;
 }
@@ -161,12 +135,9 @@ $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
 @$atualiza = $_GET['atualiza'];
 $totalDuplicidade=0;
-//echo "<h1>$atualiza</h1>";
     
    if ($edit) {
      $judi = Utils::getJudiByGetId();
-     //echo "<pre>";
-     //print_r($judi);die;
    } else {
     $Tododao=new TodoDao();
     $Todosearch=new TodoSearchCriteria();
@@ -181,25 +152,19 @@ $totalDuplicidade=0;
    
    
         echo "<div class=carregando>";
-	echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
-        echo "<i>POR FAVOR AGUARDE...</i>";
-        //require 'js/FlipClock-master/examples/countdown-stop-callback.html';
+            echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
+            echo "<i>POR FAVOR AGUARDE...</i>";
         echo "</div>";          
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
         echo "<div id=mostra class=conteudo style='display:none'>";
-    //$ordem='Segurado asc';
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
-    //echo "<pre>";
-    //print_r($judis);die;
        
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a></div>";
-      //echo "<a href='index.php?page=acaoJudicial&act=cadastro'><button title='Adcionar Linha'><img src='../web/img/add.ico' height=20 title='Adcionar Linha' class=add></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h2>A&Ccedil;&Otilde;ES TRANSITADO E JULGADO</h2></caption>";
-      //echo "<tr>";
     echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=9 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th align=right colspan=3 style=\"background-color: rgba(123, 123, 123, 0.5)\"><a href='index.php?page=duplicado'><div id='total'></div></a></th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=13px></button></th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
@@ -216,42 +181,43 @@ $totalDuplicidade=0;
       $x=0; 
       $deferido=$causa=$condenacao=$honorario=$certidao=$pedido=null;
       
-      //echo "<pre>";
-      //print_r($judis);die;
       
       echo "<tr>";
       $titularOld='inicial';
       $titular_=null;
       foreach($judis as $judi){
+          
+          //// Procurando por duplicidade no administrativo ////
+          
           //if($x==330)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
-         //$Odbcsearch->setTITULAR('jos_ pereira');
-         //ECHO "<pre>";
-         //print_r($Odbcsearch);
-         //print_r($Odbcsearch);
          $sinistrado=$Odbcdao->busca3($Odbcsearch);
          //echo "<pre>";
-         //print_r($sinistrado);
+         //print_r($judi);die;
+         if(!$sinistrado){
+             //echo "Não encontrei nada";
+             $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
+             $beneficiarios=$Odbcdao->busca4($Odbcsearch);
+             //$judi->setnome($beneficiario['nome']);
+             //echo "<pre>";
+             //print_r($judi);die;
+             foreach($beneficiarios as $beneficiario_){
+                 //echo "<pre>";
+                $judi->setSINISTRO($beneficiario_->getsinistro());
+                //echo " - ";
+                $judi->setbeneficiario($beneficiario_->getnome());
+             }
+         }
+         //echo "<pre>";
+         //print_r($judi);
          foreach($sinistrado as $keys => $item){
-             //echo "$sinistro_ -> ".$item->getTITULAR();
-             //echo "<br>";
             if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($item->getTITULAR(),'utf8')){
-                //echo "<pre>";
-                //print_r($sinistrado);
-                //echo "é igual ";
-                //echo $judi->getSegurado()." - ".$item->getTITULAR();
-                //echo "<br>";
                 $judi->setSINISTRO($item->getsinistro());
                 $judi->setTITULAR_h($item->getTITULAR());
-                //die;
-             //echo "$sinistro_ -> $titular_";
-             //echo "<br>";
             }
          }
-         //echo "COMPARA = ";
-         //echo $titular_." -. ".$titularOld."<br>";
          if($titular_ != $titularOld){
             //$judi->setTITULAR_h($titular_);
             //@$judi->setSINISTRO($sinistro_);
@@ -260,26 +226,24 @@ $totalDuplicidade=0;
            $titularOld=$titular_; 
        }
            
+            //// Termino da busca ////
       
            ///// Construindo a tabela ////
        $campos=conteudo($judi);
        
        foreach($campos as $key => $campo){
-        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[12] != $campo){
+        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
          echo "<td align=right bgcolor=white>";
            echo number_format($campo,'2',',','.');
          echo "</td>";
         }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null && $campo != $judi->getParte_contraria()){
-            //echo "estou aqui";die;
          if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
             if($campo == $judi->getSINISTRO()){
                 echo "<td bgcolor=white>";
                     echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
-                //echo mb_strtoupper($campo);
                 echo "</td>";
             }elseif($campo == $judi->getSegurado()){
                echo "<td bgcolor=yellow>";
-                //echo "<img src=img/interroga.png height=15>";
                   echo mb_strtoupper($campo); 
                echo "</td>"; 
             }
@@ -287,14 +251,17 @@ $totalDuplicidade=0;
            ///// Gravando Sinistro e Titular em Acoes /////
              $judi->setTITULAR($judi->getTITULAR_h());
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
-             //echo "<pre>";
-             //print_r($judi);die;
+             
+             //if($judi->getTITULAR_h() == 'manoel ferreira'){
+                //echo "<pre>";
+                //print_r($judi);die;
+             //} 
+             
            $Judidao->saveJd2($judi);
            
           echo "<td align=center bgcolor=white>";
           if($campo == $judi->getSINISTRO()){ 
            echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
-           //echo mb_strtoupper($campo);
           }else{
             echo mb_strtoupper($campo);  
           }
@@ -305,27 +272,16 @@ $totalDuplicidade=0;
             if($atualiza == 1){
                 $confereExclusao=new OdbcSearchCriteria();
                 $confereExclusao->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
-                //print_r($Odbcsearch);die;
                 $sinistrado=$Odbcdao->busca3($confereExclusao);
-                //echo "<pre>";
-                //print_r($sinistrado);
-                //}
-                //die;
                 if($sinistrado){
                  foreach($sinistrado as $item2);
                  $judi->setSINISTRO($item2->getsinistro());
                     echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
                     $totalDuplicidade++;
-                    //echo $judi->getSINISTRO();
-                    //echo "ainda está lá";die;
-                    //echo "<pre>";
-                    //print_r($sinistrado);die;
                 }else{
                     echo "<img src=img/confirmado.png heght=15 title='Exclus&atilde;o Confirmada'>";
                     /// Salvando confirmação de exclusão em ações ///
                     $judi->setOk(1);
-                    //echo "<pre>";
-                    //print_r($judi);die;
                     $Judidao->saveJd2($judi);
                 }
             }else{
@@ -336,7 +292,6 @@ $totalDuplicidade=0;
                     $totalDuplicidade++;
                 }
             }
-          //echo mb_strtoupper($campo);
          echo "</td>";
         }else{
          echo "<td bgcolor=white>";
@@ -360,16 +315,9 @@ $totalDuplicidade=0;
            $pedido=$pedido+$campo;
            break;
         }
-        //print_r($key);die;
        }
        $id=$judi->getId();
-       //echo "<td class=edicao ><a href='index.php?page=acaoJudicial&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
-       //echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
-       //echo "<td class=edicao ><a href='index.php?page=delete&id=".$judi->getId()."' ><img src='../web/img/excluir.png' height=13 title='Excluir Linha'/></a></td>";
        echo "</tr>";
-       //$Odbcsearch->setSINISTRO(null);
-       //$Odbcsearch->setTITULAR(null);
-       //$judi->setTITULAR_h(null);
        unset($sinistro,$titular);
        $x++;
      }   
@@ -391,9 +339,6 @@ $totalDuplicidade=0;
     echo "<fieldset>";
     echo "<legend><h2>CERTID&Atilde;O DE CR&Eacute;DITO PARA IMPRESS&Atilde;O</h2></legend>";
         $titulos=titulos();
-  //echo "<pre>";
-  //print_r($titulos);die;
-        //$judi->getNumero_CNJ_Antigo()=null;
         $x=0;
         foreach($titulos as $titulo){
           switch($x){
@@ -480,7 +425,6 @@ $totalDuplicidade=0;
                 echo "&nbsp&nbsp ".$titulo.": ";
                 echo "<select name=Aba >";
                   echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
-                //echo "&nbsp&nbsp ".$titulo.": <input type=text value='IMPRESS&Atilde;O' disabled>";
                 echo "</select>";
                }
                 break;            
