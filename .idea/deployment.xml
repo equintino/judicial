@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Processos Judiciais">
+  <component name="PublishConfigData" serverName="juridico">
     <serverData>
-      <paths name="Processos Judiciais">
+      <paths name="juridico">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$" web="projetos/judicial" />
           </mappings>
         </serverdata>
       </paths>
