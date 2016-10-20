@@ -183,6 +183,7 @@ $totalDuplicidade=0;
         echo "<div class=carregando>";
 	echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
         echo "<i>POR FAVOR AGUARDE...</i>";
+        //require 'js/FlipClock-master/examples/countdown-stop-callback.html';
         echo "</div>";          
  
     //////// Exibe tabela /////////
