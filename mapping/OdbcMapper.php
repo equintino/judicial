@@ -162,6 +162,9 @@ class OdbcMapper {
         if (array_key_exists('CORRECAO_TR_h', $properties)) {
             $odbc->setCORRECAO_TR_h($properties['CORRECAO_TR_h']);
         }   
+        if (array_key_exists('beneficiario', $properties)) {
+            $odbc->setbeneficiario($properties['beneficiario']);
+        }   
     }
     private static function createDateTime($input) {
         //return DateTime::createFromFormat('j-n-Y H:i:s', $input);

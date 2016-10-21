@@ -374,7 +374,7 @@ class JudiDao {//extends TodoDao{
         
         $judi->setAlteracao($now);
            
-        $sql = 'INSERT INTO `acoes_transitado_julgado_18102016` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`,`Faixa_de_Probabilidade`, `Vlr_da_causa`, `Vlr_condenacao`, `Valor_Pedido`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`, `SINISTRO`, `ok`, `TITULAR`, `VALOR_ADMINISTRATIVO`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Faixa_de_Probabilidade, :Vlr_da_causa, :Vlr_condenacao, :Valor_Pedido, :Honorarios, :OBS, :id, :Alteracao, :login, :SINISTRO, :ok, :TITULAR, :VALOR_ADMINISTRATIVO)';
+        $sql = 'INSERT INTO `acoes_transitado_julgado_18102016` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`,`Faixa_de_Probabilidade`, `Vlr_da_causa`, `Vlr_condenacao`, `Valor_Pedido`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`, `SINISTRO`, `ok`, `TITULAR`, `VALOR_ADMINISTRATIVO`, `beneficiario`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Faixa_de_Probabilidade, :Vlr_da_causa, :Vlr_condenacao, :Valor_Pedido, :Honorarios, :OBS, :id, :Alteracao, :login, :SINISTRO, :ok, :TITULAR, :VALOR_ADMINISTRATIVO, :beneficiario)';
 
         return $this->execute2($sql, $judi);
     }
@@ -382,7 +382,7 @@ class JudiDao {//extends TodoDao{
         $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
         $now=$now_->getTimestamp();
         $judi->setAlteracao($now);
-        $sql = "UPDATE `acoes_transitado_julgado_18102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login, SINISTRO = :SINISTRO, ok = :ok, TITULAR = :TITULAR, VALOR_ADMINISTRATIVO = :VALOR_ADMINISTRATIVO WHERE id = :id";
+        $sql = "UPDATE `acoes_transitado_julgado_18102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login, SINISTRO = :SINISTRO, ok = :ok, TITULAR = :TITULAR, VALOR_ADMINISTRATIVO = :VALOR_ADMINISTRATIVO, beneficiario = :beneficiario WHERE id = :id";
         //echo "<pre>";
         //print_r($sql);die;
         return $this->execute2($sql, $judi);
@@ -464,6 +464,7 @@ class JudiDao {//extends TodoDao{
             ':ok' => $judi->getOk(),
             ':TITULAR' => $judi->getTITULAR(),
             ':VALOR_ADMINISTRATIVO' => $judi->getVALOR_ADMINISTRATIVO(),
+            ':beneficiario' => $judi->getbeneficiario()
             );
         if ($judi->getId()) {
             unset($params[':created_on']);

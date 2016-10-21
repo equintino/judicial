@@ -103,6 +103,7 @@ function titulos(){
             'SINISTRO',
             'TITULAR',
             'Segurado',
+            'Beneficiário',
             'Número CNJ / Antigo',
             'Parte contrária',
             'CPF',
@@ -128,6 +129,7 @@ function conteudo($judi){
             $judi->getSINISTRO(),
             $judi->getTITULAR(),
             $judi->getnome(),
+            $judi->getbeneficiario(),
             $judi->getNumero_CNJ_Antigo(),
             $judi->getParte_contraria(),
             $judi->getCPF(),
@@ -229,12 +231,12 @@ function conteudo($judi){
         echo "<i>POR FAVOR AGUARDE...</i>";
         echo "</div>";
         
-        echo "<div id=mostra class=conteudo style='display:none'>";
+        //echo "<div id=mostra class=conteudo style='display:none'>";
         
       echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h2>DUPLICADO NO ADMINSTRATIVO (COM A&Ccedil;&Otilde;ES JUDICIAIS JULGADAS)</h2></caption>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=7 align=left><div id=total></div></th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=8 align=left><div id=total></div></th></tr>";
     echo "<tr>";
     $titulos=  titulos();
       foreach($titulos as $titulo){
@@ -272,9 +274,9 @@ function conteudo($judi){
             //$judi->setIMPORTANCIA_SEGURADA($item->getCORRECAO_TR_h());
             $judi->setNumero_CNJ_Antigo($item->getNumero_CNJ_Antigo());
             $judi->setParte_contraria($item->getParte_contraria());
-            //echo "<pre>";
-            //print_r($item);
-            //print_r($judi);die;
+            echo "<pre>";
+            print_r($item);
+            print_r($judi);
             $campos=conteudo($judi);
             if($campos[0] != $sinistro_old) {
                 $contador++;

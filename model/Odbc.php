@@ -52,6 +52,7 @@ final class Odbc {
     private $Parte_contraria;
     //private $APOLICE;
     private $CORRECAO_TR_h;
+    private $beneficiario;
     
     //private $status;
     
@@ -559,6 +560,12 @@ final class Odbc {
     }
     public function setCORRECAO_TR_h($CORRECAO_TR_h){
         $this->CORRECAO_TR_h = $CORRECAO_TR_h;
+    }
+    public function getbeneficiario(){
+        return $this->beneficiario;
+    }
+    public function setbeneficiario($beneficiario){
+        $this->beneficiario = $beneficiario;
     }
 }
 ?>

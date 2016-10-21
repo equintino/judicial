@@ -158,7 +158,7 @@ $totalDuplicidade=0;
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
-        //echo "<div id=mostra class=conteudo style='display:none'>";
+        echo "<div id=mostra class=conteudo style='display:none'>";
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
        
     $titulos=titulos(); 
@@ -310,6 +310,15 @@ $totalDuplicidade=0;
                 }
             }
          echo "</td>";
+        }elseif($campo == $judi->getbeneficiario() && $campo != null){
+          echo "<td bgcolor=white>";
+            echo mb_strtoupper($campo);
+            //echo '<pre>';
+            ///// grava beneficiario e sinistro /////
+           $Judidao->saveJd2($judi);
+            //print_r($judi);die;
+            //echo "passei por aqui";
+          echo "</td>";
         }else{
          echo "<td bgcolor=white>";
           echo mb_strtoupper($campo);
