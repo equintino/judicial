@@ -11,6 +11,7 @@ final class OdbcSearchCriteria {
     private $ENDOSSO = null;
     private $idtitular = 0;
     private $idbenefi = 0;
+    private $beneficiario;
     
     public function getsinistro() {
         return $this->sinistro;
@@ -73,6 +74,13 @@ final class OdbcSearchCriteria {
     }
     public function setIMPORTANCIA_SEGURADA($IMPORTANCIA_SEGURADA){
         $this->IMPORTANCIA_SEGURADA = $IMPORTANCIA_SEGURADA;
+        return $this;
+    }
+    public function getbeneficiario(){
+        return $this->beneficiario;
+    }
+    public function setbeneficiario($beneficiario){
+        $this->beneficiario = $beneficiario;
         return $this;
     }
 }

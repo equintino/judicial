@@ -53,6 +53,7 @@ final class Odbc {
     //private $APOLICE;
     private $CORRECAO_TR_h;
     private $beneficiario;
+    private $Segurado;
     
     //private $status;
     
@@ -566,6 +567,12 @@ final class Odbc {
     }
     public function setbeneficiario($beneficiario){
         $this->beneficiario = $beneficiario;
+    }
+    public function getSegurado(){
+        return $this->Segurado;
+    }
+    public function setSegurado($Segurado){
+        $this->Segurado = $Segurado;
     }
 }
 ?>

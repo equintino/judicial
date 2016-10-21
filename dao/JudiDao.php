@@ -154,7 +154,7 @@ class JudiDao {//extends TodoDao{
         return $result;
     }
     public function listaSegurados(JudiSearchCriteria $Judisearch = null, $ordem = null) {
-     $sql="SELECT * FROM acoes_transitado_julgado_18102016 LEFT JOIN geral_henrique ON acoes_transitado_julgado_18102016.SINISTRO = geral_henrique.SINISTRO_h WHERE TITULAR != ''";
+     $sql="SELECT * FROM acoes_transitado_julgado_18102016 LEFT JOIN geral_henrique ON acoes_transitado_julgado_18102016.SINISTRO = geral_henrique.SINISTRO_h WHERE TITULAR != '' OR beneficiario != ''";
      //print_r($ordem);
      if($ordem){
        if("NúmeroCNJ/Antigo"==$ordem){

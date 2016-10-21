@@ -164,7 +164,10 @@ class OdbcMapper {
         }   
         if (array_key_exists('beneficiario', $properties)) {
             $odbc->setbeneficiario($properties['beneficiario']);
-        }   
+        }    
+        if (array_key_exists('Segurado', $properties)) {
+            $odbc->setSegurado($properties['Segurado']);
+        }  
     }
     private static function createDateTime($input) {
         //return DateTime::createFromFormat('j-n-Y H:i:s', $input);

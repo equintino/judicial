@@ -104,8 +104,8 @@ function titulos(){
             'TITULAR',
             'Segurado',
             'Beneficiário',
-            'Número CNJ / Antigo',
             'Parte contrária',
+            'Número CNJ / Antigo',
             'CPF',
             'VALOR ADMINISTRATIVO',
             //'Faixa de Probabilidade',
@@ -128,10 +128,10 @@ function conteudo($judi){
             //$judi->getUF(),
             $judi->getSINISTRO(),
             $judi->getTITULAR(),
-            $judi->getnome(),
+            $judi->getSegurado(),
             $judi->getbeneficiario(),
-            $judi->getNumero_CNJ_Antigo(),
             $judi->getParte_contraria(),
+            $judi->getNumero_CNJ_Antigo(),
             $judi->getCPF(),
             $judi->getCORRECAO_TR_h(),
             //$judi->getIMPORTANCIA_SEGURADA(),
@@ -185,6 +185,7 @@ function conteudo($judi){
     $contador=0;
     $totalAdm=0;
     $seguradoOld=null;
+    $segurado=null;
     
     //echo "<pre>";
     //print_r($segurados);die;
@@ -231,7 +232,7 @@ function conteudo($judi){
         echo "<i>POR FAVOR AGUARDE...</i>";
         echo "</div>";
         
-        //echo "<div id=mostra class=conteudo style='display:none'>";
+        echo "<div id=mostra class=conteudo style='display:none'>";
         
       echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -250,15 +251,20 @@ function conteudo($judi){
       echo "</tr><tr>";
       
     foreach($segurados as $item){
-          //echo "<pre>";       
-       if($seguradoOld != $item->getTITULAR()){
-          $segurado=JudiValidator::tirarAcento($item->getTITULAR());
-          //$segurado='francisco da silva';
-          $Odbcsearch->setTITULAR($segurado);
-          $odbcs=$Odbcdao->busca3($Odbcsearch);
           //echo "<pre>";
-          //PRINT_R($Odbcsearch);
-          //print_r($odbcs);die;
+          //print_r($item->getbeneficiario());die;
+       if($seguradoOld != $item->getTITULAR() || $item->getTITULAR() == ''){
+           if($item->getTITULAR() == ''){
+               $Odbcsearch->setnome($item->getbeneficiario());
+               $odbcs=$Odbcdao->busca4($Odbcsearch);
+               //print_r($odbcs);die;
+           }else{
+                $segurado=JudiValidator::tirarAcento($item->getTITULAR());
+          //$beneficiario=
+          //$segurado='francisco da silva';
+                $Odbcsearch->setTITULAR($segurado);
+                $odbcs=$Odbcdao->busca3($Odbcsearch);
+           }
           //$item->setSegurado($segurado);
           //print_r($item);
            //echo $segurado;
@@ -269,14 +275,24 @@ function conteudo($judi){
       //echo "<pre>";
       //print_r($segurado);die;   
         foreach($odbcs as $key => $judi){
+            //ECHO "<pre>";
+            //print_r($judi);die;
+            //if($judi->getTITULAR() == ''){
+                //echo "<pre>"; 
+                //echo "não achei nada";
+                //print_r($odbcs);die;
+            //}
           if(mb_strlen($segurado,'utf8') == mb_strlen($judi->getTITULAR(),'utf8')){
-            $judi->setnome($item->getSegurado());
+              //echo "<pre>";
+              //print_r($item);die;
+            $judi->setSegurado($item->getSegurado());
             //$judi->setIMPORTANCIA_SEGURADA($item->getCORRECAO_TR_h());
             $judi->setNumero_CNJ_Antigo($item->getNumero_CNJ_Antigo());
             $judi->setParte_contraria($item->getParte_contraria());
-            echo "<pre>";
-            print_r($item);
-            print_r($judi);
+            $judi->setbeneficiario($item->getbeneficiario());
+            //echo "<pre>";
+            //print_r($item);
+            //print_r($judi);
             $campos=conteudo($judi);
             if($campos[0] != $sinistro_old) {
                 $contador++;
@@ -288,19 +304,19 @@ function conteudo($judi){
                     }
                     //print_r($judi);
         //echo "<pre>";
-                  $campos[6]=$judi->getCORRECAO_TR_h();
+                  $campos[7]=$judi->getCORRECAO_TR_h();
         //print_r($campos);
                 foreach($campos as $chaves => $campo){
                  //print_r($campos);
         //echo $campo->getSINISTRO();die;
-                    if($chaves == 6){
+                    if($chaves == 7){
                         echo "<td align=right bgcolor=white>";
-                            echo $campos[6];
-                            $valor=JudiValidator::trocavirgula($campos[6]);
+                            echo $campos[7];
+                            $valor=JudiValidator::trocavirgula($campos[7]);
                             //echo $valor;die;
                             $totalAdm=$valor+$totalAdm;
                         echo "</td>";
-                    }elseif($chaves == 5){
+                    }elseif($chaves == 6){
                         echo "<td align=center bgcolor=white>";
                             $campo_=JudiValidator::removePonto($campo);
                             echo JudiValidator::mask($campo_, '###.###.###-##');
@@ -320,7 +336,7 @@ function conteudo($judi){
       }
        $seguradoOld=$segurado;
     }
-     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=6 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
+     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
      echo "</table>";
       echo "<script>total($contador);</script>";
      echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo' height=20px ></a>";
