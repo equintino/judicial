@@ -3,6 +3,11 @@
         var x='Clique aqui para ver duplicidades';
         document.getElementById('total').innerHTML=x;
     }  
+    function contagem($msg,$atual){
+        var atual=$atual;
+        var msg="<br><i><font color=blue>&nbsp Busca processada </font></i><font size=5>"+atual+"</font><i><font color=blue> de </font></i><font size=5>"+$msg+"</font>";
+        document.getElementById('contagem').innerHTML=msg;
+    }
     function excluir($id){
        var y=confirm('Confirma a excusão?');
        var id=$id;
@@ -17,6 +22,7 @@
         }
     }
 function id(el) {
+        document.getElementById('carregando').innerHTML='';
 	return document.getElementById(el);
 }
 </script>
@@ -151,9 +157,12 @@ $totalDuplicidade=0;
    }
    
    
-        echo "<div class=carregando>";
+        echo "<div class=carregando id=carregando>";
             echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
             echo "<i>POR FAVOR AGUARDE...</i>";
+            echo "<br>";
+            echo "<div id=contagem></div>";
+            //echo '<br><br>&nbsp<img src="img/regressiva.gif" alt="" height=35px />';
         echo "</div>";          
  
     //////// Exibe tabela /////////
@@ -185,6 +194,7 @@ $totalDuplicidade=0;
       echo "<tr>";
       $titularOld='inicial';
       $titular_=null;
+      $atual=count($judis);
       foreach($judis as $judi){
           
           //// Procurando por duplicidade no administrativo ////
@@ -236,6 +246,7 @@ $totalDuplicidade=0;
                 $judi->setbeneficiario($beneficiario_->getnome());
              }
         }
+           $atual--;
            $titularOld=$titular_; 
        }
            
@@ -243,6 +254,8 @@ $totalDuplicidade=0;
       
            ///// Construindo a tabela ////
        $campos=conteudo($judi);
+       //echo "<pre>";
+       //echo count($campos);die;
        
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
@@ -400,6 +413,9 @@ $totalDuplicidade=0;
        echo "</tr>";
        unset($sinistro,$titular);
        $x++;
+        ///// contagem dos processos /////
+         echo "<script>contagem(".count($judis).",".$atual.")</script>";
+        //// ///
      }   
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=2 style=\"background-color: #556B2F\"></th></tr>";
      echo "</table>";

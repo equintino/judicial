@@ -3,7 +3,13 @@
         var x='Total de linhas encontradas ('+$x+')';
         document.getElementById('total').innerHTML=x;
     }
+    function contagem($msg,$atual){
+        var atual=$atual;
+        var msg="<br><i><font color=blue>&nbsp Busca processada </font></i><font size=5>"+atual+"</font><i><font color=blue> de </font></i><font size=5>"+$msg+"</font>";
+        document.getElementById('contagem').innerHTML=msg;
+    }
 function id(el) {
+        document.getElementById('carregando').innerHTML='';
 	return document.getElementById(el);
 }
 </script>
@@ -180,6 +186,7 @@ function conteudo($judi){
     $ordem='TITULAR';
     
     $segurados=$Judidao->listaSegurados($Judisearch, $ordem);
+    $atual=count($segurados);
     //$judis=$Judidao->dupliciadeAcaoAdmin($Judisearch,'SINISTRO');
     $sinistro_old=null;
     $contador=0;
@@ -227,9 +234,11 @@ function conteudo($judi){
      * 
      */
     //echo "<div id=total></div>";
-        echo "<div class=carregando>";
-	echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
-        echo "<i>POR FAVOR AGUARDE...</i>";
+        echo "<div class=carregando id=carregando>";
+         echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
+         echo "<i>POR FAVOR AGUARDE...</i>";
+         echo "<br>";
+         echo "<div id=contagem></div>";
         echo "</div>";
         
         echo "<div id=mostra class=conteudo style='display:none'>";
@@ -333,8 +342,12 @@ function conteudo($judi){
             }
           }
         }
+        $atual--;
       }
        $seguradoOld=$segurado;
+        ///// contagem dos processos /////
+         echo "<script>contagem(".count($segurados).",".$atual.")</script>";
+        //// ///
     }
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
      echo "</table>";
