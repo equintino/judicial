@@ -46,8 +46,8 @@
           //$sql="select * from $tabela2 where idtitular=5788";
           //$sql="select * from $tabela where idbenefi=9067";
           
-          $sql="update $tabela set nome='MARIA DE NAZARETH GONCALVES SANTOS' where nome like 'maria de nazareth gon%'";
-          $sql="select * from $tabela where nome like 'maria de nazareth gon%'";
+          //$sql="update $tabela set nome='MARIA DE NAZARETH GONCALVES SANTOS' where nome like 'maria de nazareth gon%'";
+          $sql="select * from $tabela where nome like 'ZULMIRA COELHO DA SILVA'";
           
           //$sql="select * from $tabela2 where 1";
           $result=odbc_exec($conn,$sql);

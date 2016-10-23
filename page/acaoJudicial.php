@@ -5,7 +5,7 @@
     }  
     function contagem($msg,$atual){
         var atual=$atual;
-        var msg="<br><i><font color=blue>&nbsp Busca processada </font></i><font size=5>"+atual+"</font><i><font color=blue> de </font></i><font size=5>"+$msg+"</font>";
+        var msg="<br><i><font color=blue>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp buscando </font></i><font size=5>"+atual+"</font><i><font color=blue> registros </font></i>";//<font size=5>"+$msg+"</font>";
         document.getElementById('contagem').innerHTML=msg;
     }
     function excluir($id){

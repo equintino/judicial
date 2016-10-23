@@ -5,7 +5,7 @@
     }
     function contagem($msg,$atual){
         var atual=$atual;
-        var msg="<br><i><font color=blue>&nbsp Busca processada </font></i><font size=5>"+atual+"</font><i><font color=blue> de </font></i><font size=5>"+$msg+"</font>";
+        var msg="<br><i><font color=blue>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp buscando </font></i><font size=5>"+atual+"</font><i><font color=blue> registros </font></i>";//<font size=5>"+$msg+"</font>";
         document.getElementById('contagem').innerHTML=msg;
     }
 function id(el) {
@@ -110,9 +110,14 @@ function titulos(){
             'TITULAR',
             'Segurado',
             'Beneficiário',
+            'CPF',
             'Parte contrária',
             'Número CNJ / Antigo',
-            'CPF',
+            'VALOR DEFERIDO',
+            'VALOR DA CAUSA',
+            'VALOR CONDENAÇÃO',
+            'VALOR PEDIDO',
+            'HONORÁRIOS',
             'VALOR ADMINISTRATIVO',
             //'Faixa de Probabilidade',
             //'Valor Deferido',
@@ -136,9 +141,14 @@ function conteudo($judi){
             $judi->getTITULAR(),
             $judi->getSegurado(),
             $judi->getbeneficiario(),
+            $judi->getCPF(),
             $judi->getParte_contraria(),
             $judi->getNumero_CNJ_Antigo(),
-            $judi->getCPF(),
+            $judi->getVlr_deferido(),
+            $judi->getVlr_da_causa(),
+            $judi->getVlr_condenacao(),
+            $judi->getValor_Pedido(),
+            $judi->getHonorarios(),
             $judi->getCORRECAO_TR_h(),
             //$judi->getIMPORTANCIA_SEGURADA(),
             //$judi->getFaixa_de_Probabilidade(),
@@ -191,6 +201,9 @@ function conteudo($judi){
     $sinistro_old=null;
     $contador=0;
     $totalAdm=0;
+    for($z=7;$z<12;$z++){
+     $totais[$z]=0;
+    }
     $seguradoOld=null;
     $segurado=null;
     
@@ -246,7 +259,7 @@ function conteudo($judi){
       echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
     echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h2>DUPLICADO NO ADMINSTRATIVO (COM A&Ccedil;&Otilde;ES JUDICIAIS JULGADAS)</h2></caption>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=8 align=left><div id=total></div></th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=13 align=left><div id=total></div></th></tr>";
     echo "<tr>";
     $titulos=  titulos();
       foreach($titulos as $titulo){
@@ -261,6 +274,7 @@ function conteudo($judi){
       
     foreach($segurados as $item){
           //echo "<pre>";
+          //print_r($segurados);
           //print_r($item->getbeneficiario());die;
        if($seguradoOld != $item->getTITULAR() || $item->getTITULAR() == ''){
            if($item->getTITULAR() == ''){
@@ -276,6 +290,8 @@ function conteudo($judi){
            }
           //$item->setSegurado($segurado);
           //print_r($item);
+          //echo "<pre>";
+          //print_r($odbcs);
            //echo $segurado;
              //echo "<br>";
              //die;
@@ -299,57 +315,118 @@ function conteudo($judi){
             $judi->setNumero_CNJ_Antigo($item->getNumero_CNJ_Antigo());
             $judi->setParte_contraria($item->getParte_contraria());
             $judi->setbeneficiario($item->getbeneficiario());
+            $judi->setVlr_deferido($item->getVlr_deferido());
+            $judi->setVlr_da_causa($item->getVlr_da_causa());
+            $judi->setVlr_condenacao($item->getVlr_condenacao());
+            $judi->setHonorarios($item->getHonorarios());
+            $judi->setValor_Pedido($item->getValor_Pedido());
             //echo "<pre>";
             //print_r($item);
-            //print_r($judi);
+            //print_r($judi);die;
             $campos=conteudo($judi);
             if($campos[0] != $sinistro_old) {
                 $contador++;
                     $vlrCorrigido=$Judidao->findBySinistro($campos[0]);
                     //echo "<pre>";
-                    //print_r($vlrCorrigido);
+                    //print_r($vlrCorrigido);die;
                     if($vlrCorrigido){
                         $judi->setCORRECAO_TR_h($vlrCorrigido->getCORRECAO_TR_h());//die;
                     }
                     //print_r($judi);
         //echo "<pre>";
-                  $campos[7]=$judi->getCORRECAO_TR_h();
+        //print_r($segurados);die;
+                  $campos[12]=$judi->getCORRECAO_TR_h();
         //print_r($campos);
-                foreach($campos as $chaves => $campo){
+                foreach($campos as $chaves => $campo);
+                 //echo "<pre>";
                  //print_r($campos);
-        //echo $campo->getSINISTRO();die;
-                    if($chaves == 7){
+                for($z=0;$z<count($campos);$z++){
+                 switch ($z){
+                   case 0:
+                    echo "<td bgcolor=white>";
+                      echo mb_strtoupper($campos[$z]);
+                    echo "</td>";
+                    $sinistro_old=$campos[0];
+                    break;
+                   case 1: case 2: case 3: case 5: case 6:
+                    echo "<td bgcolor=white>";
+                      echo mb_strtoupper($campos[$z]);
+                    echo "</td>";
+                    break;
+                   case 4:
+                    $confirmaCpf=JudiValidator::validaCpf($campos[$z]);
+                    //echo "<h1>".substr($campo, -2,2).' - '.$confirmaCpf."</h1>";
+                    if(substr($campos[$z], -2,2) == $confirmaCpf){
+                       echo "<td align=center bgcolor=white><font>";
+                    }else{
+                       echo "<td align=center bgcolor=white><font color=red>";
+                    }
+                       $campo_=JudiValidator::removePonto($campos[$z]);
+                       echo JudiValidator::mask($campo_, '###.###.###-##');
+                       echo "</font></td>";
+                    break;
+                   case 7: case 8: case 9: case 10: case 11:
+                    echo "<td bgcolor=white align=right>";
+                      //echo $campos[$z];
+                      echo mb_strtoupper(number_format($campos[$z],'2',',','.'));
+                    echo "</td>";
+                      //$valor[$z]=$campos[$z];
+                      $totais[$z]=$campos[$z]+$totais[$z];
+                      break;
+                    break;
+                   case 12:
+                    echo "<td align=right bgcolor=white>";
+                      echo $campos[$z];
+                      $valor=JudiValidator::trocavirgula($campos[$z]);
+                      //echo $valor;die;
+                      $totalAdm=$valor+$totalAdm;
+                    echo "</td>";
+                    break;                   
+                 }
+                }
+                /*
+                    if($chaves == 12){
                         echo "<td align=right bgcolor=white>";
-                            echo $campos[7];
-                            $valor=JudiValidator::trocavirgula($campos[7]);
+                            echo $campos[12];
+                            $valor=JudiValidator::trocavirgula($campos[12]);
                             //echo $valor;die;
                             $totalAdm=$valor+$totalAdm;
                         echo "</td>";
-                    }elseif($chaves == 6){
-                        echo "<td align=center bgcolor=white>";
+                    }elseif($chaves == 4){
+                        $confirmaCpf=JudiValidator::validaCpf($campo);
+                        //echo "<h1>".substr($campo, -2,2).' - '.$confirmaCpf."</h1>";
+                        if(substr($campo, -2,2) == $confirmaCpf){
+                           echo "<td align=center bgcolor=white><font>";
+                        }else{
+                           echo "<td align=center bgcolor=white><font color=red>";
+                        }
                             $campo_=JudiValidator::removePonto($campo);
                             echo JudiValidator::mask($campo_, '###.###.###-##');
-                        echo "</td>";
+                        echo "</font></td>";
                     }else{
                         echo "<td bgcolor=white>";
                             echo mb_strtoupper($campo);
                         echo "</td>";
                             $sinistro_old=$campos[0];  
                     }
+                    */
         //print_r($key);die;
-                }
-                echo "</tr>";
-            }
+                //}
+                echo "</tr>";         
+           //} die;
           }
+           $sinistro_old=$campos[0]; 
         }
+       }
         $atual--;
       }
+      //echo $segurado;
        $seguradoOld=$segurado;
         ///// contagem dos processos /////
          echo "<script>contagem(".count($segurados).",".$atual.")</script>";
         //// ///
     }
-     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAL</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
+     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totais[7],'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totais[8],'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totais[9],'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totais[10],'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totais[11],'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($totalAdm,'2',',','.')."</th></tr>";
      echo "</table>";
       echo "<script>total($contador);</script>";
      echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo' height=20px ></a>";

@@ -167,7 +167,22 @@ class OdbcMapper {
         }    
         if (array_key_exists('Segurado', $properties)) {
             $odbc->setSegurado($properties['Segurado']);
-        }  
+        }      
+        if (array_key_exists('Vlr_deferido', $properties)) {
+            $odbc->setVlr_deferido($properties['Vlr_deferido']);
+        }     
+        if (array_key_exists('Vlr_da_causa', $properties)) {
+            $odbc->setVlr_da_causa($properties['Vlr_da_causa']);
+        }     
+        if (array_key_exists('Vlr_condenacao', $properties)) {
+            $odbc->setVlr_condenacao($properties['Vlr_condenacao']);
+        }     
+        if (array_key_exists('Valor_Pedido', $properties)) {
+            $odbc->setValor_Pedido($properties['Valor_Pedido']);
+        }     
+        if (array_key_exists('Honorarios', $properties)) {
+            $odbc->setHonorarios($properties['Honorarios']);
+        }
     }
     private static function createDateTime($input) {
         //return DateTime::createFromFormat('j-n-Y H:i:s', $input);

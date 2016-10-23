@@ -54,6 +54,11 @@ final class Odbc {
     private $CORRECAO_TR_h;
     private $beneficiario;
     private $Segurado;
+    private $Vlr_deferido;
+    private $Vlr_da_causa;
+    private $Vlr_condenacao;
+    private $Valor_Pedido;
+    private $Honorarios;
     
     //private $status;
     
@@ -573,6 +578,36 @@ final class Odbc {
     }
     public function setSegurado($Segurado){
         $this->Segurado = $Segurado;
+    }
+    public function getVlr_deferido(){
+        return $this->Vlr_deferido;
+    }
+    public function setVlr_deferido($Vlr_deferido){
+        $this->Vlr_deferido = $Vlr_deferido;
+    }
+    public function getVlr_da_causa(){
+        return $this->Vlr_da_causa;
+    }
+    public function setVlr_da_causa($Vlr_da_causa){
+        $this->Vlr_da_causa = $Vlr_da_causa;
+    }
+    public function getVlr_condenacao(){
+        return $this->Vlr_condenacao;
+    }
+    public function setVlr_condenacao($Vlr_condenacao){
+        $this->Vlr_condenacao = $Vlr_condenacao;
+    }
+    public function getValor_Pedido(){
+        return $this->Valor_Pedido;
+    }
+    public function setValor_Pedido($Valor_Pedido){
+        $this->Valor_Pedido = $Valor_Pedido;
+    }
+    public function getHonorarios(){
+        return $this->Honorarios;
+    }
+    public function setHonorarios($Honorarios){
+        $this->Honorarios = $Honorarios;
     }
 }
 ?>

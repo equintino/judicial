@@ -189,7 +189,7 @@ class JudiDao {//extends TodoDao{
      $rows = $this->query($sql) ->fetchAll();
      //print_r($sql);die;
      //echo "<pre>";
-     //print_r($rows);die;
+     //print_r($rows);
         foreach($rows as $row){
          $judi = new Judi();
             JudiMapper::map($judi, $row);
