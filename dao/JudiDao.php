@@ -340,6 +340,14 @@ class JudiDao {//extends TodoDao{
         }
         return $this->update2($judi);
     }
+    public function saveJd3($judi) {
+     //echo "<pre>";
+     //print_r($judi);die;
+        if ($judi->getId() === null) {
+            return $this->insert3($judi);
+        }
+        return $this->update3($judi);
+    }
     public function query($sql) {
             set_time_limit(3600);
         $statement = $this->getDb2()->query($sql, PDO::FETCH_ASSOC);
@@ -387,6 +395,21 @@ class JudiDao {//extends TodoDao{
         //print_r($sql);die;
         return $this->execute2($sql, $judi);
     }
+    private function insert3($judi) {
+     //ECHO "<pre>";
+     //print_r($judi);die;
+      //$now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
+      //$now=$now_->getTimestamp();
+      $judi->setId(null);
+        
+      //$judi->setAlteracao($now); 
+           
+      //$sql="INSERT INTO `duplicidade` (`ID`,`SINISTRO`,`TITULAR`,`SEGURADO`,`BENEFICIARIO`,`CPF`,`PARTE_CONTRARIA`,`NUMERO_CNJ_ANTIGO`,`VALOR_DEFERIDO`,`VALOR_DA_CAUSA`,`VALOR_CONDENACAO`,`VALOR_PEDIDO`,`HONORARIOS`,`VALOR_ADMINISTRATIVO`,`ALTERACAO`,`LOGIN`) VALUES (:ID,:SINISTRO,:TITULAR,:SEGURADO,:BENEFICIARIO,:CPF,:PARTE_CONTRARIA,:NUMERO_CNJ_ANTIGO,:VALOR_DEFERIDO,:VALOR_DA_CAUSA,:VALOR_CONDENACAO,:VALOR_PEDIDO,:HONORARIOS,:VALOR_ADMINISTRATIVO,:ALTERACAO,:LOGIN)"; 
+
+     $sql="INSERT INTO `duplicidade` (`ID`,`SINISTRO`) VALUES (:ID,:SINISTRO)";
+print_r($this->execute3($sql, $judi));die;
+        return $this->execute3($sql, $judi);
+    }
     public function delete($id) {
         //$sql = 'delete from certidao_cre_impressao WHERE id = :id';
         $sql='UPDATE certidao_cre_impressao set excluido=1  WHERE id = :id';
@@ -417,6 +440,16 @@ class JudiDao {//extends TodoDao{
         if (!$statement->rowCount()) {
             //throw new NotFoundException('Processo com ID "' . $todo->getId() . '" nao existe.');
         }
+        return $judi;
+    }
+    public function execute3($sql,$judi) {
+        $statement = $this->getDb2()->prepare($sql);
+        //print_r($this->executeStatement($statement, $this->getParams3($judi)));die;
+        $this->executeStatement($statement, $this->getParams3($judi));
+        if (!$statement->rowCount()) {
+            //throw new NotFoundException('Processo com ID "' . $todo->getId() . '" nao existe.');
+        }
+        //print_r($judi);die;
         return $judi;
     }
     private function getParams(Judi $judi) {
@@ -469,6 +502,33 @@ class JudiDao {//extends TodoDao{
         if ($judi->getId()) {
             unset($params[':created_on']);
         }
+        return $params;
+    }
+    private function getParams3($judi) {
+     //echo "<pre>";
+     //PRINT_R($judi);die;
+        $params = array(
+            ':ID' => $judi->getId(),
+            ':SINISTRO' => $judi->getsinistro(),
+            /*':TITULAR'=>$judi->getTITULAR(),
+            ':Segurado' => $judi->getSegurado(),
+            ':beneficiario' => $judi->getbeneficiario(),
+            ':CPF'=>$judi->getCPF(),
+            ':Parte_contraria' => $judi->getParte_contraria(),
+            ':Numero_CNJ_Antigo' => $judi->getNumero_CNJ_Antigo(),
+            ':Vlr_deferido' => $judi->getVlr_deferido(),
+            ':Vlr_da_causa' => $judi->getVlr_da_causa(),
+            ':Vlr_condenacao' => $judi->getVlr_condenacao(),
+            ':Valor_Pedido' => $judi->getValor_Pedido(),
+            ':Honorarios' => $judi->getHonorarios(),
+            ':VALOR_ADMINISTRATIVO'=>$judi->getVALOR_ADMINISTRATIVO(),
+            ':Alteracao' => $judi->getAlteracao(),
+            ':login' => $judi->getLogin()*/
+            );
+        if ($judi->getId()) {
+            unset($params[':created_on']);
+        }
+        print_r($params);
         return $params;
     }
     private function executeStatement(PDOStatement $statement, array $params) {
