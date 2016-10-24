@@ -167,7 +167,7 @@ $totalDuplicidade=0;
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
-        echo "<div id=mostra class=conteudo style='display:none'>";
+        //echo "<div id=mostra class=conteudo style='display:none'>";
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
        
     $titulos=titulos(); 
@@ -221,10 +221,10 @@ $totalDuplicidade=0;
             }
         }else{
              //echo "Não encontrei nada";
+            if($judi->getParte_contraria()){
              $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
              $beneficiarios=$Odbcdao->busca4($Odbcsearch);
              //$judi->setnome($beneficiario['nome']);
-             //echo "<pre>";
              //print_r($judi);
              foreach($beneficiarios as $beneficiario_){
                  //echo "<pre>";
@@ -232,19 +232,25 @@ $totalDuplicidade=0;
                 //echo " - ";
                 $judi->setbeneficiario($beneficiario_->getnome());
              }
+            }
          }
         }elseif(!$judi->getSINISTRO()){
+            if($judi->getParte_contraria()){
             $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
              $beneficiarios=$Odbcdao->busca4($Odbcsearch);
              //$judi->setnome($beneficiario['nome']);
              //echo "<pre>";
-             //print_r($judi);
+             //print_r($beneficiarios);
+             
              foreach($beneficiarios as $beneficiario_){
                  //echo "<pre>";
                 $judi->setSINISTRO($beneficiario_->getsinistro());
                 //echo " - ";
                 $judi->setbeneficiario($beneficiario_->getnome());
+             //echo "<pre>";
+             //print_r($judi);
              }
+            }
         }
            $atual--;
            $titularOld=$titular_; 
@@ -265,7 +271,7 @@ $totalDuplicidade=0;
         }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null){
          if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
             if(($campo == $judi->getParte_contraria() || $campo == $judi->getSegurado()) && (mb_strlen($judi->getParte_contraria(),'utf8') != mb_strlen($judi->getbeneficiario(),'utf8'))){
-                echo "<td bgcolor=yellow>";
+                echo "<td align=left bgcolor=yellow>";
                     echo mb_strtoupper($campo); 
                 echo "</td>"; 
             }elseif($judi->getbeneficiario()){
@@ -294,10 +300,11 @@ $totalDuplicidade=0;
              
            $Judidao->saveJd2($judi);
            
-          echo "<td align=center bgcolor=white>";
           if($campo == $judi->getSINISTRO()){ 
+           echo "<td align=center bgcolor=white>";
            echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
           }else{
+            echo "<td bgcolor=white>";
             echo mb_strtoupper($campo);  
           }
           echo "</td>";
@@ -309,13 +316,15 @@ $totalDuplicidade=0;
                 $confereExclusao->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
                 $sinistrado=$Odbcdao->busca3($confereExclusao);
                 if(!$sinistrado){
-                    $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
-                    $beneficiarios=$Odbcdao->busca4($Odbcsearch);
+                    if($judi->getParte_contraria()){
+                        $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
+                        $beneficiarios=$Odbcdao->busca4($Odbcsearch);
                     //print_r($beneficiarios);die;
-                    foreach($beneficiarios as $beneficiario_){
-                        $judi->setbeneficiario($beneficiario_->getnome());
-                        if(!$sinistrado){
-                         $judi->setSINISTRO($beneficiario_->getsinistro());
+                        foreach($beneficiarios as $beneficiario_){
+                            $judi->setbeneficiario($beneficiario_->getnome());
+                            if(!$sinistrado){
+                                $judi->setSINISTRO($beneficiario_->getsinistro());
+                            }
                         }
                     }
                 }
