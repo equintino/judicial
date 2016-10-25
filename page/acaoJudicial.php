@@ -140,6 +140,12 @@ $judi = null;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
 @$atualiza = $_GET['atualiza'];
+if(!isset($verificar)){
+ $verificar=null;
+}
+if(!isset($atualiza)){
+ $atualiza=null;
+}
 $totalDuplicidade=0;
     
    if ($edit) {
@@ -167,9 +173,8 @@ $totalDuplicidade=0;
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
-        //echo "<div id=mostra class=conteudo style='display:none'>";
-    $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
-       
+        echo "<div id=mostra class=conteudo style='display:none'>";
+    $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito 
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -204,15 +209,17 @@ $totalDuplicidade=0;
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
          $sinistrado=$Odbcdao->busca3($Odbcsearch);
-         //echo "<pre>";
-         //print_r($judi);die;
-         //echo "<pre>";
-         //print_r($judi);
          if($sinistrado){
             foreach($sinistrado as $keys => $item){
                 if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($item->getTITULAR(),'utf8')){
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
+                }else{
+                    //echo "<pre>";
+                    //print_r($judi);
+                    $verificar[]=$judi->getSegurado();
+                    //print_r($verificar);
+                    //die;
                 }
             }
             if($titular_ != $titularOld){
@@ -254,15 +261,15 @@ $totalDuplicidade=0;
         }
            $atual--;
            $titularOld=$titular_; 
+        ///// contagem dos processos /////
+         echo "<script>contagem(".count($judis).",".$atual.")</script>";
+        //// ///
        }
            
             //// Termino da busca ////
       
            ///// Construindo a tabela ////
-       $campos=conteudo($judi);
-       //echo "<pre>";
-       //echo count($campos);die;
-       
+       $campos=conteudo($judi);       
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
          echo "<td align=right bgcolor=white>";
@@ -283,20 +290,10 @@ $totalDuplicidade=0;
                     echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
                 echo "</td>";
             }
-            //echo "<pre>";
-            //print_r($judi);die;
          }else{
            ///// Gravando Sinistro e Titular em Acoes /////
              $judi->setTITULAR($judi->getTITULAR_h());
-             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
-             //$judi->setbeneficiario
-             
-             //if($judi->getTITULAR_h() == 'manoel ferreira'){
-             //if($judi->getbeneficiario() <> ''){
-                //echo "<pre>";
-                //print_r($judi);die;
-             //}
-             //} 
+             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h()); 
              
            $Judidao->saveJd2($judi);
            
@@ -319,7 +316,6 @@ $totalDuplicidade=0;
                     if($judi->getParte_contraria()){
                         $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
                         $beneficiarios=$Odbcdao->busca4($Odbcsearch);
-                    //print_r($beneficiarios);die;
                         foreach($beneficiarios as $beneficiario_){
                             $judi->setbeneficiario($beneficiario_->getnome());
                             if(!$sinistrado){
@@ -328,25 +324,16 @@ $totalDuplicidade=0;
                         }
                     }
                 }
-                //print_r($beneficiarios);
                 if($sinistrado || $beneficiarios){
                  if($sinistrado){
                   foreach($sinistrado as $item2);
                   $judi->setSINISTRO($item2->getsinistro());
-                 }//else{
-                  //$judi->setSEGURADO($SEGURADO_lev);
-                 //}
-                 //echo "<pre>";
-                 //print_r($judi);die;
+                 }
                     if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($judi->getTITULAR(),'utf8') && $judi->getTITULAR() != ''){
                         echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
-                        echo "<pre>";
-                        //print_r($judi);
                     }elseif(mb_strlen($judi->getbeneficiario(),'utf8') == mb_strlen($judi->getParte_contraria(),'utf8')){
                         echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
                     }else{
-                        //echo "<pre>";
-                        //print_r($judi);die;
                         echo "<img src=img/interroga.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
                     }
                     //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
@@ -354,8 +341,6 @@ $totalDuplicidade=0;
                 }else{
                     echo "<img src=img/confirmado.png heght=15 title='Exclus&atilde;o Confirmada'>";
                     /// Salvando confirmação de exclusão em ações ///
-                    //echo "<pre>";
-                    //print_r($judi);die;
                     $judi->setOk(1);
                     $Judidao->saveJd2($judi);
                 }
