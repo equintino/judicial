@@ -109,7 +109,7 @@ class JudiDao {//extends TodoDao{
         return $result;
     }
     public function listaAcao(JudiSearchCriteria $Judisearch = null, $ordem = null) {
-     $sql="SELECT * FROM acoes_transitado_julgado_18102016 ";
+     $sql="SELECT * FROM acoes_transitado_julgado_18102016 WHERE excluido=0 ";
      //print_r($ordem);
      if($ordem){
        if("NúmeroCNJ/Antigo"==$ordem){
@@ -317,6 +317,17 @@ class JudiDao {//extends TodoDao{
         JudiMapper::map($judi, $row);
         return $judi;
     }
+    public function findById2($id) {
+     //print_r($id);die;
+        $row = $this->query('SELECT * FROM acoes_transitado_julgado_18102016 WHERE id = ' . (int) $id)->fetch();
+        //print_r($row);die;
+        if (!$row) {
+            return null;
+        }
+        $judi = new Judi();
+        JudiMapper::map($judi, $row);
+        return $judi;
+    }
     public function findBySinistro($sinistro) {
      //print_r($sinistro);die;
         $row = $this->query('SELECT * FROM geral_henrique WHERE geral_henrique.`SINISTRO_h` = "'.$sinistro.'"')->fetch();
@@ -359,10 +370,11 @@ class JudiDao {//extends TodoDao{
     private function insert(Judi $judi) {
         $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
         $now=$now_->getTimestamp();
+        $timestamp = mktime(date("H")-4);
         //$now=date("d/m/Y H:i",mktime(0));
         $judi->setId(null);
         
-        $judi->setAlteracao($now);
+        $judi->setAlteracao($timestamp);
         //print_r($judi);die;   
         $sql = 'INSERT INTO `certidao_cre_impressao` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`, `Vlr_da_causa`, `Vlr_condenacao`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Vlr_da_causa, :Vlr_condenacao, :Honorarios, :Vlr_certidao_de_credito, :Aba, :id, :Alteracao, :login)';
         return $this->execute($sql, $judi);
@@ -370,17 +382,19 @@ class JudiDao {//extends TodoDao{
     private function update(Judi $judi) {
         $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
         $now=$now_->getTimestamp();
+        $timestamp=mktime(date('H')-4);
         //$now=date("d/m/Y H:i",mktime(0));
-        $judi->setAlteracao($now);
+        $judi->setAlteracao($timestamp);
         $sql = "UPDATE `certidao_cre_impressao` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza=:Natureza, UF=:UF, Parte_contraria=:Parte_contraria, Segurado=:Segurado, Vlr_deferido=:Vlr_deferido, Vlr_da_causa=:Vlr_da_causa, Vlr_condenacao=:Vlr_condenacao, Honorarios=:Honorarios, Vlr_certidao_de_credito=:Vlr_certidao_de_credito, Aba=:Aba, Alteracao=:Alteracao, login=:login WHERE id = :id";
         return $this->execute($sql, $judi);
     }
     private function insert2(Judi $judi) {
         $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
         $now=$now_->getTimestamp();
+        $timestamp=mktime(date('H')-4);
         $judi->setId(null);
         
-        $judi->setAlteracao($now);
+        $judi->setAlteracao($timestamp);
            
         $sql = 'INSERT INTO `acoes_transitado_julgado_18102016` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`,`Faixa_de_Probabilidade`, `Vlr_da_causa`, `Vlr_condenacao`, `Valor_Pedido`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`, `SINISTRO`, `ok`, `TITULAR`, `VALOR_ADMINISTRATIVO`, `beneficiario`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Faixa_de_Probabilidade, :Vlr_da_causa, :Vlr_condenacao, :Valor_Pedido, :Honorarios, :OBS, :id, :Alteracao, :login, :SINISTRO, :ok, :TITULAR, :VALOR_ADMINISTRATIVO, :beneficiario)';
 
@@ -389,7 +403,8 @@ class JudiDao {//extends TodoDao{
     private function update2(Judi $judi) {
         $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
         $now=$now_->getTimestamp();
-        $judi->setAlteracao($now);
+        $timestamp = mktime(date("H")-4);
+        $judi->setAlteracao($timestamp);
         $sql = "UPDATE `acoes_transitado_julgado_18102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login, SINISTRO = :SINISTRO, ok = :ok, TITULAR = :TITULAR, VALOR_ADMINISTRATIVO = :VALOR_ADMINISTRATIVO, beneficiario = :beneficiario WHERE id = :id";
         //echo "<pre>";
         //print_r($sql);die;
@@ -400,9 +415,10 @@ class JudiDao {//extends TodoDao{
      //print_r($judi);die;
       //$now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
       //$now=$now_->getTimestamp();
+        $timestamp=mktime(date('H')-4);
       $judi->setId(null);
         
-      //$judi->setAlteracao($now); 
+      $judi->setAlteracao($timestamp); 
            
       //$sql="INSERT INTO `duplicidade` (`ID`,`SINISTRO`,`TITULAR`,`SEGURADO`,`BENEFICIARIO`,`CPF`,`PARTE_CONTRARIA`,`NUMERO_CNJ_ANTIGO`,`VALOR_DEFERIDO`,`VALOR_DA_CAUSA`,`VALOR_CONDENACAO`,`VALOR_PEDIDO`,`HONORARIOS`,`VALOR_ADMINISTRATIVO`,`ALTERACAO`,`LOGIN`) VALUES (:ID,:SINISTRO,:TITULAR,:SEGURADO,:BENEFICIARIO,:CPF,:PARTE_CONTRARIA,:NUMERO_CNJ_ANTIGO,:VALOR_DEFERIDO,:VALOR_DA_CAUSA,:VALOR_CONDENACAO,:VALOR_PEDIDO,:HONORARIOS,:VALOR_ADMINISTRATIVO,:ALTERACAO,:LOGIN)"; 
 
@@ -417,6 +433,21 @@ print_r($this->execute3($sql, $judi));die;
             /*UPDATE todo SET
                 last_modified_on = :last_modified_on,
                 deleted = :deleted*/
+        $statement = $this->getDb2()->prepare($sql);
+        $this->executeStatement($statement, array(
+            ':id' => $id
+        ));
+        //':last_modified_on' => self::formatDateTime(new DateTime(), new DateTimeZone('America/Sao_Paulo')),':deleted' => true,
+        return $statement->rowCount() == 1;
+    }
+    public function delete2($id,$tabela) {
+        //$sql = 'delete from certidao_cre_impressao WHERE id = :id';
+        $sql='UPDATE '.$tabela.' set excluido=1  WHERE id = :id';
+        //echo $sql;die;
+            /*UPDATE todo SET
+                last_modified_on = :last_modified_on,
+                deleted = :deleted*/
+        //print_r($sql);die;
         $statement = $this->getDb2()->prepare($sql);
         $this->executeStatement($statement, array(
             ':id' => $id

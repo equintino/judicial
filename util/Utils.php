@@ -112,10 +112,33 @@ final class Utils {
             throw new NotFoundException('Invalid JUDI identifier provided.');
         }
         $dao = new JudiDao();
+        //print_r($dao->findById($id));die;
         $judi = $dao->findById($id);
         if ($judi === null) {
             throw new NotFoundException('Unknown JUDI identifier provided.');
         }
+        //print_r($judi);die;
+        return $judi;
+    }
+    public static function getJudiByGetId2() {
+        $id = null;
+        try {
+            $id = self::getUrlParam('id');
+        //echo $id;die;
+        } catch (Exception $ex) {
+            throw new NotFoundException('No JUDI identifier provided.');
+        }
+        if (!is_numeric($id)) {
+            throw new NotFoundException('Invalid JUDI identifier provided.');
+        }
+        $dao = new JudiDao();
+        //print_r($dao);die;
+        $judi = $dao->findById2($id);
+        //print_r($judi);die;
+        if ($judi === null) {
+            throw new NotFoundException('Unknown JUDI identifier provided.');
+        }
+        //print_r($judi);die;
         return $judi;
     }
 

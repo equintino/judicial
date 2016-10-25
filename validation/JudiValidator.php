@@ -124,13 +124,14 @@ final class JudiValidator {
      }else{
          $dado_=$dado;
      }
+     //print_r($dado_);
         return $dado_;
     }
     public static function colocavirgula($dado){
         $dado_=str_replace('.',',',$dado);
         //echo number_format($dado_,'2',',','.');die;
         return $dado_;
-    }  
+    } 
     public static function validaCpf($cpf){
      if($cpf != null){
         $cpf=preg_replace('/[^0-9]/','', $cpf);
