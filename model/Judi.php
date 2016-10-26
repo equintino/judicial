@@ -99,6 +99,9 @@ class Judi {
    private $TITULAR;
    private $VALOR_ADMINISTRATIVO;
    private $beneficiario;
+   private $idtitular;
+   private $idbenefi;
+   private $recente;
   
    
 
@@ -645,5 +648,23 @@ class Judi {
     }
     public function setbeneficiario($beneficiario){
         $this->beneficiario = $beneficiario;
-    }  
+    }    
+    public function getidtitular(){
+        return $this->idtitular;
+    }
+    public function setidtitular($idtitular){
+        $this->idtitular = $idtitular;
+    }   
+    public function getidbenefi(){
+        return $this->idbenefi;
+    }
+    public function setidbenefi($idbenefi){
+        $this->idbenefi = $idbenefi;
+    }   
+    public function getrecente(){
+        return $this->recente;
+    }
+    public function setrecente($recente){
+        $this->recente = $recente;
+    }
 }

@@ -3,10 +3,10 @@ class OdbcMapper {
     private function __construct() {
     }
     public static function map(Odbc $odbc, array $properties) {
-     foreach($properties as $key=>$itens){
-      $keys[]=$key;
-     }
-     $APOLICE=$keys[4];
+     //foreach($properties as $key=>$itens){
+      //$keys[]=$key;
+     //}
+     //$APOLICE=$keys[4];
         if (array_key_exists('idbenefi', $properties)) {
             $odbc->setidbenefi($properties['idbenefi']);
         }
@@ -38,9 +38,9 @@ class OdbcMapper {
         if (array_key_exists('SINISTRO', $properties)) {
             $odbc->setSINISTRO($properties['SINISTRO']);
         }
-        if (array_key_exists($APOLICE,$properties)){
-            $odbc->setAPOLICE($properties[$APOLICE]);
-        }
+        //if (array_key_exists($APOLICE,$properties)){
+            //$odbc->setAPOLICE($properties[$APOLICE]);
+        //}
         if (array_key_exists('apolice', $properties)) {
             $odbc->setapolice($properties['apolice']);
         }

@@ -272,7 +272,16 @@ class JudiMapper {
         }   
         if (array_key_exists('beneficiario', $properties)){
             $judi->setbeneficiario($properties['beneficiario']);
-        }    
+        }     
+        if (array_key_exists('idtitular', $properties)){
+            $judi->setidtitular($properties['idtitular']);
+        }     
+        if (array_key_exists('idbenefi', $properties)){
+            $judi->setidbenefi($properties['idbenefi']);
+        }     
+        if (array_key_exists('recente', $properties)){
+            $judi->setrecente($properties['recente']);
+        } 
     }
 }
 ?>

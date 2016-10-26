@@ -351,45 +351,30 @@ final class OdbcDao {
         }
         return @$result;
     }
-    public function busca3(OdbcSearchCriteria $search = null){
+    public function busca3(OdbcSearchCriteria $search = null, $order = null){
         $result=array();
-        $busca = $this->query($this->getBuscaSql3($search));
-        //print_r($this->getBuscaSql3($search));
-        //echo "<pre>";
-        //print_r($search);die;
+        $busca = $this->query($this->getBuscaSql3($search, $order));
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
-            //print_r($row);echo "<br><br>";
-            //print_r($odbc);echo "<br><br>";die;
-            OdbcMapper::map($odbc, $row);
+            //echo "<pre>";
+            //print_r($row);die;
             //print_r($odbc);die;
-            //$result[$odbc->getidbenefi()] = $odbc;
+            OdbcMapper::map($odbc, $row);
             $result[$odbc->getidtitular()] = $odbc;
          }
-        }//else{
-         //echo "<p>*Nao foi encontrado nenhum registro</p>"; 
-        //}
+        }
         return @$result;
     }
-    public function busca4(OdbcSearchCriteria $search = null){
-        //print_r($this->getBuscaSql4($search));die;
+    public function busca4(OdbcSearchCriteria $search = null, $order = null){
         $result=array();
-        $busca = $this->query($this->getBuscaSql4($search));
-        //print_r($search);
-        //print_r($busca);
+        $busca = $this->query($this->getBuscaSql4($search, $order));
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
-            //print_r($row);echo "<br><br>";
-            //print_r($odbc);echo "<br><br>";
             OdbcMapper::map($odbc, $row);
-            //print_r($odbc);die;
-            //$result[$odbc->getidbenefi()] = $odbc;
             $result[$odbc->getidbenefi()] = $odbc;
          }
-        }else{
-         //echo "<p>*Nao foi encontrado nenhum registro</p>"; 
         }
         return @$result;
     }
@@ -601,11 +586,11 @@ final class OdbcDao {
         //print_r($sql);die;
         return $sql;
     }
-    private function getBuscaSql3(OdbcSearchCriteria $search = null){
-        $sql = "SELECT TOP 14 * FROM sinipend WHERE ";
-        $order = ' idtitular';
-        //$sql .= "SINISTRO='".$search->getsinistro()."'";
-        //var_dump($search->setsinistro(0));
+    private function getBuscaSql3(OdbcSearchCriteria $search = null, $order = null){
+        $sql = "SELECT TOP 14 TITULAR,SINISTRO,idtitular FROM sinipend WHERE ";
+        if($order == null){
+            $order = ' idtitular';
+        }
         if(@$search->getENDOSSO()){
          $campo='ENDOSSO';
          $busca=$search->getENDOSSO();
@@ -613,9 +598,7 @@ final class OdbcDao {
          $campo='SINISTRO';
          $busca=$search->getsinistro();
         }
-        //print_r($search);die;
         if($search->getIMPORTANCIA_SEGURADA() == null){
-            //echo "nulo";
             $search->setIMPORTANCIA_SEGURADA(0);
         }
         if(@!$search->getidtitular()){
@@ -623,25 +606,16 @@ final class OdbcDao {
         }else{
             $idtitular=$search->getidtitular();
         }
-        //print_r($search);
-        //var_dump($search->getsinistro() != null);die;
-        //var_dump($search->getTITULAR() != null || $search->getsinistro() != null);die;
         if ($search->getTITULAR() != null || $search->getsinistro() != null || $search->getENDOSSO() != null) {
-         //echo $search->getENDOSSO();
-            //echo "search nao esta nulo".$search->getnome();die;
             if ($search->getsinistro() != null || $search->getENDOSSO() != null) {
-                //echo "sinistro defenido";
                 $sql .= "$campo like '%".$busca."%'";
             }elseif($search->getTITULAR() != null){
-                //echo "nome defenido";
                 $sql .= "TITULAR like '%".$search->getTITULAR()."%'";
             }
             if($search->getIMPORTANCIA_SEGURADA()>0){
               $sql.= ' AND IMPORTANCIA_SEGURADA > '.$search->getIMPORTANCIA_SEGURADA().' ';
             }
         }else{
-            //echo $search->getsinistro();
-            //echo "search esta nulo";die;
           if($search->getIMPORTANCIA_SEGURADA()>0){
             $sql.= ' IMPORTANCIA_SEGURADA > '.$search->getIMPORTANCIA_SEGURADA().' ';
           }else{
@@ -649,16 +623,14 @@ final class OdbcDao {
           }
         }
         $sql .= ' AND idtitular > '.$idtitular.' ';
-        //print_r($sql);die;
         $sql .= ' ORDER BY '.$order;
-        //print_r($sql);
         return $sql;
     }
-    private function getBuscaSql4(OdbcSearchCriteria $search = null){
-        $sql = "SELECT TOP 14 * FROM Beneficiarios WHERE ";
-        $order = ' idbenefi';
-        //$sql .= "SINISTRO='".$search->getsinistro()."'";
-        //var_dump($search->setsinistro(0));
+    private function getBuscaSql4(OdbcSearchCriteria $search = null, $order = null){
+        $sql = "SELECT TOP 14 sinistro,nome,idbenefi FROM Beneficiarios WHERE ";
+        if($order == null){
+            $order = ' idbenefi';
+        }
         if(@$search->getENDOSSO()){
          $campo='endosso';
          $busca=$search->getENDOSSO();
@@ -666,7 +638,6 @@ final class OdbcDao {
          $campo='sinistro';
          $busca=$search->getsinistro();
         }
-        //print_r($search);die;
         if($search->getvlindeniza() == null){
             //echo "nulo";
             $search->setvlindeniza(0);
@@ -676,30 +647,18 @@ final class OdbcDao {
         }else{
             $idbenefi=$search->getidbenefi();
         }
-        //print_r($search);
-        //var_dump($search->getsinistro() != null);die;
-        //var_dump($search->getTITULAR() != null || $search->getsinistro() != null);die;
         if ($search->getnome() != null || $search->getsinistro() != null || $search->getendosso() != null) {
-         //echo $search->getENDOSSO();
-            //echo "search nao esta nulo".$search->getnome();die;
             if ($search->getsinistro() != null || $search->getendosso() != null) {
-                //echo "sinistro defenido";
                 $sql .= "$campo like '%".$busca."%'";
             }elseif($search->getnome() != null){
-                //echo "nome defenido";
                 $sql .= "nome like '%".$search->getnome()."%'";
             }
             $sql.= ' AND vlindeniza > '.$search->getvlindeniza().' ';
         }else{
-            //echo $search->getsinistro();
-            //echo "search esta nulo";die;
-          //$sql .= "1";
           $sql.= ' vlindeniza > '.$search->getvlindeniza().' ';
         }
         $sql .= " AND idbenefi > $idbenefi ";
-        //print_r($sql);die;
         $sql .= ' ORDER BY '.$order;
-        //print_r($sql);die;
         return $sql;
     }
     private function getBuscaSql5(OdbcSearchCriteria $search = null){

@@ -180,7 +180,7 @@ $totalDuplicidade=0;
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
       
-        echo "<div id=mostra class=conteudo style='display:none'>";
+        //echo "<div id=mostra class=conteudo style='display:none'>";
       
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito 
     
@@ -226,12 +226,13 @@ $totalDuplicidade=0;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
-         $sinistrado=$Odbcdao->busca3($Odbcsearch);
+         $sinistrado=$Odbcdao->busca3($Odbcsearch, 'TITULAR');
          if($sinistrado){
             foreach($sinistrado as $keys => $item){
                 if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($item->getTITULAR(),'utf8')){
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
+                    $judi->setidtitular($item->getidtitular());
                 }else{
                     $verificar[]=$judi->getSegurado();
                 }
@@ -239,10 +240,13 @@ $totalDuplicidade=0;
         }else{
             if($judi->getParte_contraria()){
              $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
-             $beneficiarios=$Odbcdao->busca4($Odbcsearch);
+             $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
              foreach($beneficiarios as $beneficiario_){
                 $judi->setSINISTRO($beneficiario_->getsinistro());
                 $judi->setbeneficiario($beneficiario_->getnome());
+                $judi->setidbenefi($beneficiario_->getidbenefi());
+             //echo "<pre>";
+             //print_r($judi);
              }
             }
          }
@@ -254,6 +258,7 @@ $totalDuplicidade=0;
              foreach($beneficiarios as $beneficiario_){
                 $judi->setSINISTRO($beneficiario_->getsinistro());
                 $judi->setbeneficiario($beneficiario_->getnome());
+                $judi->setidbenefi($beneficiario_->getidbenefi());
              }
             }
         }
@@ -267,7 +272,7 @@ $totalDuplicidade=0;
             //// Termino da busca ////
       
            ///// Construindo a tabela ////
-       $campos=conteudo($judi); 
+       $campos=conteudo($judi);
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
             if($key == 15){
@@ -297,13 +302,16 @@ $totalDuplicidade=0;
          }else{
            ///// Gravando Sinistro e Titular em Acoes /////
              $judi->setTITULAR($judi->getTITULAR_h());
-             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h()); 
+             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
+             $judi->setidbenefi($judi->getidbenefi());
             
-           $Judidao->saveJd2($judi);
+           
+           $judi->setrecente(1);  
+           $Judidao->saveJd2($judi);//die;
            
           if($campo == $judi->getSINISTRO()){ 
            echo "<td align=center bgcolor=white>";
-           echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
+           //echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
            echo $judi->getSINISTRO();
           }else{
             echo "<td bgcolor=white>";
@@ -323,6 +331,7 @@ $totalDuplicidade=0;
                         $beneficiarios=$Odbcdao->busca4($Odbcsearch);
                         foreach($beneficiarios as $beneficiario_){
                             $judi->setbeneficiario($beneficiario_->getnome());
+                            $judi->setidbenefi($beneficiario_->getidbenefi());
                             if(!$sinistrado){
                                 $judi->setSINISTRO($beneficiario_->getsinistro());
                             }
@@ -335,13 +344,16 @@ $totalDuplicidade=0;
                   $judi->setSINISTRO($item2->getsinistro());
                  }
                     if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($judi->getTITULAR(),'utf8') && $judi->getTITULAR() != ''){
-                        echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                        //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                        echo $judi->getSINISTRO();
                     }elseif(mb_strlen($judi->getbeneficiario(),'utf8') == mb_strlen($judi->getParte_contraria(),'utf8')){
-                        echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                        //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                        echo $judi->getSINISTRO();
                     }else{
                         echo "<img src=img/interroga.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
                     }
                     //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
+                    //echo $judi->getSINISTRO();
                     $totalDuplicidade++;
                 }else{
                     echo "<img src=img/confirmado.png heght=15 title='Exclus&atilde;o Confirmada'>";
@@ -356,7 +368,7 @@ $totalDuplicidade=0;
                     //if((mb_strlen($judi->getbeneficiario(),'utf8') != mb_strlen($judi->getParte_contraria(),'utf8')) || (mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8'))){
                         //echo "<img src=img/interroga.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
                     //}else{
-                        echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
+                        //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
                         echo $judi->getSINISTRO();
                    // }
                     $totalDuplicidade++;
@@ -375,9 +387,10 @@ $totalDuplicidade=0;
             }else{
                 echo "<td bgcolor=white>";
                     echo mb_strtoupper($campo);
-                    if(!$judi->getSINISTRO()){
+                     $judi->setrecente(1);
+                     //echo "<pre>";
+                     //print_r($judi);
                      $Judidao->saveJd2($judi);
-                    }
             }
             echo "</td>";
         }else{

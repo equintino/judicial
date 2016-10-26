@@ -1,0 +1,14 @@
+Optimização da consulta do banco
+
+    Ao realizar uma consulta, selecione apenas as colunas realmente necessárias, isso reduz a quantidade de dados retornada. Nem sempre é preciso usar o “SELECT *”, então vale a pena avaliar quais campos serão realmente utilizados e listá-los na cláusula select.
+    Na cláusula where, procure usar sempre a seguinte ordem nos filtros pelo tipo da coluna: NUMÉRICOS -> DATA/HORA -> TEXTO SIMPLES -> TEXTO EXTENSOS/BINÁRIOS. Essa ordem se explica pelo nível de exatidão e complexidade de cada tipo de dado. Quanto mais exato e menos complexo for o dado da coluna, mais simples é a avaliação do seu valor.
+    Sempre que possível utilize consultas por igualdade no lugar de filtros por faixas de valores, isso reduz a quantidade de avaliações feitas com o valor (se possível, dê prioridade a filtrar pelos dados na ordem da dica anterior).
+    Considere utilizar índices, principalmente em campos numéricos de suas tabelas. Essa medida ajuda o gerenciador do banco de dados a localizar os registros com mais facilidade. Esse elemento (índice) é o principal foco deste artigo e será melhor explicado a seguir.
+
+
+----------------
+
+Divisão da tabela na metade
+
+
+

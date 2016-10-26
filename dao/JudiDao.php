@@ -110,7 +110,6 @@ class JudiDao {//extends TodoDao{
     }
     public function listaAcao(JudiSearchCriteria $Judisearch = null, $ordem = null) {
      $sql="SELECT * FROM acoes_transitado_julgado_18102016 WHERE excluido=0 ";
-     //print_r($ordem);
      if($ordem){
        if("NúmeroCNJ/Antigo"==$ordem){
         $ordem='Numero_CNJ_Antigo asc';
@@ -140,22 +139,19 @@ class JudiDao {//extends TodoDao{
         $ordem='Faixa_de_Probabilidade';
        }
        $sql.="ORDER BY ".$ordem;
+     }else{
+       $sql.="ORDER BY id ";
      }
      $rows = $this->query($sql) ->fetchAll();
-     //print_r($sql);die;
-     //echo "<pre>";
-     //print_r($rows);die;
         foreach($rows as $row){
          $judi = new Judi();
             JudiMapper::map($judi, $row);
             $result[] = $judi;
         }
-        //print_r($judi);die;
         return $result;
     }
     public function listaSegurados(JudiSearchCriteria $Judisearch = null, $ordem = null) {
      $sql="SELECT * FROM acoes_transitado_julgado_18102016 LEFT JOIN geral_henrique ON acoes_transitado_julgado_18102016.SINISTRO = geral_henrique.SINISTRO_h WHERE TITULAR != '' OR beneficiario != ''";
-     //print_r($ordem);
      if($ordem){
        if("NúmeroCNJ/Antigo"==$ordem){
         $ordem='Numero_CNJ_Antigo asc';
@@ -396,7 +392,7 @@ class JudiDao {//extends TodoDao{
         
         $judi->setAlteracao($timestamp);
            
-        $sql = 'INSERT INTO `acoes_transitado_julgado_18102016` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`,`Faixa_de_Probabilidade`, `Vlr_da_causa`, `Vlr_condenacao`, `Valor_Pedido`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`, `SINISTRO`, `ok`, `TITULAR`, `VALOR_ADMINISTRATIVO`, `beneficiario`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Faixa_de_Probabilidade, :Vlr_da_causa, :Vlr_condenacao, :Valor_Pedido, :Honorarios, :OBS, :id, :Alteracao, :login, :SINISTRO, :ok, :TITULAR, :VALOR_ADMINISTRATIVO, :beneficiario)';
+        $sql = 'INSERT INTO `acoes_transitado_julgado_18102016` (`Numero_CNJ_Antigo`, `Natureza`, `UF`, `Parte_contraria`, `Segurado`, `Vlr_deferido`,`Faixa_de_Probabilidade`, `Vlr_da_causa`, `Vlr_condenacao`, `Valor_Pedido`, `Honorarios`, `Vlr_certidao_de_credito`, `Aba`, `id`, `Alteracao`, `login`, `SINISTRO`, `ok`, `TITULAR`, `VALOR_ADMINISTRATIVO`, `beneficiario`,`idtitular`, `idbenefi`, `recente`) VALUES (:Numero_CNJ_Antigo, :Natureza, :UF, :Parte_contraria, :Segurado, :Vlr_deferido, :Faixa_de_Probabilidade, :Vlr_da_causa, :Vlr_condenacao, :Valor_Pedido, :Honorarios, :OBS, :id, :Alteracao, :login, :SINISTRO, :ok, :TITULAR, :VALOR_ADMINISTRATIVO, :beneficiario, :idtitular, :idbenefi, :recente)';
 
         return $this->execute2($sql, $judi);
     }
@@ -405,7 +401,7 @@ class JudiDao {//extends TodoDao{
         $now=$now_->getTimestamp();
         $timestamp = mktime(date("H")-4);
         $judi->setAlteracao($timestamp);
-        $sql = "UPDATE `acoes_transitado_julgado_18102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login, SINISTRO = :SINISTRO, ok = :ok, TITULAR = :TITULAR, VALOR_ADMINISTRATIVO = :VALOR_ADMINISTRATIVO, beneficiario = :beneficiario WHERE id = :id";
+        $sql = "UPDATE `acoes_transitado_julgado_18102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login, SINISTRO = :SINISTRO, ok = :ok, TITULAR = :TITULAR, VALOR_ADMINISTRATIVO = :VALOR_ADMINISTRATIVO, beneficiario = :beneficiario, idtitular = :idtitular, idbenefi = :idbenefi, recente = :recente WHERE id = :id";
         //echo "<pre>";
         //print_r($sql);die;
         return $this->execute2($sql, $judi);
@@ -528,7 +524,10 @@ print_r($this->execute3($sql, $judi));die;
             ':ok' => $judi->getOk(),
             ':TITULAR' => $judi->getTITULAR(),
             ':VALOR_ADMINISTRATIVO' => $judi->getVALOR_ADMINISTRATIVO(),
-            ':beneficiario' => $judi->getbeneficiario()
+            ':beneficiario' => $judi->getbeneficiario(),
+            ':idtitular' => $judi->getidtitular(),
+            ':idbenefi' => $judi->getidbenefi(),
+            ':recente' => $judi->getrecente(),
             );
         if ($judi->getId()) {
             unset($params[':created_on']);
