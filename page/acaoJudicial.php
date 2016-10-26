@@ -233,28 +233,15 @@ $totalDuplicidade=0;
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
                 }else{
-                    //echo "<pre>";
-                    //print_r($judi);
                     $verificar[]=$judi->getSegurado();
-                    //print_r($verificar);
-                    //die;
                 }
             }
-            if($titular_ != $titularOld){
-                //$judi->setTITULAR_h($titular_);
-                //@$judi->setSINISTRO($sinistro_);
-            }
         }else{
-             //echo "Não encontrei nada";
             if($judi->getParte_contraria()){
              $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
              $beneficiarios=$Odbcdao->busca4($Odbcsearch);
-             //$judi->setnome($beneficiario['nome']);
-             //print_r($judi);
              foreach($beneficiarios as $beneficiario_){
-                 //echo "<pre>";
                 $judi->setSINISTRO($beneficiario_->getsinistro());
-                //echo " - ";
                 $judi->setbeneficiario($beneficiario_->getnome());
              }
             }
@@ -263,17 +250,10 @@ $totalDuplicidade=0;
             if($judi->getParte_contraria()){
             $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
              $beneficiarios=$Odbcdao->busca4($Odbcsearch);
-             //$judi->setnome($beneficiario['nome']);
-             //echo "<pre>";
-             //print_r($beneficiarios);
              
              foreach($beneficiarios as $beneficiario_){
-                 //echo "<pre>";
                 $judi->setSINISTRO($beneficiario_->getsinistro());
-                //echo " - ";
                 $judi->setbeneficiario($beneficiario_->getnome());
-             //echo "<pre>";
-             //print_r($judi);
              }
             }
         }
@@ -288,8 +268,6 @@ $totalDuplicidade=0;
       
            ///// Construindo a tabela ////
        $campos=conteudo($judi); 
-       //echo '<pre>';
-       //print_r($campos[15]);
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
             if($key == 15){
@@ -320,7 +298,7 @@ $totalDuplicidade=0;
            ///// Gravando Sinistro e Titular em Acoes /////
              $judi->setTITULAR($judi->getTITULAR_h());
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h()); 
-             
+            
            $Judidao->saveJd2($judi);
            
           if($campo == $judi->getSINISTRO()){ 
@@ -390,8 +368,6 @@ $totalDuplicidade=0;
                 if($judi->getbeneficiario()){
                     echo "<td bgcolor=yellow>";
                         echo mb_strtoupper($campo); 
-                        //echo "<pre>";
-                        //print_r($judi);die;
                 }else{
                     echo "<td bgcolor=white>";
                         echo mb_strtoupper($campo); 
@@ -399,14 +375,10 @@ $totalDuplicidade=0;
             }else{
                 echo "<td bgcolor=white>";
                     echo mb_strtoupper($campo);
-                    //echo '<pre>';
-                    //print_r($judi);die;
-                    $Judidao->saveJd2($judi);
+                    if(!$judi->getSINISTRO()){
+                     $Judidao->saveJd2($judi);
+                    }
             }
-            //echo '<pre>';
-            ///// grava beneficiario e sinistro /////
-            //print_r($judi);die;
-            //echo "passei por aqui";
             echo "</td>";
         }else{
          echo "<td bgcolor=white>";
