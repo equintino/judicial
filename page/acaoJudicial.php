@@ -49,48 +49,48 @@ function id(el) {
     table td{
         #background-color: white;
     }
-.add:hover {
-    background: blanchedalmond;
-}
-.voltar button{
-    background: transparent; 
-}
-.voltar button:hover{
-    background-color: white;
-}
-.edicao:hover{
-    background-color: silver;
-}
-.moedas{   
-    padding: 5px 10px;
-}
-a:link,a:visited{
-    text-decoration: none;
-    color: white;
-}
-.topo{
-    position: absolute;
-    right: 10px;
-}
-.btn{
-     width: 100%;
-     background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
-     box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
-                   0 2px 7px rgba(0, 0, 0, 0.2);
-}
-.btn:hover{
-    width: 100%;
-    background: -moz-linear-gradient(bottom, #efedd3, #fdfdf8 70%);
-}
-.conteudo{
-    position: absolute;
-    top:1px;
-}
-.carregando{
-    position: relative;
-    left: 39%;
-    top: 130px;
-}
+    .add:hover {
+        background: blanchedalmond;
+    }
+    .voltar button{
+        background: transparent; 
+    }
+    .voltar button:hover{
+        background-color: white;
+    }
+    .edicao:hover{
+        background-color: silver;
+    }
+    .moedas{   
+        padding: 5px 10px;
+    }
+    a:link,a:visited{
+        text-decoration: none;
+        color: white;
+    }
+    .topo{
+        position: absolute;
+        right: 10px;
+    }
+    .btn{
+         width: 100%;
+         background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+         box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
+                       0 2px 7px rgba(0, 0, 0, 0.2);
+    }
+    .btn:hover{
+        width: 100%;
+        background: -moz-linear-gradient(bottom, #efedd3, #fdfdf8 70%);
+    }
+    .conteudo{
+        position: absolute;
+        top:1px;
+    }
+    .carregando{
+        position: relative;
+        left: 39%;
+        top: 130px;
+    }
 </style>
 <head><a id="topo"></a></head>
 <body>
@@ -98,47 +98,47 @@ a:link,a:visited{
 header('Content-type: text/html; charset=UTF-8');
 function titulos(){
     $titulos=array(
-            "Número CNJ / Antigo",
-            'Natureza',
-            'UF',
-            'Parte contrária',
-            'Segurado',
-            'Beneficiário',
-            'Faixa de Probabilidade',
-            'Valor Deferido',
-            'Valor da causa',
-            'Valor condenação',
-            'Valor Pedido',
-            'Honorários',
-            'OBS',
-            'DUPLICIDADE',
-            'LOGIN',
-            'ALTERAÇÃO',
-            //'ABA',
-       );
+        "Número CNJ / Antigo",
+        'Natureza',
+        'UF',
+        'Parte contrária',
+        'Segurado',
+        'Beneficiário',
+        'Faixa de Probabilidade',
+        'Valor Deferido',
+        'Valor da causa',
+        'Valor condenação',
+        'Valor Pedido',
+        'Honorários',
+        'OBS',
+        'DUPLICIDADE',
+        'LOGIN',
+        'ALTERAÇÃO',
+        //'ABA',
+    );
     return $titulos;
 }
 function conteudo($judi){
-       $campos=array(
-            $judi->getNumero_CNJ_Antigo(),
-            $judi->getNatureza(),
-            $judi->getUF(),
-            $judi->getParte_contraria(),
-            $judi->getSegurado(),
-            $judi->getbeneficiario(),
-            $judi->getFaixa_de_Probabilidade(),
-            $judi->getVlr_deferido(),
-            $judi->getVlr_da_causa(),
-            $judi->getVlr_condenacao(),
-            $judi->getValor_Pedido(),
-            $judi->getHonorarios(),
-            $judi->getOBS(),
-            $judi->getSINISTRO(),
-            $judi->getlogin(),
-            $judi->getAlteracao(),
-            //$judi->getAba(),
-       );
-       return $campos;
+    $campos=array(
+        $judi->getNumero_CNJ_Antigo(),
+        $judi->getNatureza(),
+        $judi->getUF(),
+        $judi->getParte_contraria(),
+        $judi->getSegurado(),
+        $judi->getbeneficiario(),
+        $judi->getFaixa_de_Probabilidade(),
+        $judi->getVlr_deferido(),
+        $judi->getVlr_da_causa(),
+        $judi->getVlr_condenacao(),
+        $judi->getValor_Pedido(),
+        $judi->getHonorarios(),
+        $judi->getOBS(),
+        $judi->getSINISTRO(),
+        $judi->getlogin(),
+        $judi->getAlteracao(),
+        //$judi->getAba(),
+    );
+    return $campos;
 }
 @$act=$_GET['act'];
 $errors = array();
@@ -154,7 +154,6 @@ if(!isset($atualiza)){
  $atualiza=null;
 }
 $totalDuplicidade=0;
-    //echo $edit;die;
    if ($edit) {
      $judi = Utils::getJudiByGetId2();
    } else {
@@ -219,8 +218,6 @@ $totalDuplicidade=0;
       $titular_=null;
       $atual=count($judis);
       foreach($judis as $judi){
-          //echo "<pre>";
-        //print_r($judi);die;  
           //// Procurando por duplicidade no administrativo ////
           
           //if($x==330)die;
@@ -234,8 +231,6 @@ $totalDuplicidade=0;
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
                     $judi->setidtitular($item->getidtitular());
-                }else{
-                    //$verificar[]=$judi->getSegurado();
                 }
             }
           }else{
@@ -247,7 +242,6 @@ $totalDuplicidade=0;
          //if($beneficiarios){
             //die;
          //}
-             if($beneficiarios){
                 foreach($beneficiarios as $beneficiario_){
                     $judi->setSINISTRO($beneficiario_->getsinistro());
                     $judi->setbeneficiario($beneficiario_->getnome());
@@ -255,11 +249,9 @@ $totalDuplicidade=0;
              //echo "<pre>";
              //print_r($judi);
                 }
-             }
             }
-         }
+          }
         }elseif(!$judi->getSINISTRO()){
-            if($judi->getParte_contraria()){
             $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
              $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
              
@@ -268,7 +260,6 @@ $totalDuplicidade=0;
                 $judi->setbeneficiario($beneficiario_->getnome());
                 $judi->setidbenefi($beneficiario_->getidbenefi());
              }
-            }
         }/*else{
             $Odbcsearch->setsinistro($judi->getSINISTRO());
             $sinistros=$Odbcdao->busca3($Odbcsearch);
@@ -294,9 +285,9 @@ $totalDuplicidade=0;
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
             if($key == 15){
-                echo "<td align=right bgcolor=white>";
-                    echo date('H:i d/m/Y',$campo);
-                echo "</td>";
+                //echo "<td align=right bgcolor=white>";
+                    //echo date('H:i d/m/Y',$campo);
+                //echo "</td>";
             }else{
                 echo "<td align=right bgcolor=white>";
                     echo number_format($campo,'2',',','.');
@@ -450,8 +441,8 @@ $totalDuplicidade=0;
      ///// EDIÇÃO /////
      
        $id=$judi->getId();
-       echo "<td class=edicao ><a href='index.php?page=acaoJudicial&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
-       echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
+       //echo "<td class=edicao ><a href='index.php?page=acaoJudicial&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
+       //echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
        
      //// FIM EDIÇão //// 
        echo "</tr>";
