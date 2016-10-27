@@ -51,6 +51,7 @@
         //echo "<pre>";
         //print_r($judi);die;
     
+        $judi->setrecente(1);
         $Judidao->saveJd2($judi);
     
         //print_r(mysql_affected_rows()); 

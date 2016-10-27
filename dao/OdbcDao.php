@@ -354,13 +354,15 @@ final class OdbcDao {
     public function busca3(OdbcSearchCriteria $search = null, $order = null){
         $result=array();
         $busca = $this->query($this->getBuscaSql3($search, $order));
+        //print_r($this->getBuscaSql3($search, $order));die;
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
             //echo "<pre>";
             //print_r($row);die;
-            //print_r($odbc);die;
+            //print_r($odbc);
             OdbcMapper::map($odbc, $row);
+            //print_r($odbc);die;
             $result[$odbc->getidtitular()] = $odbc;
          }
         }
@@ -369,10 +371,14 @@ final class OdbcDao {
     public function busca4(OdbcSearchCriteria $search = null, $order = null){
         $result=array();
         $busca = $this->query($this->getBuscaSql4($search, $order));
+        //print_r($this->getBuscaSql4($search, $order));die;
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
             OdbcMapper::map($odbc, $row);
+            //echo "<pre>";
+            //print_r($row);die;
+            //print_r($odbc);die;
             $result[$odbc->getidbenefi()] = $odbc;
          }
         }
@@ -610,7 +616,7 @@ final class OdbcDao {
             if ($search->getsinistro() != null || $search->getENDOSSO() != null) {
                 $sql .= "$campo like '%".$busca."%'";
             }elseif($search->getTITULAR() != null){
-                $sql .= "TITULAR like '%".$search->getTITULAR()."%'";
+                $sql .= "TITULAR like '".$search->getTITULAR()."'";
             }
             if($search->getIMPORTANCIA_SEGURADA()>0){
               $sql.= ' AND IMPORTANCIA_SEGURADA > '.$search->getIMPORTANCIA_SEGURADA().' ';
@@ -651,7 +657,7 @@ final class OdbcDao {
             if ($search->getsinistro() != null || $search->getendosso() != null) {
                 $sql .= "$campo like '%".$busca."%'";
             }elseif($search->getnome() != null){
-                $sql .= "nome like '%".$search->getnome()."%'";
+                $sql .= "nome like '".$search->getnome()."'";
             }
             $sql.= ' AND vlindeniza > '.$search->getvlindeniza().' ';
         }else{
@@ -659,6 +665,7 @@ final class OdbcDao {
         }
         $sql .= " AND idbenefi > $idbenefi ";
         $sql .= ' ORDER BY '.$order;
+        //print_r($sql);die;
         return $sql;
     }
     private function getBuscaSql5(OdbcSearchCriteria $search = null){
