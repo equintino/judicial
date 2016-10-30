@@ -47,6 +47,6 @@
   //echo "<script>cpf=prompt('Entre com seu cpf','digite aqui')</script>";
   //$cpf="<script>document.write(cpf)</script>";
   //echo $cpf;
-  echo primeiroDigito('000.089.870-84');
+  echo primeiroDigito('409.708.099-72');
 ?>
 

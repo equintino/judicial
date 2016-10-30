@@ -593,7 +593,7 @@ final class OdbcDao {
         return $sql;
     }
     private function getBuscaSql3(OdbcSearchCriteria $search = null, $order = null){
-        $sql = "SELECT TOP 14 TITULAR,SINISTRO,idtitular FROM sinipend WHERE ";
+        $sql = "SELECT TOP 14 TITULAR,SINISTRO,idtitular,CPF FROM sinipend WHERE ";
         if($order == null){
             $order = ' idtitular';
         }
@@ -633,7 +633,7 @@ final class OdbcDao {
         return $sql;
     }
     private function getBuscaSql4(OdbcSearchCriteria $search = null, $order = null){
-        $sql = "SELECT TOP 14 sinistro,nome,idbenefi FROM Beneficiarios WHERE ";
+        $sql = "SELECT TOP 14 sinistro,nome,idbenefi,cpf FROM Beneficiarios WHERE ";
         if($order == null){
             $order = ' idbenefi';
         }

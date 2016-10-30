@@ -1,3 +1,4 @@
+<head>
 <script>
     function total($x){
         var x='Clique aqui para ver duplicidades';
@@ -16,7 +17,7 @@
        }
     }
     function atualiza(){
-        var x=confirm('Esta ação levará alguns minutos. Confirma?');
+        var x=confirm('Esta ação levará + ou - 10 minutos. Confirma?');
         if(x){
             location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
         }
@@ -31,9 +32,51 @@ function id(el) {
         margin: 50px auto;
         width: 90%;
     }
-    .botao{
-        margin: 10px;
+    .botao input{
+        margin-left: 5px;
+        padding: 2px;
         float: right;
+        background: -webkit-linear-gradient(bottom, #E0E0E0, #F9F9F9 10%);
+        background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 10%);
+        background: -o-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+        background: -ms-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+        background: linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+        border: 1px solid #CCCCCE;
+        border-radius: 3px;
+        box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
+                      0 2px 7px rgba(0, 0, 0, 0.2);
+        color: #616165;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+        font-weight: bold;
+        line-height: 15px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-shadow:1px 1px 0 #FFF;
+    }
+    .botao input:hover{
+        margin-left: 5px;
+        padding: 2px;
+        float: right;
+        background: -webkit-linear-gradient(bottom, #E0E0E0, #F9F9F9 10%);
+        background: -moz-linear-gradient(bottom, #E0E0E0, #F9F9F9 10%);
+        background: -o-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+        background: -ms-linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+        background: linear-gradient(bottom, #E0E0E0, #F9F9F9 70%);
+        border: 1px solid #CCCCCE;
+        border-radius: 3px;
+        box-shadow: 0 3px 0 rgba(0, 0, 0, .3),
+                      0 2px 7px rgba(0, 0, 0, 0.2);
+        color: yellowgreen;
+        font-family: "Trebuchet MS";
+        font-size: 13px;
+        font-weight: bold;
+        line-height: 15px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-shadow:1px 1px 0 #FFF;
     }
     body{
         background-color: silver;
@@ -46,8 +89,12 @@ function id(el) {
         background-color: green;
         color: white;
     }
-    table td{
-        #background-color: white;
+    table td:hover{
+        position: absolute;
+        font-size: 18px;
+        color: blue;
+        background-color: white;
+        text-align: center;
     }
     .add:hover {
         background: blanchedalmond;
@@ -87,15 +134,21 @@ function id(el) {
         top:1px;
     }
     .carregando{
-        position: relative;
+        position: fixed;
         left: 39%;
         top: 130px;
-    }
+     }
+     form {
+         font-size: 15px;
+     }
+     select{
+         font-size: 11px;
+     }
 </style>
-<head><a id="topo"></a></head>
+<a id="topo"></a>
+</head>
 <body>
 <?php
-header('Content-type: text/html; charset=UTF-8');
 function titulos(){
     $titulos=array(
         "Número CNJ / Antigo",
@@ -112,8 +165,8 @@ function titulos(){
         'Honorários',
         'OBS',
         'DUPLICIDADE',
-        'LOGIN',
-        'ALTERAÇÃO',
+        'Login',
+        'Alteração',
         //'ABA',
     );
     return $titulos;
@@ -145,6 +198,9 @@ $errors = array();
 $judi = null;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
+if(@$ordem == 'Alteração'){
+ $ordem = 'Alteracao';
+}
 @$atualiza = $_GET['atualiza'];
 $cabecalho = 'A&Ccedil;&Otilde;ES TRANSITADO E JULGADO';
 if(!isset($verificar)){
@@ -181,9 +237,9 @@ $totalDuplicidade=0;
       
         //echo "<div id=mostra class=conteudo style='display:none'>";
       
-    $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito 
-    
-    
+    $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
+    //echo '<pre>';
+    //print_r($judis);die;
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -212,26 +268,44 @@ $totalDuplicidade=0;
       $x=0; 
       $deferido=$causa=$condenacao=$honorario=$certidao=$pedido=null;
       
-      
-      echo "<tr>";
       $titularOld='inicial';
       $titular_=null;
       $atual=count($judis);
       foreach($judis as $judi){
-          //// Procurando por duplicidade no administrativo ////
-          
+          //// Procurando por duplicidade no administrativo ////          
           //if($x==330)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
-         $Odbcsearch->setTITULAR(JudiValidator::tirarAcento($judi->getSegurado()));
+         $Odbcsearch->setTITULAR(JudiValidator::tirarAcento('%'.$judi->getSegurado().'%'));
+         //$Odbcsearch->setTITULAR('%Pedro Dias Lopes%');
          $sinistrado=$Odbcdao->busca3($Odbcsearch, 'TITULAR');
+         //echo "<pre>";
+         //print_r($sinistrado);die;
          if($sinistrado){
+           
             foreach($sinistrado as $keys => $item){
-                if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($item->getTITULAR(),'utf8')){
+          //print_r($item->getTITULAR());
+          //echo "<pre>";
+          //print_r($judi->getSegurado());
+          //if('Pedro Dias Lopes'==$judi->getSegurado()){
+           //die;
+          //}
+                //if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen(utf8_encode($item->getTITULAR(),'utf8'))){
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
                     $judi->setidtitular($item->getidtitular());
-                }
+               // }else{
+                    /*if('FRANCISCO GONÇALVES DA SILVA' == $judi->getSegurado()){
+                     echo "<pre>";
+                     print_r(utf8_encode($item->getTITULAR()));
+                     echo "<br>";
+                     echo mb_strlen($judi->getSegurado(),'utf8');
+                     echo "<br>";
+                     echo mb_strlen($item->getTITULAR(),'utf8');
+                     //die;
+                      
+                    }*/
+                //}
             }
           }else{
             if($judi->getParte_contraria()){
@@ -246,8 +320,6 @@ $totalDuplicidade=0;
                     $judi->setSINISTRO($beneficiario_->getsinistro());
                     $judi->setbeneficiario($beneficiario_->getnome());
                     $judi->setidbenefi($beneficiario_->getidbenefi());
-             //echo "<pre>";
-             //print_r($judi);
                 }
             }
           }
@@ -282,12 +354,13 @@ $totalDuplicidade=0;
       
            ///// Construindo a tabela ////
        $campos=conteudo($judi);
+      echo "<tr>";
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
             if($key == 15){
-                //echo "<td align=right bgcolor=white>";
-                    //echo date('H:i d/m/Y',$campo);
-                //echo "</td>";
+                echo "<td align=right bgcolor=white>";
+                    echo date('H:i d/m/Y',$campo);
+                echo "</td>";
             }else{
                 echo "<td align=right bgcolor=white>";
                     echo number_format($campo,'2',',','.');
@@ -302,23 +375,34 @@ $totalDuplicidade=0;
             }elseif($judi->getbeneficiario()){
                 echo "<td bgcolor=white>";
                     echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getbeneficiario())."\">";
+                    //echo mb_strtoupper($campo);
                 echo "</td>";
             }else{
                 echo "<td bgcolor=white>";
                     echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
+                    //echo mb_strtoupper($campo);
                 echo "</td>";
             }
+            //if('Pedro Dias Lopes' == $judi->getSegurado()){
+             $judi->setTITULAR(utf8_encode($judi->getTITULAR_h()));
+             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
+             $judi->setidbenefi($judi->getidbenefi()); 
+           if($atualiza==1){
+            //$judi->setrecente(1);  
+            $Judidao->saveJd2($judi);//die;
+           }
+            //}
          }else{
            ///// Gravando Sinistro e Titular em Acoes /////
              $judi->setTITULAR($judi->getTITULAR_h());
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
              $judi->setidbenefi($judi->getidbenefi());
             
-           if($atualiza==1){
+             if($atualiza==1){
             //$judi->setrecente(1);  
-            $Judidao->saveJd2($judi);//die;
+              $Judidao->saveJd2($judi);//die;
+             }
            }
-           
           if($campo == $judi->getSINISTRO()){ 
            echo "<td align=center bgcolor=white>";
            //echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
@@ -328,7 +412,7 @@ $totalDuplicidade=0;
             echo mb_strtoupper($campo);  
           }
           echo "</td>";
-         }
+         //}
         }elseif($campo == $judi->getSINISTRO () && $campo != null){
          echo "<td align=center bgcolor=white>";
          /*
@@ -441,8 +525,8 @@ $totalDuplicidade=0;
      ///// EDIÇÃO /////
      
        $id=$judi->getId();
-       //echo "<td class=edicao ><a href='index.php?page=acaoJudicial&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
-       //echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
+       echo "<td class=edicao ><a href='index.php?page=acaoJudicial&act=cadastro&id=".$judi->getId()."' ><img src='../web/img/lapis.gif' height=20 title='Fazer Altera&ccedil;&otilde;es'/></a></td>";
+       echo "<td class=edicao onclick=excluir($id)>&nbsp<img src='../web/img/excluir.png' height=13 title='Excluir Linha'/>&nbsp</td>";
        
      //// FIM EDIÇão //// 
        echo "</tr>";
@@ -469,7 +553,7 @@ $totalDuplicidade=0;
    echo "<div class=formulario>";
    echo "<form action='index.php?page=grava2' method=POST>";
     echo "<fieldset>";
-    echo "<legend><h2>$cabecalho (edi&ccedil;&atilde;o)</h2></legend>";
+    echo "<legend><h3>$cabecalho (edi&ccedil;&atilde;o)</h3></legend>";
         $titulos=titulos();
         //$x=0;
         //echo "<pre>";
@@ -521,23 +605,23 @@ $totalDuplicidade=0;
                 break;
               case 6:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='faixa_de_probabilidade' value='".Utils::escape($judi->getFaixa_de_Probabilidade())."'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='faixa_de_probabilidade' value='".Utils::escape($judi->getFaixa_de_Probabilidade())."'>";
                }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='faixa_de_probabilidade'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text size=30 name='faixa_de_probabilidade'>";
                }
                 break;
               case 7:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getVlr_deferido())),'2',',','.')."'>";
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getVlr_deferido())),'2',',','.')."'>";
                }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido'>";
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_deferido'>";
                }
                 break;
               case 8:
                if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getVlr_da_causa())),'2',',','.')."'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getVlr_da_causa())),'2',',','.')."'>";
                }else{
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Vlr_da_causa'>";
                }
                 break;
               case 9:
@@ -549,60 +633,69 @@ $totalDuplicidade=0;
                 break;
               case 10:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Valor_Pedido' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getValor_Pedido())))."'>";
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Valor_Pedido' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getValor_Pedido())),'2',',','.')."'>";
                }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='Valor_Pedido'>";
+                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='Valor_Pedido'>";
                }
                 break;
               case 11:
                if($edit){
-                echo "<br><br>&nbsp&nbsp ".$titulo.": <input type=text name='honorarios' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getHonorarios())))."'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='honorarios' value='".number_format(JudiValidator::trocavirgula(Utils::escape($judi->getHonorarios())),'2',',','.')."'>";
                }else{
                 echo "&nbsp&nbsp ".$titulo.": <input type=text name='honorarios'>";
                }
                 break;
               case 12:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='obs' value='".Utils::escape($judi->getOBS())."'>";
+                echo "&nbsp&nbsp Origem: <input type=text name='obs' value='".Utils::escape($judi->getOBS())."'>";
                }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='obs'>";
+                echo "&nbsp&nbsp Origem: <input type=text name='obs'>";
                }
                 break;
               case 13:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='sinistro' value='".Utils::escape($judi->getSINISTRO())."'>";
+                echo "<br><br>&nbsp&nbsp Duplicidade: <input type=text name='sinistro' value='".Utils::escape($judi->getSINISTRO())."'>";
                }else{
-                echo "&nbsp&nbsp ".$titulo.": <input type=text name='sinistro'>";
+                echo "<br><br>&nbsp&nbsp Duplicidade: <input type=text name='sinistro'>";
                }
                 break;
               case 14:
                if($edit){
-                echo "&nbsp&nbsp ".$titulo.": ";
-                echo "<select name='Aba' >";
-                  echo "<option selected value='".Utils::escape($judi->getAba())."'>";
-                    echo Utils::escape($judi->getAba());
-                    echo "</option>";
-                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
+                //echo "&nbsp&nbsp ".$titulo.": ";
+                //echo "<select name='login' >";
+                  //echo "<option selected value='".Utils::escape($judi->getAba())."'>";
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='sinistro' value='".Utils::escape($judi->getlogin())."' disabled>";
+                    //echo Utils::escape(date('H:i d/m/Y',$judi->getAlteracao()));
+                    //echo "</option>";
+                  //echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
                }else{
-                echo "&nbsp&nbsp ".$titulo.": ";
-                echo "<select name=Aba >";
-                  echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
-                echo "</select>";
+                //echo "&nbsp&nbsp ".$titulo.": ";
+                //echo "&nbsp&nbsp ".$titulo.": <input type=text name='sinistro'>";
+                //echo "<select name=Aba >";
+                  //echo "<option value='IMPRESS&Atilde;O'>IMPRESS&Atilde;O</option>";
+                //echo "</select>";
                }
-                break;            
+                break; 
+              case 15:
+               if($edit){
+                echo "&nbsp&nbsp ".$titulo.": <input type=text name='sinistro' value='".Utils::escape(date('H:i\h \d\e d/m/Y',$judi->getAlteracao()))."' disabled>";
+               }else{
+                //echo "&nbsp&nbsp ".$titulo.": <input type=text name='sinistro'>";
+               }
+                break;           
           }
           //$x++;
         }
         echo "</fieldset>";
            echo "<input type=hidden name=Aba value='IMPRESS&Atilde;O'>";
         echo "<div class=botao>";
-        echo "<input type=submit name=cancel value=CANCELAR>";
         echo "<input type=submit name=save value=";
             if($edit){
-                echo " EDITAR>";
+                echo " EDITAR >";
             }else{
-                echo " GRAVAR>";
+                echo " GRAVAR >";
             }
+        echo "<input type=submit name=cancel value=CANCELAR>";
         echo "</div>";
      echo "</form>";
    echo "</div>";

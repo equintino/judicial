@@ -80,7 +80,7 @@
         top:1px;
     }
     .carregando{
-        position: relative;
+        position: fixed;
         left: 39%;
         top: 130px;
     }
@@ -132,6 +132,8 @@ $Odbcdao=new OdbcDao();
 $ordem='TITULAR';
 
 $segurados=$Judidao->listaSegurados($Judisearch, $ordem);
+//echo '<pre>';
+//print_r($segurados);die;
 $atual=count($segurados);
 $sinistro_old=null;
 $contador=0;
@@ -149,7 +151,7 @@ echo "<br>";
 echo "<div id=contagem></div>";
 echo "</div>";
 
-echo "<div id=mostra class=conteudo style='display:none'>";
+//echo "<div id=mostra class=conteudo style='display:none'>";
 
 echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
 echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -167,18 +169,30 @@ foreach($titulos as $titulo){
 }
 echo "</tr><tr>";
 
+$sinistros=array();
 foreach($segurados as $item){
     if($seguradoOld != $item->getTITULAR() || $item->getTITULAR() == ''){
-        if($item->getTITULAR() == ''){
-            $Odbcsearch->setnome($item->getbeneficiario());
-            $odbcs=$Odbcdao->busca4($Odbcsearch);
-        }else{
+        if($item->getTITULAR() != ''){
             $segurado=JudiValidator::tirarAcento($item->getTITULAR());
             $Odbcsearch->setTITULAR($segurado);
             $odbcs=$Odbcdao->busca3($Odbcsearch);
+            //if($item->getTITULAR()=='FRANCISCO GONÇALVES DA SILVA'){
+             //echo $segurado;
+             //echo '<br>';
+             //echo "<pre>";
+             //print_r($odbcs);
+            //}
+            if(!$odbcs){
+              $Odbcsearch->setnome($item->getbeneficiario());
+              $odbcs=$Odbcdao->busca4($Odbcsearch);
+            }
+        }else{
+            $Odbcsearch->setnome($item->getbeneficiario());
+            $odbcs=$Odbcdao->busca4($Odbcsearch);         
         }
         foreach($odbcs as $key => $judi){
-            if(mb_strlen($segurado,'utf8') == mb_strlen($judi->getTITULAR(),'utf8')){
+          if(!in_array($judi->getSINISTRO(),$sinistros)){
+            //if(mb_strlen($segurado,'utf8') == mb_strlen($judi->getTITULAR(),'utf8')){
                 $judi->setSegurado($item->getSegurado());
                 $judi->setNumero_CNJ_Antigo($item->getNumero_CNJ_Antigo());
                 $judi->setParte_contraria($item->getParte_contraria());
@@ -204,6 +218,7 @@ foreach($segurados as $item){
                                 echo mb_strtoupper($campos[$z]);
                                 echo "</td>";
                                 $sinistro_old=$campos[0];
+                                $sinistros[]=$campos[0];
                                 break;
                             case 1: case 2: case 3: case 5: case 6:
                             echo "<td bgcolor=white>";
@@ -243,7 +258,9 @@ foreach($segurados as $item){
                     //$Judidao->saveJd3($judi);die;
                 }
                 $sinistro_old=$campos[0];
-            }
+               //$sinistros[]=$campos[0];
+            //}
+          }
         }
         $atual--;
     }

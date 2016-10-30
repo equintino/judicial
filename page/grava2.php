@@ -32,11 +32,11 @@
         $judi->setSegurado($_POST['Segurado']);
         $judi->setbeneficiario($_POST['beneficiario']);
         $judi->setFaixa_de_Probabilidade($_POST['faixa_de_probabilidade']);
-        $judi->setVlr_deferido($_POST['Vlr_deferido']);
-        $judi->setVlr_da_causa($_POST['Vlr_da_causa']);
-        $judi->setVlr_condenacao($_POST['Vlr_condenacao']);
-        $judi->setValor_Pedido($_POST['Valor_Pedido']);
-        $judi->setHonorarios($_POST['honorarios']);
+    $judi->setVlr_deferido(JudiValidator::trocavirgula($_POST['Vlr_deferido']));
+        $judi->setVlr_da_causa(JudiValidator::trocavirgula($_POST['Vlr_da_causa']));
+        $judi->setVlr_condenacao(JudiValidator::trocavirgula($_POST['Vlr_condenacao']));
+        $judi->setValor_Pedido(JudiValidator::trocavirgula($_POST['Valor_Pedido']));
+        $judi->setHonorarios(JudiValidator::trocavirgula($_POST['honorarios']));
         $judi->setOBS($_POST['obs']);
         $judi->setSINISTRO($_POST['sinistro']);
         $judi->setAba($_POST['Aba']);

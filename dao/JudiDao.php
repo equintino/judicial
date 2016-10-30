@@ -402,8 +402,6 @@ class JudiDao {//extends TodoDao{
         $timestamp = mktime(date("H")-4);
         $judi->setAlteracao($timestamp);
         $sql = "UPDATE `acoes_transitado_julgado_18102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login, SINISTRO = :SINISTRO, ok = :ok, TITULAR = :TITULAR, VALOR_ADMINISTRATIVO = :VALOR_ADMINISTRATIVO, beneficiario = :beneficiario, idtitular = :idtitular, idbenefi = :idbenefi, recente = :recente WHERE id = :id";
-        //echo "<pre>";
-        //print_r($sql);die;
         return $this->execute2($sql, $judi);
     }
     private function insert3($judi) {
@@ -527,7 +525,7 @@ print_r($this->execute3($sql, $judi));die;
             ':beneficiario' => $judi->getbeneficiario(),
             ':idtitular' => $judi->getidtitular(),
             ':idbenefi' => $judi->getidbenefi(),
-            ':recente' => $judi->getrecente(),
+            ':recente' => $judi->getrecente()
             );
         if ($judi->getId()) {
             unset($params[':created_on']);
