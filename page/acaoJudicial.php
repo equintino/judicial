@@ -1,4 +1,5 @@
 <head>
+    <meta charset="utf-8">
 <script>
     function total($x){
         var x='Clique aqui para ver duplicidades';
@@ -17,7 +18,7 @@
        }
     }
     function atualiza(){
-        var x=confirm('Esta ação levará + ou - 10 minutos. Confirma?');
+        var x=confirm('Esta ação poderá levar + ou - 15 minutos.\s\n Confirma?');
         if(x){
             location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
         }
@@ -89,6 +90,7 @@ function id(el) {
         background-color: green;
         color: white;
     }
+    /*
     table td:hover{
         position: absolute;
         font-size: 18px;
@@ -96,6 +98,7 @@ function id(el) {
         background-color: white;
         text-align: center;
     }
+    */
     .add:hover {
         background: blanchedalmond;
     }
@@ -279,21 +282,60 @@ $totalDuplicidade=0;
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento('%'.$judi->getSegurado().'%'));
          //$Odbcsearch->setTITULAR('%Pedro Dias Lopes%');
          $sinistrado=$Odbcdao->busca3($Odbcsearch, 'TITULAR');
-         //echo "<pre>";
-         //print_r($sinistrado);die;
          if($sinistrado){
+         echo "<pre>";
+         print_r($sinistrado);
+         echo "<br>";
            
             foreach($sinistrado as $keys => $item){
-          //print_r($item->getTITULAR());
+         
+         if(count($sinistrado)>1){
+             echo strlen($judi->getSegurado());
+             echo " - ";
+             echo $judi->getSegurado();
+             echo '<br>';
+             echo strlen($item->getTITULAR());
+             echo ' - '.$item->getTITULAR();
+             if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(utf8_encode(trim($item->getTITULAR())), 'utf8')){
+                    $judi->setSINISTRO($item->getsinistro());
+                    $judi->setTITULAR_h($item->getTITULAR());
+                    $judi->setidtitular($item->getidtitular());               
+             }else{
+                if($judi->getParte_contraria()){
+                 $Odbcsearch->setnome(''.JudiValidator::tirarAcento($judi->getParte_contraria()).'');
+                 $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
+                    foreach($beneficiarios as $beneficiario_){
+                        $judi->setSINISTRO($beneficiario_->getsinistro());
+                        $judi->setbeneficiario($beneficiario_->getnome());
+                        $judi->setidbenefi($beneficiario_->getidbenefi());
+                    }
+                }                
+             }
+         }else{
+                 echo 'Segurado - ';
+                 echo mb_strlen(trim($judi->getSegurado()),'utf8');
+                 echo ' - '.$judi->getSegurado();
+                 echo '<br>';
+                 echo 'Parte Contrária - ';
+                 echo mb_strlen(utf8_encode(trim($judi->getParte_contraria())));
+                 echo ' - '.$judi->getParte_contraria().'<br>';
+                 echo mb_strlen(utf8_encode(trim($item->getTITULAR())),'utf8');
+                 echo ' - '.$item->getTITULAR();
+             if('Ney José de Souza' == $judi->getSegurado()){
+                 die;
+             }
+            $judi->setSINISTRO($item->getsinistro());
+            $judi->setTITULAR_h(utf8_encode($item->getTITULAR()));
+            $judi->setidtitular($item->getidtitular());
+         }
           //echo "<pre>";
+          //die;
           //print_r($judi->getSegurado());
           //if('Pedro Dias Lopes'==$judi->getSegurado()){
            //die;
           //}
                 //if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen(utf8_encode($item->getTITULAR(),'utf8'))){
-                    $judi->setSINISTRO($item->getsinistro());
-                    $judi->setTITULAR_h($item->getTITULAR());
-                    $judi->setidtitular($item->getidtitular());
+                    
                // }else{
                     /*if('FRANCISCO GONÇALVES DA SILVA' == $judi->getSegurado()){
                      echo "<pre>";
@@ -367,8 +409,8 @@ $totalDuplicidade=0;
                 echo "</td>";
             }
         }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null){
-         if(mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8')){
-            if(($campo == $judi->getParte_contraria() || $campo == $judi->getSegurado()) && (mb_strlen($judi->getParte_contraria(),'utf8') != mb_strlen($judi->getbeneficiario(),'utf8'))){
+         if(mb_strlen(trim($judi->getSegurado()),'utf8') != mb_strlen(trim($judi->getTITULAR_h()),'utf8')){
+            if(($campo == $judi->getParte_contraria() || $campo == $judi->getSegurado()) && (mb_strlen(trim($judi->getParte_contraria()),'utf8') != mb_strlen(trim($judi->getbeneficiario()),'utf8'))){
                 echo "<td align=left bgcolor=yellow>";
                     echo mb_strtoupper($campo);
                 echo "</td>"; 
@@ -387,10 +429,10 @@ $totalDuplicidade=0;
              $judi->setTITULAR(utf8_encode($judi->getTITULAR_h()));
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
              $judi->setidbenefi($judi->getidbenefi()); 
-           if($atualiza==1){
+           //if($atualiza==1){
             //$judi->setrecente(1);  
-            $Judidao->saveJd2($judi);//die;
-           }
+            //$Judidao->saveJd2($judi);//die;
+           //}
             //}
          }else{
            ///// Gravando Sinistro e Titular em Acoes /////
@@ -480,7 +522,7 @@ $totalDuplicidade=0;
             //}
          echo "</td>";
         }elseif(($campo == $judi->getbeneficiario() || $campo == $judi->getParte_contraria()) && $campo != null){
-            if(mb_strlen($judi->getbeneficiario(),'utf8') != mb_strlen($judi->getParte_contraria(),'utf8')){
+            if(mb_strlen(trim($judi->getbeneficiario()),'utf8') != mb_strlen(trim($judi->getParte_contraria()),'utf8')){
                 if($judi->getbeneficiario()){
                     echo "<td bgcolor=yellow>";
                         echo mb_strtoupper($campo);
