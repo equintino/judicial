@@ -152,6 +152,7 @@ function id(el) {
 </head>
 <body>
 <?php
+$time = microtime(true);
 function titulos(){
     $titulos=array(
         "Número CNJ / Antigo",
@@ -230,6 +231,7 @@ $totalDuplicidade=0;
             echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
             echo "<i>POR FAVOR AGUARDE...</i>";
             echo "<br>";
+        echo "<script>alert('".(microtime(true) - $time)."');</script>";
             echo "<div id=contagem></div>";
             //echo '<br><br>&nbsp<img src="img/regressiva.gif" alt="" height=35px />';
         echo "</div>"; 
@@ -321,9 +323,9 @@ $totalDuplicidade=0;
                  echo ' - '.$judi->getParte_contraria().'<br>';
                  echo mb_strlen(utf8_encode(trim($item->getTITULAR())),'utf8');
                  echo ' - '.$item->getTITULAR();
-             if('Ney José de Souza' == $judi->getSegurado()){
-                 die;
-             }
+             //if('Ney José de Souza' == $judi->getSegurado()){
+                 //die;
+             //}
             $judi->setSINISTRO($item->getsinistro());
             $judi->setTITULAR_h(utf8_encode($item->getTITULAR()));
             $judi->setidtitular($item->getidtitular());
@@ -585,6 +587,8 @@ $totalDuplicidade=0;
             total($totalDuplicidade);            
            </script>";
      echo "<a href='#topo' class=topo><img src='img/setacima.ico' title='Voltar ao Topo' height=20px ></a>";
+     
+     
         echo "<script>id('mostra').style.display = 'block';</script>";
      die;
   }
