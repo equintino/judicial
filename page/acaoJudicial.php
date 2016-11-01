@@ -12,7 +12,7 @@
     }
     function contagem2($tempo){
         var tempo_=$tempo;
-        var msg="<br><i><font size=1>"+tempo_+" segundos</font></i>";//<font size=5>"+$msg+"</font>";
+        var msg="<br><i><font color=#606060 size=1>"+tempo_+" segundos</font></i>";//<font size=5>"+$msg+"</font>";
         document.getElementById('tempo').innerHTML=msg;
     }
     function excluir($id){
@@ -154,7 +154,8 @@ function id(el) {
      }
      .tempo{
          position: absolute;
-         top: 23px;
+         top: 30px;
+         left: 15px;
      }
 </style>
 <a id="topo"></a>
@@ -249,7 +250,7 @@ $totalDuplicidade=0;
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
       
-        //echo "<div id=mostra class=conteudo style='display:none'>";
+        echo "<div id=mostra class=conteudo style='display:none'>";
       
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
     //echo '<pre>';
@@ -410,18 +411,19 @@ $totalDuplicidade=0;
        $campos=conteudo($judi);
       echo "<tr>";
        foreach($campos as $key => $campo){
-        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){
-            if($key == 15){
+        if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){// passa somente valores monetarios e a data
+            if($key == 15){//formata a data
                 echo "<td align=right bgcolor=white>";
                     echo date('H:i d/m/Y',$campo);
                 echo "</td>";
-            }else{
+            }else{//formata valores monetários
                 echo "<td align=right bgcolor=white>";
                     echo number_format($campo,'2',',','.');
                 echo "</td>";
             }
         }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null){
          if(mb_strlen(trim($judi->getSegurado()),'utf8') != mb_strlen(trim($judi->getTITULAR_h()),'utf8')){
+             
             if(($campo == $judi->getParte_contraria() || $campo == $judi->getSegurado()) && (mb_strlen(trim($judi->getParte_contraria()),'utf8') != mb_strlen(trim($judi->getbeneficiario()),'utf8'))){
                 echo "<td align=left bgcolor=yellow>";
                     echo mb_strtoupper($campo);

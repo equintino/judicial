@@ -8,6 +8,11 @@
         var msg="<br><i><font color=blue>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp buscando </font></i><font size=5>"+atual+"</font><i><font color=blue> registros </font></i>";//<font size=5>"+$msg+"</font>";
         document.getElementById('contagem').innerHTML=msg;
     }
+    function contagem2($tempo){
+        var tempo_=$tempo;
+        var msg="<br><i><font color=#606060 size=1>"+tempo_+" segundos</font></i>";//<font size=5>"+$msg+"</font>";
+        document.getElementById('tempo').innerHTML=msg;
+    }
     function id(el) {
         document.getElementById('carregando').innerHTML='';
         return document.getElementById(el);
@@ -84,9 +89,15 @@
         left: 39%;
         top: 130px;
     }
+     .tempo{
+         position: absolute;
+         top: 30px;
+         left: 15px;
+     }
 </style>
 <?php
 header('Content-type: text/html; charset=UTF-8');
+$time = time(true);
 echo "<div id=topo></div>";
 function titulos(){
     $titulos=array(
@@ -144,6 +155,7 @@ for($z=7;$z<12;$z++){
 $seguradoOld=null;
 $segurado=null;
 
+echo "<div id=tempo class=tempo></div>";
 echo "<div class=carregando id=carregando>";
 echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
 echo "<i>POR FAVOR AGUARDE...</i>";
@@ -151,7 +163,7 @@ echo "<br>";
 echo "<div id=contagem></div>";
 echo "</div>";
 
-//echo "<div id=mostra class=conteudo style='display:none'>";
+echo "<div id=mostra class=conteudo style='display:none'>";
 
 echo "<div class=voltar><button title='Voltar' onclick=location.href='index.php?page=acaoJudicial&act=ver' ;><img src='../web/img/action/back.png' height=15 title='Voltar'></button></div>";
 echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -171,6 +183,7 @@ echo "</tr><tr>";
 
 $sinistros=array();
 foreach($segurados as $item){
+    echo "<div><script>contagem2('".(time(true) - $time)."');</script></div>";
     if($seguradoOld != $item->getTITULAR() || $item->getTITULAR() == ''){
         if($item->getTITULAR() != ''){
             $segurado=JudiValidator::tirarAcento($item->getTITULAR());
