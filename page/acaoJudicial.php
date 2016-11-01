@@ -10,6 +10,11 @@
         var msg="<br><i><font color=blue>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp buscando </font></i><font size=5>"+atual+"</font><i><font color=blue> registros </font></i>";//<font size=5>"+$msg+"</font>";
         document.getElementById('contagem').innerHTML=msg;
     }
+    function contagem2($tempo){
+        var tempo_=$tempo;
+        var msg="<br><i><font size=1>"+tempo_+" segundos</font></i>";//<font size=5>"+$msg+"</font>";
+        document.getElementById('tempo').innerHTML=msg;
+    }
     function excluir($id){
        var y=confirm('Confirma a excusão?');
        var id=$id;
@@ -18,7 +23,7 @@
        }
     }
     function atualiza(){
-        var x=confirm('Esta ação poderá levar + ou - 15 minutos.\s\n Confirma?');
+        var x=confirm('Esta ação poderá levar aproximadamento 15 minutos.\nContinua?');
         if(x){
             location.href='index.php?page=acaoJudicial&act=ver&atualiza=1';
         }
@@ -147,12 +152,16 @@ function id(el) {
      select{
          font-size: 11px;
      }
+     .tempo{
+         position: absolute;
+         top: 23px;
+     }
 </style>
 <a id="topo"></a>
 </head>
 <body>
 <?php
-$time = microtime(true);
+$time = time(true);
 function titulos(){
     $titulos=array(
         "Número CNJ / Antigo",
@@ -226,12 +235,12 @@ $totalDuplicidade=0;
     
     $Judidao=new JudiDao();
     $Judisearch=new JudiSearchCriteria();
-     
+     echo "<div id=tempo class=tempo></div>";
         echo "<div class=carregando id=carregando>";
             echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
             echo "<i>POR FAVOR AGUARDE...</i>";
             echo "<br>";
-        echo "<script>alert('".(microtime(true) - $time)."');</script>";
+            //contagem($msg,$atual)
             echo "<div id=contagem></div>";
             //echo '<br><br>&nbsp<img src="img/regressiva.gif" alt="" height=35px />';
         echo "</div>"; 
@@ -276,7 +285,8 @@ $totalDuplicidade=0;
       $titularOld='inicial';
       $titular_=null;
       $atual=count($judis);
-      foreach($judis as $judi){
+      foreach($judis as $judi){       
+        echo "<div><script>contagem2('".(time(true) - $time)."');</script></div>";
           //// Procurando por duplicidade no administrativo ////          
           //if($x==330)die;
        if($atualiza == 1){
@@ -285,19 +295,19 @@ $totalDuplicidade=0;
          //$Odbcsearch->setTITULAR('%Pedro Dias Lopes%');
          $sinistrado=$Odbcdao->busca3($Odbcsearch, 'TITULAR');
          if($sinistrado){
-         echo "<pre>";
-         print_r($sinistrado);
-         echo "<br>";
+         //echo "<pre>";
+         //print_r($sinistrado);
+         //echo "<br>";
            
             foreach($sinistrado as $keys => $item){
          
          if(count($sinistrado)>1){
-             echo strlen($judi->getSegurado());
-             echo " - ";
-             echo $judi->getSegurado();
-             echo '<br>';
-             echo strlen($item->getTITULAR());
-             echo ' - '.$item->getTITULAR();
+             //echo strlen($judi->getSegurado());
+             //echo " - ";
+             //echo $judi->getSegurado();
+             //echo '<br>';
+             //echo strlen($item->getTITULAR());
+             //echo ' - '.$item->getTITULAR();
              if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(utf8_encode(trim($item->getTITULAR())), 'utf8')){
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
@@ -314,15 +324,15 @@ $totalDuplicidade=0;
                 }                
              }
          }else{
-                 echo 'Segurado - ';
-                 echo mb_strlen(trim($judi->getSegurado()),'utf8');
-                 echo ' - '.$judi->getSegurado();
-                 echo '<br>';
-                 echo 'Parte Contrária - ';
-                 echo mb_strlen(utf8_encode(trim($judi->getParte_contraria())));
-                 echo ' - '.$judi->getParte_contraria().'<br>';
-                 echo mb_strlen(utf8_encode(trim($item->getTITULAR())),'utf8');
-                 echo ' - '.$item->getTITULAR();
+                 //echo 'Segurado - ';
+                 //echo mb_strlen(trim($judi->getSegurado()),'utf8');
+                 //echo ' - '.$judi->getSegurado();
+                 //echo '<br>';
+                 //echo 'Parte Contrária - ';
+                 //echo mb_strlen(utf8_encode(trim($judi->getParte_contraria())));
+                 //echo ' - '.$judi->getParte_contraria().'<br>';
+                 //echo mb_strlen(utf8_encode(trim($item->getTITULAR())),'utf8');
+                 //echo ' - '.$item->getTITULAR();
              //if('Ney José de Souza' == $judi->getSegurado()){
                  //die;
              //}

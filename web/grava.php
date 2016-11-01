@@ -44,12 +44,12 @@
           /// limpar tabela ///
           
           //$sql="select * from $tabela2 where idtitular=5788";
-          //$sql="select * from $tabela where idbenefi=9067";
+          $sql="select * from $tabela2 where idtitular=4916";
           
-          //$sql="update $tabela set nome='MARIA DE NAZARETH GONCALVES SANTOS' where nome like 'maria de nazareth gon%'";
-          $sql="select * from $tabela2 where sinistro like '0124.81.03.00000040'";
+          //$sql="update $tabela2 set TITULAR='MARIA DAS GRACAS DE JESUS' where idtitular=4916";
+          //$sql="select * from $tabela2 where sinistro like '0124.81.03.00000040'";
           
-          $sql="select * from $tabela2 where 1";
+          //$sql="select * from $tabela2 where 1";
           $result=odbc_exec($conn,$sql);
           odbc_result_all($result,'border=1');
           die;
