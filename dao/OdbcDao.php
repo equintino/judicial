@@ -371,7 +371,7 @@ final class OdbcDao {
     public function busca4(OdbcSearchCriteria $search = null, $order = null){
         $result=array();
         $busca = $this->query($this->getBuscaSql4($search, $order));
-        //print_r($this->getBuscaSql4($search, $order));die;
+        //print_r($this->getBuscaSql4($search, $order));
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();

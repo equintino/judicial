@@ -241,20 +241,16 @@ $totalDuplicidade=0;
             echo '<img src="img/loading.gif" alt="" id="loading" height=55px />';
             echo "<i>POR FAVOR AGUARDE...</i>";
             echo "<br>";
-            //contagem($msg,$atual)
             echo "<div id=contagem></div>";
-            //echo '<br><br>&nbsp<img src="img/regressiva.gif" alt="" height=35px />';
         echo "</div>"; 
    }
  
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
       
-        echo "<div id=mostra class=conteudo style='display:none'>";
+        //echo "<div id=mostra class=conteudo style='display:none'>";
       
-    $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
-    //echo '<pre>';
-    //print_r($judis);die;
+    $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito e julgado
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -293,50 +289,36 @@ $totalDuplicidade=0;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento('%'.$judi->getSegurado().'%'));
-         //$Odbcsearch->setTITULAR('%Pedro Dias Lopes%');
          $sinistrado=$Odbcdao->busca3($Odbcsearch, 'TITULAR');
          if($sinistrado){
-         //echo "<pre>";
-         //print_r($sinistrado);
-         //echo "<br>";
            
-            foreach($sinistrado as $keys => $item){
+          foreach($sinistrado as $keys => $item){
          
-         if(count($sinistrado)>1){
-             //echo strlen($judi->getSegurado());
-             //echo " - ";
-             //echo $judi->getSegurado();
-             //echo '<br>';
-             //echo strlen($item->getTITULAR());
-             //echo ' - '.$item->getTITULAR();
+           if(count($sinistrado)>1){
              if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(utf8_encode(trim($item->getTITULAR())), 'utf8')){
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
                     $judi->setidtitular($item->getidtitular());               
              }else{
                 if($judi->getParte_contraria()){
-                 $Odbcsearch->setnome(''.JudiValidator::tirarAcento($judi->getParte_contraria()).'');
+                 $Odbcsearch->setnome('%'.JudiValidator::tirarAcento($judi->getParte_contraria()).'%');
                  $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
-                    foreach($beneficiarios as $beneficiario_){
-                        $judi->setSINISTRO($beneficiario_->getsinistro());
-                        $judi->setbeneficiario($beneficiario_->getnome());
-                        $judi->setidbenefi($beneficiario_->getidbenefi());
+                 if(count($beneficiarios)>1){
+                  foreach($beneficiarios as $beneficiario_){
+                    if(mb_strlen(trim($judi->getParte_contraria()),'utf8') == mb_strlen(utf8_encode(trim($beneficiario_->getnome())),'utf8')){
+                       $judi->setSINISTRO($beneficiario_->getsinistro());
+                       $judi->setbeneficiario($beneficiario_->getnome());
+                       $judi->setidbenefi($beneficiario_->getidbenefi());
                     }
+                  }
+                 }else{
+                      $judi->setSINISTRO($beneficiario_->getsinistro());
+                      $judi->setbeneficiario($beneficiario_->getnome());
+                      $judi->setidbenefi($beneficiario_->getidbenefi());
+                 }
                 }                
              }
          }else{
-                 //echo 'Segurado - ';
-                 //echo mb_strlen(trim($judi->getSegurado()),'utf8');
-                 //echo ' - '.$judi->getSegurado();
-                 //echo '<br>';
-                 //echo 'Parte Contrária - ';
-                 //echo mb_strlen(utf8_encode(trim($judi->getParte_contraria())));
-                 //echo ' - '.$judi->getParte_contraria().'<br>';
-                 //echo mb_strlen(utf8_encode(trim($item->getTITULAR())),'utf8');
-                 //echo ' - '.$item->getTITULAR();
-             //if('Ney José de Souza' == $judi->getSegurado()){
-                 //die;
-             //}
             $judi->setSINISTRO($item->getsinistro());
             $judi->setTITULAR_h(utf8_encode($item->getTITULAR()));
             $judi->setidtitular($item->getidtitular());
@@ -381,13 +363,20 @@ $totalDuplicidade=0;
         }elseif(!$judi->getSINISTRO()){
             $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
              $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
-             
-             foreach($beneficiarios as $beneficiario_){
-                $judi->setSINISTRO($beneficiario_->getsinistro());
-                $judi->setbeneficiario($beneficiario_->getnome());
-                $judi->setidbenefi($beneficiario_->getidbenefi());
+             if(count($beneficiarios)>1){
+                foreach($beneficiarios as $beneficiario_){
+                  if(mb_strlen(trim($judi->getParte_contraria()),'utf8') == mb_strlen(utf8_encode(trim($beneficiario_->getnome())),'utf8')){
+                       $judi->setSINISTRO($beneficiario_->getsinistro());
+                       $judi->setbeneficiario($beneficiario_->getnome());
+                       $judi->setidbenefi($beneficiario_->getidbenefi());
+                  }else{
+                   $judi->setSINISTRO($beneficiario_->getsinistro());
+                   $judi->setbeneficiario($beneficiario_->getnome());
+                   $judi->setidbenefi($beneficiario_->getidbenefi());   
+                  }
+                }
              }
-        }/*else{
+          }/*else{
             $Odbcsearch->setsinistro($judi->getSINISTRO());
             $sinistros=$Odbcdao->busca3($Odbcsearch);
             foreach($sinistros as $sinistro_){
