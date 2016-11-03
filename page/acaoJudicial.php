@@ -251,6 +251,7 @@ $totalDuplicidade=0;
         //echo "<div id=mostra class=conteudo style='display:none'>";
       
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito e julgado
+    //$sinistrado=new Odbc();
     $titulos=titulos(); 
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
@@ -282,7 +283,9 @@ $totalDuplicidade=0;
       $titularOld='inicial';
       $titular_=null;
       $atual=count($judis);
-      foreach($judis as $judi){       
+      foreach($judis as $judi){
+       //echo '<pre>';
+       //print_r($judi);
         echo "<div><script>contagem2('".(time(true) - $time)."');</script></div>";
           //// Procurando por duplicidade no administrativo ////          
           //if($x==330)die;
@@ -303,21 +306,28 @@ $totalDuplicidade=0;
                 if($judi->getParte_contraria()){
                  $Odbcsearch->setnome('%'.JudiValidator::tirarAcento($judi->getParte_contraria()).'%');
                  $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
-                 if(count($beneficiarios)>1){
-                  foreach($beneficiarios as $beneficiario_){
-                    if(mb_strlen(trim($judi->getParte_contraria()),'utf8') == mb_strlen(utf8_encode(trim($beneficiario_->getnome())),'utf8')){
+                  if(count($beneficiarios)>1){
+                   foreach($beneficiarios as $beneficiario_){
+                     if(mb_strlen(trim($judi->getParte_contraria()),'utf8') == mb_strlen(utf8_encode(trim($beneficiario_->getnome())),'utf8')){
+                        $judi->setSINISTRO($beneficiario_->getsinistro());
+                        $judi->setbeneficiario($beneficiario_->getnome());
+                        $judi->setidbenefi($beneficiario_->getidbenefi());
+                     }
+                   }
+                     if(!$judi->getbeneficiario()){
+                        $judi->setSINISTRO($beneficiario_->getsinistro());
+                        $judi->setbeneficiario($beneficiario_->getnome());
+                        $judi->setidbenefi($beneficiario_->getidbenefi());
+                     }
+                  }else{
+                       foreach($beneficiarios as $beneficiario_);
                        $judi->setSINISTRO($beneficiario_->getsinistro());
                        $judi->setbeneficiario($beneficiario_->getnome());
                        $judi->setidbenefi($beneficiario_->getidbenefi());
-                    }
                   }
-                 }else{
-                      $judi->setSINISTRO($beneficiario_->getsinistro());
-                      $judi->setbeneficiario($beneficiario_->getnome());
-                      $judi->setidbenefi($beneficiario_->getidbenefi());
                  }
                 }                
-             }
+             //}
          }else{
             $judi->setSINISTRO($item->getsinistro());
             $judi->setTITULAR_h(utf8_encode($item->getTITULAR()));
@@ -346,18 +356,27 @@ $totalDuplicidade=0;
             }
           }else{
             if($judi->getParte_contraria()){
-             $Odbcsearch->setnome(''.JudiValidator::tirarAcento($judi->getParte_contraria()).'');
+             $Odbcsearch->setnome('%'.JudiValidator::tirarAcento($judi->getParte_contraria()).'%');
              $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
-         //echo "<pre>";
-         //print_r($beneficiarios);
-         //if($beneficiarios){
-            //die;
-         //}
-                foreach($beneficiarios as $beneficiario_){
+             if($beneficiarios > 1){
+               foreach($beneficiarios as $beneficiario_){
+                if(mb_strlen(utf8_encode(trim($beneficiario_->getnome())),'utf8') == mb_strlen(trim($judi->getParte_contraria()),'utf8')){
+                   $judi->setSINISTRO($beneficiario_->getsinistro());
+                   $judi->setbeneficiario($beneficiario_->getnome());
+                   $judi->setidbenefi($beneficiario_->getidbenefi());
+                }
+                if(!$judi->getbeneficiario()){
+                   $judi->setSINISTRO($beneficiario_->getsinistro());
+                   $judi->setbeneficiario($beneficiario_->getnome());
+                   $judi->setidbenefi($beneficiario_->getidbenefi());
+                }
+               }
+             }else{
+                foreach($beneficiarios as $beneficiario_);
                     $judi->setSINISTRO($beneficiario_->getsinistro());
                     $judi->setbeneficiario($beneficiario_->getnome());
                     $judi->setidbenefi($beneficiario_->getidbenefi());
-                }
+             }
             }
           }
         }elseif(!$judi->getSINISTRO()){
@@ -376,7 +395,7 @@ $totalDuplicidade=0;
                   }
                 }
              }
-          }/*else{
+          }else{
             $Odbcsearch->setsinistro($judi->getSINISTRO());
             $sinistros=$Odbcdao->busca3($Odbcsearch);
             foreach($sinistros as $sinistro_){
@@ -386,7 +405,7 @@ $totalDuplicidade=0;
             if(!isset($sinistro)){
                 $judi->setOk(1);
             }
-        }*/
+           }
            $atual--;
            $titularOld=$titular_; 
         ///// contagem dos processos /////
@@ -398,6 +417,18 @@ $totalDuplicidade=0;
       
            ///// Construindo a tabela ////
        $campos=conteudo($judi);
+       /*
+       echo '<pre>';
+       echo 'Judi<br>';
+       print_r($judi);
+       echo 'Sinistrado<br>';
+       print_r($item);
+       echo 'Beneficiarios<br>';
+       print_r($beneficiario_);
+       echo 'Campos<br>';
+       print_r($campos);
+        * 
+        */
       echo "<tr>";
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){// passa somente valores monetarios e a data
@@ -410,14 +441,45 @@ $totalDuplicidade=0;
                     echo number_format($campo,'2',',','.');
                 echo "</td>";
             }
-        }elseif(($campo == $judi->getTITULAR_h() || $campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null){
-         if(mb_strlen(trim($judi->getSegurado()),'utf8') != mb_strlen(trim($judi->getTITULAR_h()),'utf8')){
-             
+        }elseif(($campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null){
+         //echo $judi->getTITULAR_h();
+         //echo ' - ';
+         //var_dump($campo);
+         //echo '<pre>';
+         //print_r($judi);
+         //if($campo == $judi->getSegurado()){
+           //die;
+         //}
+         if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(trim($judi->getTITULAR_h()),'utf8') && $campo == $judi->getSegurado()){
+           ///// Gravando Sinistro e Titular em Acoes /////
+             $judi->setTITULAR($judi->getTITULAR_h());
+             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
+             $judi->setidtitular($judi->getidtitular());
+            
+             if($atualiza==1){
+            //$judi->setrecente(1);  
+              $Judidao->saveJd2($judi);//die;
+             }
+         /*}/*else{
+          if($campo == $judi->getSINISTRO()){
+            echo "<td bgcolor=white>";
+              echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR())."\">";
+                    echo mb_strtoupper($campo);
+            echo "</td>";
+            echo '<pre>';
+            print_r($sinistrado);
+            die;         
+          }elseif($campo == $judi->getSegurado()){
+            echo "<td bgcolor=yellow>";
+               echo mb_strtoupper($campo);
+            echo '</td>';
+          }
+            /* 
             if(($campo == $judi->getParte_contraria() || $campo == $judi->getSegurado()) && (mb_strlen(trim($judi->getParte_contraria()),'utf8') != mb_strlen(trim($judi->getbeneficiario()),'utf8'))){
                 echo "<td align=left bgcolor=yellow>";
                     echo mb_strtoupper($campo);
                 echo "</td>"; 
-            }elseif($judi->getbeneficiario()){
+            }elseif($judi->getbeneficiario()){die;
                 echo "<td bgcolor=white>";
                     echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getbeneficiario())."\">";
                     //echo mb_strtoupper($campo);
@@ -428,35 +490,39 @@ $totalDuplicidade=0;
                     //echo mb_strtoupper($campo);
                 echo "</td>";
             }
+             * 
+             */
             //if('Pedro Dias Lopes' == $judi->getSegurado()){
-             $judi->setTITULAR(utf8_encode($judi->getTITULAR_h()));
-             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
-             $judi->setidbenefi($judi->getidbenefi()); 
+             //$judi->setTITULAR(utf8_encode($judi->getTITULAR_h()));
+             //$judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
+             //$judi->setidbenefi($judi->getidbenefi()); 
            //if($atualiza==1){
             //$judi->setrecente(1);  
             //$Judidao->saveJd2($judi);//die;
            //}
             //}
-         }else{
-           ///// Gravando Sinistro e Titular em Acoes /////
-             $judi->setTITULAR($judi->getTITULAR_h());
-             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
-             $judi->setidbenefi($judi->getidbenefi());
-            
-             if($atualiza==1){
-            //$judi->setrecente(1);  
-              $Judidao->saveJd2($judi);//die;
-             }
-           }
+         }elseif($campo == $judi->getSegurado() && $item->getTITULAR() <> null){
+          //echo '<pre>';
+          //print_r($item->getTITULAR());
+           echo "<td align=center bgcolor=yellow>";
+             echo mb_strtoupper($campo);
+           echo "</td>";
+           //echo '<pre>';
+          //print_r($sinistrado);
+          //print_r($judi);die;
+         }
+         /*
           if($campo == $judi->getSINISTRO()){ 
-           echo "<td align=center bgcolor=white>";
+           echo "<td align=center bgcolor=white>";            
+             echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR())."\">";
            //echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
            echo $judi->getSINISTRO();
-          }else{
-            echo "<td bgcolor=white>";
-            echo mb_strtoupper($campo);  
+          //}else{
+            //echo "<td bgcolor=white>";
+            //echo mb_strtoupper($campo);  
           }
           echo "</td>";
+          */
          //}
         }elseif($campo == $judi->getSINISTRO () && $campo != null){
          echo "<td align=center bgcolor=white>";
@@ -580,7 +646,7 @@ $totalDuplicidade=0;
         ///// contagem dos processos /////
          echo "<script>contagem(".count($judis).",".$atual.")</script>";
         //// ///
-          //$judi=new Judi();
+          $judi=new Judi();
      }   
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=6 style=\"background-color: #556B2F\"></th>";
      echo "</tr></table>";
