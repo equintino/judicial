@@ -294,6 +294,8 @@ $totalDuplicidade=0;
          $Odbcsearch->setTITULAR(JudiValidator::tirarAcento('%'.$judi->getSegurado().'%'));
          $sinistrado=$Odbcdao->busca3($Odbcsearch, 'TITULAR');
          if($sinistrado){
+         //echo '<pre>';
+         //print_r($sinistrado);die;
            
           foreach($sinistrado as $keys => $item){
          
@@ -455,14 +457,16 @@ $totalDuplicidade=0;
          //if($campo == $judi->getSegurado()){
            //die;
          //}
-             $judi->setTITULAR($judi->getTITULAR_h());
-             $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
-             $judi->setidtitular($judi->getidtitular());
+         /*
+            echo '<pre>';
+         print_r($item);
             echo 'Segurado -> '.mb_strlen(trim($judi->getSegurado()),'utf8').' - '.trim($judi->getSegurado());
             echo '<br>';
-            echo 'Titular -> '.mb_strlen(trim($judi->getTITULAR_h()),'utf8').' - '.trim($judi->getTITULAR_h());
+            echo 'Titular -> '.mb_strlen(trim($item->getTITULAR()),'utf8').' - '.trim($item->getTITULAR());
             echo '<br>';
-         if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(trim($judi->getTITULAR_h()),'utf8')){
+          * 
+          */
+         if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(trim($judi->getTITULAR_h()),'utf8') || !$sinistrado){
              $judi->setTITULAR($judi->getTITULAR_h());
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
              $judi->setidtitular($judi->getidtitular());
@@ -660,6 +664,7 @@ $totalDuplicidade=0;
          echo "<script>contagem(".count($judis).",".$atual.")</script>";
         //// ///
           $judi=new Judi();
+          $sinistrado=new Odbc();
      }   
      echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=6 style=\"background-color: #556B2F\"></th>";
      echo "</tr></table>";
