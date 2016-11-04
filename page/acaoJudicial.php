@@ -407,7 +407,7 @@ $totalDuplicidade=0;
             if(!isset($sinistro)){
                 $judi->setOk(1);
             }
-           }
+          }
            $atual--;
            $titularOld=$titular_; 
         ///// contagem dos processos /////
@@ -448,107 +448,51 @@ $totalDuplicidade=0;
                 echo mb_strtoupper($campo);
             echo "</td>";
         }elseif($key == 4){
-            //(($campo == $judi->getSINISTRO() || $campo == $judi->getSegurado()) && $judi->getSegurado() != null && $judi->getTITULAR_h() != null){
-         //echo $judi->getTITULAR_h();
-         //echo ' - ';
-         //var_dump($campo);
-         //echo '<pre>';
-         //print_r($judi);
-         //if($campo == $judi->getSegurado()){
-           //die;
-         //}
-         /*
-            echo '<pre>';
-         print_r($item);
-            echo 'Segurado -> '.mb_strlen(trim($judi->getSegurado()),'utf8').' - '.trim($judi->getSegurado());
-            echo '<br>';
-            echo 'Titular -> '.mb_strlen(trim($item->getTITULAR()),'utf8').' - '.trim($item->getTITULAR());
-            echo '<br>';
-          * 
-          */
-         if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(trim($judi->getTITULAR_h()),'utf8') || !@$sinistrado){
+            //echo '<pre>';
+            //if(isset($item)){
+                //print_r($item);
+            //}
+            //echo 'segurado - '.$judi->getSegurado().'('.mb_strlen(trim($judi->getSegurado()),'utf8').')';
+            //echo '<br>';
+            //echo 'titular - '.$judi->getTITULAR().'('.mb_strlen(trim($judi->getTITULAR()),'utf8').')';
+            //echo '<br>';
+            //echo '<pre>';
+            //print_r($judi);
+         if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(trim($judi->getTITULAR()),'utf8') || $judi->getTITULAR_h()){
              $judi->setTITULAR($judi->getTITULAR_h());
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
              $judi->setidtitular($judi->getidtitular());
             
              if($atualiza==1){///// Gravando Sinistro e Titular em Acoes /////
-              $Judidao->saveJd2($judi);//die;
+              $Judidao->saveJd2($judi);
              }
             echo "<td bgcolor=white>";
                 echo mb_strtoupper($campo);
             echo "</td>";
-         /*}/*else{
-          if($campo == $judi->getSINISTRO()){
-            echo "<td bgcolor=white>";
-              echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR())."\">";
-                    echo mb_strtoupper($campo);
-            echo "</td>";
-            echo '<pre>';
-            print_r($sinistrado);
-            die;         
-          }elseif($campo == $judi->getSegurado()){
-            echo "<td bgcolor=yellow>";
-               echo mb_strtoupper($campo);
-            echo '</td>';
-          }
-            /* 
-            if(($campo == $judi->getParte_contraria() || $campo == $judi->getSegurado()) && (mb_strlen(trim($judi->getParte_contraria()),'utf8') != mb_strlen(trim($judi->getbeneficiario()),'utf8'))){
-                echo "<td align=left bgcolor=yellow>";
-                    echo mb_strtoupper($campo);
-                echo "</td>"; 
-            }elseif($judi->getbeneficiario()){die;
-                echo "<td bgcolor=white>";
-                    echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getbeneficiario())."\">";
-                    //echo mb_strtoupper($campo);
-                echo "</td>";
-            }else{
-                echo "<td bgcolor=white>";
-                    echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR_h())."\">";
-                    //echo mb_strtoupper($campo);
-                echo "</td>";
-            }
-             * 
-             */
-            //if('Pedro Dias Lopes' == $judi->getSegurado()){
-             //$judi->setTITULAR(utf8_encode($judi->getTITULAR_h()));
-             //$judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
-             //$judi->setidbenefi($judi->getidbenefi()); 
-           //if($atualiza==1){
-            //$judi->setrecente(1);  
-            //$Judidao->saveJd2($judi);//die;
-           //}
-            //}
          }else{
           //echo '<pre>';
           //print_r($item->getTITULAR());
-           echo "<td bgcolor=yellow>";
-             echo mb_strtoupper($campo);
-           echo "</td>";
+             if(mb_strlen(trim($judi->getTITULAR()),'utf8') <> 0){
+                echo "<td bgcolor=yellow>";
+                  echo mb_strtoupper($campo);
+                echo "</td>";
+             }else{
+                echo "<td bgcolor=white>";
+                    echo mb_strtoupper($campo);
+                echo "</td>"; 
+             }
            //echo '<pre>';
           //print_r($sinistrado);
           //print_r($judi);die;
          }
-         /*
-          if($campo == $judi->getSINISTRO()){ 
-           echo "<td align=center bgcolor=white>";            
-             echo "<img src=img/interroga.png height=15 title=\"Poss&iacute;vel Duplica&ccedil;&atilde;o &#10 ".mb_strtoupper($judi->getTITULAR())."\">";
-           //echo "<img src=img/atencao.png height=15 title='Duplicado &#10 ".$judi->getSINISTRO()."'>";
-           echo $judi->getSINISTRO();
-          //}else{
-            //echo "<td bgcolor=white>";
-            //echo mb_strtoupper($campo);  
-          }
-          echo "</td>";
-          */
-         //}
         }elseif($key == 3 || $key == 5){
             if(mb_strlen(trim($judi->getbeneficiario()),'utf8') == mb_strlen(trim($judi->getParte_contraria()),'utf8')){
                 echo "<td bgcolor=white>";
                     echo mb_strtoupper($campo); 
                 echo "</td>";
-                    if($atualiza == 1 && $key == 5){
-                     $Judidao->saveJd2($judi);
-                    }
+                    if($atualiza == 1){
+                        $Judidao->saveJd2($judi);
+                    } 
             }else{
                if($campo == null || $key == 3){
                  echo "<td bgcolor=white>";
@@ -561,9 +505,16 @@ $totalDuplicidade=0;
                }
             }
         }elseif($key == 13){
-           echo "<td bgcolor=white>";
-            echo mb_strtoupper($campo);
-           echo "</td>";  
+            //echo '<pre>';
+            //print_r($judi);
+           if(isset($item) || isset($beneficiario_)){
+                echo "<td bgcolor=white>";
+                 echo mb_strtoupper($campo);
+                echo "</td>"; 
+           }else{
+               echo "<td bgcolor=white>";
+               echo "</td>";
+           }
         }
         switch($key){
           case 7:
