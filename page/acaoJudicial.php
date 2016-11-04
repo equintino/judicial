@@ -466,7 +466,7 @@ $totalDuplicidade=0;
             echo '<br>';
           * 
           */
-         if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(trim($judi->getTITULAR_h()),'utf8') || !$sinistrado){
+         if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(trim($judi->getTITULAR_h()),'utf8') || !@$sinistrado){
              $judi->setTITULAR($judi->getTITULAR_h());
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
              $judi->setidtitular($judi->getidtitular());
@@ -541,96 +541,29 @@ $totalDuplicidade=0;
           echo "</td>";
           */
          //}
-        }elseif($campo == $judi->getSINISTRO () && $campo != null){
-         echo "<td align=center bgcolor=white>";
-         /*
-            if($atualiza != 1){
-                $confereExclusao=new OdbcSearchCriteria();
-                $confereExclusao->setidtitular($judi->getidtitular());
-                $sinistrado=$Odbcdao->busca3($confereExclusao);
-                $beneficiarios=null;
-                if(!$sinistrado){
-                    if($judi->getParte_contraria()){
-                        $Odbcsearch->setidbenefi($judi->getidbenefi());
-                        $beneficiarios=$Odbcdao->busca4($Odbcsearch);
-                        
-                        /*foreach($beneficiarios as $beneficiario_){
-                            $judi->setbeneficiario($beneficiario_->getnome());
-                            $judi->setidbenefi($beneficiario_->getidbenefi());
-                            if(!$sinistrado){
-                                $judi->setSINISTRO($beneficiario_->getsinistro());
-                            }
-                        }
-                    }
-                }*/
-                /*if($sinistrado || $beneficiarios){
-                 if($sinistrado){
-                  foreach($sinistrado as $item2);
-                  $judi->setSINISTRO($item2->getsinistro());
-                 }
-                    if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen($judi->getTITULAR(),'utf8') && $judi->getTITULAR() != ''){
-                        //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
-                        echo $judi->getSINISTRO();
-                    }elseif(mb_strlen($judi->getbeneficiario(),'utf8') == mb_strlen($judi->getParte_contraria(),'utf8')){
-                        //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
-                        echo $judi->getSINISTRO();
-                    }else{
-                        echo "<img src=img/interroga.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
-                    }
-                    //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
-                    //echo $judi->getSINISTRO();
-                    $totalDuplicidade++;
-                }else{*/
-                /*
-                    if(!$sinistrado && !$beneficiarios){
-                        echo "<img src=img/confirmado.png heght=15 title='Exclus&atilde;o Confirmada'>";
-                    /// Salvando confirmação de exclusão em ações ///
-                        $judi->setrecente(1);
-                        $judi->setOk(1);
-                        $Judidao->saveJd2($judi);
-                    }
-                    $atual--;
-                }*/
-            /*}else{
-                if($judi->getOk() == 1){
-                    echo "<img src=img/confirmado.png heght=15 title='Exclus&atilde;o Confirmada'>";                
-                }else{
-                    //if((mb_strlen($judi->getbeneficiario(),'utf8') != mb_strlen($judi->getParte_contraria(),'utf8')) || (mb_strlen($judi->getSegurado(),'utf8') != mb_strlen($judi->getTITULAR_h(),'utf8'))){
-                        //echo "<img src=img/interroga.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">";
-                    //}else{
-                        //echo "<img src=img/atencao.png height=15 title=\"Duplicado &#10 ".$judi->getSINISTRO()."\">"; 
-             * 
-             */
-                        echo $judi->getSINISTRO();
-                   // }
-                    //$totalDuplicidade++;
-                //}
-            //}
-         echo "</td>";
-        }elseif(($campo == $judi->getbeneficiario() || $campo == $judi->getParte_contraria()) && $campo != null){
-            if(mb_strlen(trim($judi->getbeneficiario()),'utf8') != mb_strlen(trim($judi->getParte_contraria()),'utf8')){
-                if($judi->getbeneficiario()){
-                    echo "<td bgcolor=yellow>";
-                        echo mb_strtoupper($campo);
-                }else{
-                    echo "<td bgcolor=white>";
-                        echo mb_strtoupper($campo); 
-                }
-            }else{
+        }elseif($key == 3 || $key == 5){
+            if(mb_strlen(trim($judi->getbeneficiario()),'utf8') == mb_strlen(trim($judi->getParte_contraria()),'utf8')){
                 echo "<td bgcolor=white>";
-                    echo mb_strtoupper($campo);
-                     //$judi->setrecente(1);
-                     //echo "<pre>";
-                     //print_r($judi);
-                    if($atualiza==1){
+                    echo mb_strtoupper($campo); 
+                echo "</td>";
+                    if($atualiza == 1 && $key == 5){
                      $Judidao->saveJd2($judi);
                     }
+            }else{
+               if($campo == null || $key == 3){
+                 echo "<td bgcolor=white>";
+                    echo mb_strtoupper($campo); 
+                 echo "</td>";
+               }else{
+                 echo "<td bgcolor=yellow>";
+                    echo mb_strtoupper($campo);
+                 echo "</td>";
+               }
             }
-            echo "</td>";
-        }else{
-         echo "<td bgcolor=white>";
-          echo mb_strtoupper($campo);
-         echo "</td>";  
+        }elseif($key == 13){
+           echo "<td bgcolor=white>";
+            echo mb_strtoupper($campo);
+           echo "</td>";  
         }
         switch($key){
           case 7:
