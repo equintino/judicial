@@ -91,6 +91,9 @@ function id(el) {
          width: 100%;
          font-size: 10px;
     }
+    table td{
+        #color: white;
+    }
     table th{
         background-color: green;
         color: white;
@@ -224,6 +227,10 @@ if(!isset($atualiza)){
  $atualiza=null;
 }
 $totalDuplicidade=0;
+/// padroes da tabela ///
+$fundo='white';
+
+
    if ($edit) {
      $judi = Utils::getJudiByGetId2();
    } else {
@@ -435,16 +442,16 @@ $totalDuplicidade=0;
        foreach($campos as $key => $campo){
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){// passa somente valores monetarios e a data
             if($key == 15){//formata a data
-                echo "<td align=right bgcolor=white>";
+                echo "<td align=right bgcolor=".$fundo.">";
                     echo date('H:i d/m/Y',$campo);
                 echo "</td>";
             }else{//formata valores monetários
-                echo "<td align=right bgcolor=white>";
+                echo "<td align=right bgcolor=".$fundo.">";
                     echo number_format($campo,'2',',','.');
                 echo "</td>";
             }
         }elseif($key == 0 || $key == 1 || $key == 2 || $key == 6 || $key == 12 || $key == 14){
-            echo "<td align=center bgcolor=white>";
+            echo "<td align=center bgcolor=".$fundo.">";
                 echo mb_strtoupper($campo);
             echo "</td>";
         }elseif($key == 4){
@@ -466,7 +473,7 @@ $totalDuplicidade=0;
              if($atualiza==1){///// Gravando Sinistro e Titular em Acoes /////
               $Judidao->saveJd2($judi);
              }
-            echo "<td bgcolor=white>";
+            echo "<td bgcolor=".$fundo.">";
                 echo mb_strtoupper($campo);
             echo "</td>";
          }else{
@@ -477,7 +484,7 @@ $totalDuplicidade=0;
                   echo mb_strtoupper($campo);
                 echo "</td>";
              }else{
-                echo "<td bgcolor=white>";
+                echo "<td bgcolor=".$fundo.">";
                     echo mb_strtoupper($campo);
                 echo "</td>"; 
              }
@@ -487,7 +494,7 @@ $totalDuplicidade=0;
          }
         }elseif($key == 3 || $key == 5){
             if(mb_strlen(trim($judi->getbeneficiario()),'utf8') == mb_strlen(trim($judi->getParte_contraria()),'utf8')){
-                echo "<td bgcolor=white>";
+                echo "<td bgcolor=".$fundo.">";
                     echo mb_strtoupper($campo); 
                 echo "</td>";
                     if($atualiza == 1){
@@ -495,7 +502,7 @@ $totalDuplicidade=0;
                     } 
             }else{
                if($campo == null || $key == 3){
-                 echo "<td bgcolor=white>";
+                 echo "<td bgcolor=".$fundo.">";
                     echo mb_strtoupper($campo); 
                  echo "</td>";
                }else{
@@ -508,11 +515,11 @@ $totalDuplicidade=0;
             //echo '<pre>';
             //print_r($judi);
            if(isset($item) || isset($beneficiario_)){
-                echo "<td bgcolor=white>";
+                echo "<td bgcolor=".$fundo.">";
                  echo mb_strtoupper($campo);
                 echo "</td>"; 
            }else{
-               echo "<td bgcolor=white>";
+               echo "<td bgcolor=".$fundo.">";
                echo "</td>";
            }
         }
