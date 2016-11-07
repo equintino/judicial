@@ -6,7 +6,7 @@ final class OdbcDao {
         $this->db = null;
         odbc_close_all();
     }
-    public function getDb() {
+    public function getDb2() {
         if ($this->db !== null) {
             return $this->db;
         }
@@ -21,6 +21,18 @@ final class OdbcDao {
             throw new Exception('DB connection error: ' . $ex->getMessage());
         }
         //print_r($this->db);die;
+        return $this->db;
+    }
+    public function getDb(){
+        if ($this->db !== null) {
+            return $this->db;
+        }
+        try {
+            $this->db = odbc_connect("Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq=C:/xampp/htdocs/projetos/judicial/db/novobanco.accdb", "", "") or die (odbc_errormsg());
+        } catch (Exception $ex) {
+            throw new Exception('DB connection error: ' . $ex->getMessage());
+        }
+        //print_r($this->db);
         return $this->db;
     }
     public function query($sql) {
