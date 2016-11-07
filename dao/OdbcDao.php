@@ -6,6 +6,18 @@ final class OdbcDao {
         $this->db = null;
         odbc_close_all();
     }
+    public function getDb2(){
+        if ($this->db !== null) {
+            return $this->db;
+        }
+        try {
+            $this->db = odbc_connect("Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq=C:/xampp/htdocs/projetos/judicial/db/novobanco.accdb", "", "") or die (odbc_errormsg());
+        } catch (Exception $ex) {
+            throw new Exception('DB connection error: ' . $ex->getMessage());
+        }
+        //print_r($this->db);
+        return $this->db;
+    }
     public function getDb() {
         if ($this->db !== null) {
             return $this->db;
@@ -39,7 +51,7 @@ final class OdbcDao {
         //$sql = "SELECT * FROM Beneficiarios WHERE exclui like 0";
      //print_r($sql);die;
        //odbc_exec($conn, "SET names utf8"); 
-      @$statement = odbc_exec($this->getDb(),$sql);
+      @$statement = odbc_exec($this->getDb2(),$sql);
       //print_r($statement);die;
       while(@$linha = odbc_fetch_array($statement)){
         $result[]=$linha;
