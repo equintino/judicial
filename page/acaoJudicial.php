@@ -179,8 +179,8 @@ function titulos(){
         'Honorários',
         'OBS',
         'DUPLICIDADE',
-        'Login',
-        'Alteração',
+        //'Login',
+        //'Alteração',
         //'ABA',
     );
     return $titulos;
@@ -201,8 +201,8 @@ function conteudo($judi){
         $judi->getHonorarios(),
         $judi->getOBS(),
         $judi->getSINISTRO(),
-        $judi->getlogin(),
-        $judi->getAlteracao(),
+        //$judi->getlogin(),
+        //$judi->getAlteracao(),
         //$judi->getAba(),
     );
     return $campos;
@@ -210,6 +210,7 @@ function conteudo($judi){
 @$act=$_GET['act'];
 $errors = array();
 $judi = null;
+$vezes = 0;
 $edit = array_key_exists('id', $_GET);
 @$ordem = $_GET['ordem'];
 if(@$ordem == 'Alteração'){
@@ -250,7 +251,7 @@ $totalDuplicidade=0;
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
       
-        echo "<div id=mostra class=conteudo style='display:none'>";
+        //echo "<div id=mostra class=conteudo style='display:none'>";
       
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
     //echo '<pre>';
@@ -259,7 +260,7 @@ $totalDuplicidade=0;
       echo "<div class=voltar><a href='index.php'><button title='Voltar'><img src='../web/img/action/back.png' height=15 title='Voltar'></button></a></div>";
       echo "<table border=1 align=center cellspacing=0 spanspacing=0 class=\"tabela\">";
       echo "<caption><h2>$cabecalho</h2></caption>";
-    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=12 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th align=right colspan=3 style=\"background-color: rgba(123, 123, 123, 0.5)\"><a href='index.php?page=duplicado'><div id='total'></div></a></th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=13px></button></th></tr>";
+    echo "<tr><th style=\"background-color: rgba(123, 123, 123, 0.5)\" colspan=10 align=left> Total de linhs ".  number_format(count($judis),'0','','.')."</th><th align=right colspan=3 style=\"background-color: rgba(123, 123, 123, 0.5)\"><a href='index.php?page=duplicado'><div id='total'></div></a></th><th style=\"background-color: rgba(123, 123, 123, 0.5)\" ><button  class=btn onclick=atualiza() title='Clique aqui para atualizar'><img src=img/atualizar.png height=13px></button></th></tr>";
       foreach($titulos as $titulo){
        $titulo_=(str_replace(' ','',$titulo));
           echo "<th class=moedas style= \"white-space: nowrap;\">";
@@ -292,23 +293,15 @@ $totalDuplicidade=0;
           //if($x==330)die;
        if($atualiza == 1){
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
-         $Odbcsearch->setTITULAR(JudiValidator::tirarAcento('%'.$judi->getSegurado().'%'));
-         //$Odbcsearch->setTITULAR('%Pedro Dias Lopes%');
-         $sinistrado=$Odbcdao->busca3($Odbcsearch, 'TITULAR');
+         $Todosearch->setTITULAR(JudiValidator::tirarAcento('%'.$judi->getSegurado().'%'));
+         $sinistrado=$Tododao->busca3($Todosearch, 'TITULAR');
+         //echo '<pre>';
+         //print_r($sinistrado);die;
          if($sinistrado){
-         //echo "<pre>";
-         //print_r($sinistrado);
-         //echo "<br>";
            
             foreach($sinistrado as $keys => $item){
-         
+         //print_r($item);die;
          if(count($sinistrado)>1){
-             //echo strlen($judi->getSegurado());
-             //echo " - ";
-             //echo $judi->getSegurado();
-             //echo '<br>';
-             //echo strlen($item->getTITULAR());
-             //echo ' - '.$item->getTITULAR();
              if(mb_strlen(trim($judi->getSegurado()),'utf8') == mb_strlen(utf8_encode(trim($item->getTITULAR())), 'utf8')){
                     $judi->setSINISTRO($item->getsinistro());
                     $judi->setTITULAR_h($item->getTITULAR());
@@ -316,7 +309,9 @@ $totalDuplicidade=0;
              }else{
                 if($judi->getParte_contraria()){
                  $Odbcsearch->setnome(''.JudiValidator::tirarAcento($judi->getParte_contraria()).'');
-                 $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
+                 $beneficiarios=$Tododao->busca4($Odbcsearch, 'nome');
+                 //echo '<pre>';
+                 //print_r($beneficiarios);
                     foreach($beneficiarios as $beneficiario_){
                         $judi->setSINISTRO($beneficiario_->getsinistro());
                         $judi->setbeneficiario($beneficiario_->getnome());
@@ -325,52 +320,18 @@ $totalDuplicidade=0;
                 }                
              }
          }else{
-                 //echo 'Segurado - ';
-                 //echo mb_strlen(trim($judi->getSegurado()),'utf8');
-                 //echo ' - '.$judi->getSegurado();
-                 //echo '<br>';
-                 //echo 'Parte Contrária - ';
-                 //echo mb_strlen(utf8_encode(trim($judi->getParte_contraria())));
-                 //echo ' - '.$judi->getParte_contraria().'<br>';
-                 //echo mb_strlen(utf8_encode(trim($item->getTITULAR())),'utf8');
-                 //echo ' - '.$item->getTITULAR();
-             //if('Ney José de Souza' == $judi->getSegurado()){
-                 //die;
-             //}
             $judi->setSINISTRO($item->getsinistro());
             $judi->setTITULAR_h(utf8_encode($item->getTITULAR()));
             $judi->setidtitular($item->getidtitular());
          }
-          //echo "<pre>";
-          //die;
-          //print_r($judi->getSegurado());
-          //if('Pedro Dias Lopes'==$judi->getSegurado()){
-           //die;
-          //}
-                //if(mb_strlen($judi->getSegurado(),'utf8') == mb_strlen(utf8_encode($item->getTITULAR(),'utf8'))){
-                    
-               // }else{
-                    /*if('FRANCISCO GONÇALVES DA SILVA' == $judi->getSegurado()){
-                     echo "<pre>";
-                     print_r(utf8_encode($item->getTITULAR()));
-                     echo "<br>";
-                     echo mb_strlen($judi->getSegurado(),'utf8');
-                     echo "<br>";
-                     echo mb_strlen($item->getTITULAR(),'utf8');
-                     //die;
-                      
-                    }*/
-                //}
             }
           }else{
             if($judi->getParte_contraria()){
-             $Odbcsearch->setnome(''.JudiValidator::tirarAcento($judi->getParte_contraria()).'');
-             $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
-         //echo "<pre>";
-         //print_r($beneficiarios);
-         //if($beneficiarios){
-            //die;
-         //}
+             $Todosearch->setnome("".JudiValidator::tirarAcento($judi->getParte_contraria())."");
+             //print_r($Todosearch);
+             $beneficiarios=$Tododao->busca4($Todosearch, 'nome');
+             //echo 'estou aqui mesmo';
+             //print_r($beneficiarios);die;
                 foreach($beneficiarios as $beneficiario_){
                     $judi->setSINISTRO($beneficiario_->getsinistro());
                     $judi->setbeneficiario($beneficiario_->getnome());
@@ -379,31 +340,26 @@ $totalDuplicidade=0;
             }
           }
         }elseif(!$judi->getSINISTRO()){
-            $Odbcsearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
-             $beneficiarios=$Odbcdao->busca4($Odbcsearch, 'nome');
-             
-             foreach($beneficiarios as $beneficiario_){
-                $judi->setSINISTRO($beneficiario_->getsinistro());
-                $judi->setbeneficiario($beneficiario_->getnome());
-                $judi->setidbenefi($beneficiario_->getidbenefi());
+            $Todosearch->setnome(JudiValidator::tirarAcento($judi->getParte_contraria()));
+             $beneficiarios=$Tododao->busca4($Todosearch, 'nome');
+             if(isset($beneficiarios)){
+                foreach($beneficiarios as $beneficiario_){
+                   $judi->setSINISTRO($beneficiario_->getsinistro());
+                   $judi->setbeneficiario($beneficiario_->getnome());
+                   $judi->setidbenefi($beneficiario_->getidbenefi());
+                }
              }
-        }/*else{
-            $Odbcsearch->setsinistro($judi->getSINISTRO());
-            $sinistros=$Odbcdao->busca3($Odbcsearch);
-            foreach($sinistros as $sinistro_){
-                //echo "<pre>";
-                $sinistro=($sinistro_->getsinistro());
-            }
-            if(!isset($sinistro)){
-                $judi->setOk(1);
-            }
-        }*/
+             //echo 'estou aqui<br>';
+             //print_r($beneficiarios);
+        }
            $atual--;
            $titularOld=$titular_; 
         ///// contagem dos processos /////
          echo "<script>contagem(".count($judis).",".$atual.")</script>";
         //// ///
+        //echo 'parei aqui';
        }
+       //echo 'cheguei ate aqui';die;
            
             //// Termino da busca ////
       
@@ -411,10 +367,11 @@ $totalDuplicidade=0;
        $campos=conteudo($judi);
       echo "<tr>";
        foreach($campos as $key => $campo){
+       //echo $campo;
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){// passa somente valores monetarios e a data
             if($key == 15){//formata a data
                 echo "<td align=right bgcolor=white>";
-                    echo date('H:i d/m/Y',$campo);
+                    //echo date('H:i d/m/Y',$campo);
                 echo "</td>";
             }else{//formata valores monetários
                 echo "<td align=right bgcolor=white>";
@@ -577,6 +534,8 @@ $totalDuplicidade=0;
            $pedido=$pedido+$campo;
            break;
         }
+        //$vezes++;
+        //echo "passei por aqui $vezes vezes<br>";
        }
      ///// EDIÇÃO /////
      
@@ -593,7 +552,7 @@ $totalDuplicidade=0;
         //// ///
           //$judi=new Judi();
      }   
-     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=6 style=\"background-color: #556B2F\"></th>";
+     echo "<tr><th class=moedas style=\"background-color: #556B2F\" colspan=7 align=right>TOTAIS</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($deferido,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($causa,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($condenacao,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($honorario,'2',',','.')."</th><th style=\"background-color: #556B2F\" align=right>R$ ".number_format($pedido,'2',',','.')."</th><th colspan=4 style=\"background-color: #556B2F\"></th>";
      echo "</tr></table>";
      echo "<script>
             total($totalDuplicidade);            

@@ -101,6 +101,9 @@ class Todo {
     private $ACUMULADO;
     private $CORRECAO_IGPM;
     private $CORRECAO_TR;
+    private $TITULAR;
+    private $idbenefi;
+    private $nome;
     
     /**
      * Create new {@link Todo} with default properties set.
@@ -108,9 +111,9 @@ class Todo {
     public function __construct() {
         date_default_timezone_set ( "America/Sao_Paulo" );
         $now = new DateTime();
-        $this->setCreatedOn($now);
-        $this->setLastModifiedOn($now);
-        $this->setStatus(self::STATUS_PENDING);
+        //$this->setCreatedOn($now);
+        //$this->setLastModifiedOn($now);
+        //$this->setStatus(self::STATUS_PENDING);
         $this->setDeleted(false);
     }
 
@@ -577,6 +580,24 @@ class Todo {
     }
     public function setCORRECAO_TR($CORRECAO_TR){
         $this->CORRECAO_TR = $CORRECAO_TR;
+    }
+    public function getTITULAR(){
+        return $this->TITULAR;
+    }
+    public function setTITULAR($TITULAR){
+        $this->TITULAR = $TITULAR;
+    }
+    public function getidbenefi(){
+        return $this->idbenefi;
+    }
+    public function setidbenefi($idbenefi){
+        $this->idbenefi = $idbenefi;
+    }
+    public function getnome(){
+        return $this->nome;
+    }
+    public function setnome($nome){
+        $this->nome = $nome;
     }
 }
 ?>

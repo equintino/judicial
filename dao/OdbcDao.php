@@ -6,12 +6,11 @@ final class OdbcDao {
         $this->db = null;
         odbc_close_all();
     }
-    public function getDb2() {
+    public function getDb1() {
         if ($this->db !== null) {
             return $this->db;
         }
         $config = Config::getConfig("odbc");
-        //print_r($config);
         try {
             $this->db = odbc_connect($config['dsn'],$config['username'],$config['password']) or die (odbc_errormsg());
             //odbc_exec($this->db , "SET NAMES 'UTF8'");
@@ -20,10 +19,9 @@ final class OdbcDao {
         } catch (Exception $ex) {
             throw new Exception('DB connection error: ' . $ex->getMessage());
         }
-        //print_r($this->db);die;
         return $this->db;
     }
-    public function getDb(){
+    public function getDb2(){
         if ($this->db !== null) {
             return $this->db;
         }
@@ -35,9 +33,19 @@ final class OdbcDao {
         //print_r($this->db);
         return $this->db;
     }
+    public function getDb() {
+        if ($this->db !== null) {
+            return $this->db;
+        }
+        $config = Config::getConfig("odbc");
+        try {
+            $this->db = new PDO($config['dsn'], $config['username'], $config['password']);
+        } catch (Exception $ex) {
+            throw new Exception('DB connection error: ' . $ex->getMessage());
+        }
+        return $this->db;
+    }
     public function query($sql) {
-        //print_r($sql);
-        //echo "<br>";
             set_time_limit(3600);
             /*
         $statement = $this->getDb()->query($sql, PDO::FETCH_ASSOC);
@@ -58,6 +66,7 @@ final class OdbcDao {
       }
       //print_r(utf8_decode($result));die;
       //$col1=utf8_decode(odbc_result($rs, "name"));
+      //print_r(@$result);
       return @$result;      
     }
     public function query2($sql) {
@@ -366,7 +375,8 @@ final class OdbcDao {
     public function busca3(OdbcSearchCriteria $search = null, $order = null){
         $result=array();
         $busca = $this->query($this->getBuscaSql3($search, $order));
-        //print_r($this->getBuscaSql3($search, $order));die;
+        //$busca = $this->query("SELECT TITULAR,SINISTRO,idtitular,CPF FROM sinipend WHERE TITULAR like '%GILD%' AND idtitular > 0 ORDER BY TITULAR");
+        //print_r($busca);die;
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
@@ -378,6 +388,7 @@ final class OdbcDao {
             $result[$odbc->getidtitular()] = $odbc;
          }
         }
+        //print_r(@$result);
         return @$result;
     }
     public function busca4(OdbcSearchCriteria $search = null, $order = null){
@@ -605,7 +616,7 @@ final class OdbcDao {
         return $sql;
     }
     private function getBuscaSql3(OdbcSearchCriteria $search = null, $order = null){
-        $sql = "SELECT TOP 14 TITULAR,SINISTRO,idtitular,CPF FROM sinipend WHERE ";
+        $sql = "SELECT TITULAR,SINISTRO,idtitular,CPF FROM sinipend WHERE ";
         if($order == null){
             $order = ' idtitular';
         }

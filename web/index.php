@@ -35,7 +35,7 @@ final class Index {
             $this->runPage('404', $extra);
         } else {
             // TODO log exception
-            header('HTTP/1.1 500 Internal Server Error');
+            //header('HTTP/1.1 500 Internal Server Error');
             $this->runPage('500', $extra);
         }
     }

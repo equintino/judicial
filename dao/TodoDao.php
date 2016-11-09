@@ -104,6 +104,129 @@
         //print_r($result);die;
         return @$result;
     }
+    public function busca3($search = null, $order = null){
+        $result=array();
+        $busca = $this->query($this->getBuscaSql3($search, $order));
+        if(isset($busca)){
+         //PRINT_R($busca);
+         foreach ($busca as $key => $row) {
+     //echo '<pre>';
+     //print_r($row);die;
+            $todo = new Todo();
+            TodoMapper::map($todo, $row);
+            $result[$todo->getidtitular()] = $todo;
+         }
+        }
+        //if($result){
+          //echo '<pre>';
+          //echo 'estou aqui';
+          //print_r($result);
+        //}
+        return @$result;
+    }
+    public function busca4($search = null, $order = null){
+     //print_r($search);die;
+        $result=array();
+        $busca = $this->query($this->getBuscaSql4($search, $order));
+        //echo 'estou aqui';
+        //echo '<br>';
+        //print_r($busca);
+        if(@$busca){
+         foreach ($busca as $key => $row) {
+          //echo '<br>';
+          //print_r($row);die;
+            $todo = new Todo();
+            TodoMapper::map($todo, $row);
+            $result[$todo->getidbenefi()] = $todo;
+         }
+        }
+        //if($result){
+        //echo 'estou aqui';
+          //echo '<pre>';
+          //print_r($result);die;
+        //}
+        return @$result;
+    }
+    private function getBuscaSql3($search = null, $order = null){
+        $sql = "SELECT TITULAR,SINISTRO,idtitular,CPF FROM sinipend WHERE ";
+        if($order == null){
+            $order = ' idtitular';
+        }
+        if(@$search->getENDOSSO()){
+         $campo='ENDOSSO';
+         $busca=$search->getENDOSSO();
+        }elseif(@$search->getSINISTRO()){
+         $campo='SINISTRO';
+         $busca=$search->getSINISTRO();
+        }
+        if($search->getIMPORTANCIA_SEGURADA() == null){
+            $search->setIMPORTANCIA_SEGURADA(0);
+        }
+        if(@!$search->getidtitular()){
+            $idtitular=0;
+        }else{
+            $idtitular=$search->getidtitular();
+        }
+        if ($search->getTITULAR() != null || $search->getSINISTRO() != null || $search->getENDOSSO() != null) {
+            if ($search->getSINISTRO() != null || $search->getENDOSSO() != null) {
+                $sql .= "$campo like \"".$busca."\"";
+            }elseif($search->getTITULAR()){
+                $sql .= "TITULAR like \"".$search->getTITULAR()."\" ";
+            }
+            if($search->getIMPORTANCIA_SEGURADA()>0){
+              $sql.= ' AND IMPORTANCIA_SEGURADA > '.$search->getIMPORTANCIA_SEGURADA().' ';
+            }
+        }else{
+          if($search->getIMPORTANCIA_SEGURADA()>0){
+            $sql.= ' IMPORTANCIA_SEGURADA > '.$search->getIMPORTANCIA_SEGURADA().' ';
+          }else{
+            $sql .= "1";           
+          }
+        }
+        //$sql .= ' AND idtitular > '.$idtitular.' ';
+        $sql .= ' ORDER BY '.$order;
+        //print_r($sql);DIE;
+        return $sql;
+    }
+    private function getBuscaSql4($search = null, $order = null){
+     //print_r($search);die;
+        $sql = "SELECT sinistro,nome,idbenefi,cpf FROM Beneficiarios WHERE ";
+        //PRINT_R($sql);die;
+        if($order == null){
+            $order = ' idbenefi';
+        }
+        if(@$search->getENDOSSO()){
+         $campo='endosso';
+         $busca=$search->getENDOSSO();
+        }elseif(@$search->getSINISTRO()){
+         $campo='sinistro';
+         $busca=$search->getSINISTRO();
+        }
+        //print_r($search);die;
+        if($search->getvlindeniza() == null){
+            $search->setvlindeniza(0);
+        }
+        if(@!$search->getidbenefi()){
+            $idbenefi=0;
+        }else{
+            $idbenefi=$search->getidbenefi();
+        }
+        //print_r($sql);die;
+        if ($search->getnome() != null || $search->getSINISTRO() != null || $search->getENDOSSO() != null) {
+            if ($search->getSINISTRO() != null || $search->getENDOSSO() != null) {
+                $sql .= "$campo like \"%".$busca."%\"";
+            }elseif($search->getnome() != null){
+                $sql .= "nome like \"%".$search->getnome()."%\"";
+            }
+            $sql.= ' AND vlindeniza > '.$search->getvlindeniza().' ';
+        }else{
+          $sql.= ' vlindeniza > '.$search->getvlindeniza().' ';
+        }
+        $sql .= " AND idbenefi > $idbenefi ";
+        $sql .= ' ORDER BY '.$order;
+        //print_r($sql);DIE;
+        return $sql;
+    }
     public function findById($id) {
         $row = $this->query('SELECT * FROM processojudicial WHERE deleted = 0 and id = ' . (int) $id)->fetch();
         if (!$row) {

@@ -255,6 +255,15 @@ final class TodoMapper {
         if (array_key_exists('CORRECAO_TR', $properties)) {
             $todo->setCORRECAO_TR($properties['CORRECAO_TR']);
         }   
+        if (array_key_exists('TITULAR', $properties)) {
+            $todo->setTITULAR($properties['TITULAR']);
+        }  
+        if (array_key_exists('idbenefi', $properties)) {
+            $todo->setidbenefi($properties['idbenefi']);
+        }  
+        if (array_key_exists('nome', $properties)) {
+            $todo->setnome($properties['nome']);
+        } 
     }
     private static function createDateTime($input) {
         //return DateTime::createFromFormat('j-n-Y H:i:s', $input);
