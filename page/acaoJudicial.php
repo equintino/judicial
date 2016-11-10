@@ -255,7 +255,7 @@ $fundo='white';
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
       
-        //echo "<div id=mostra class=conteudo style='display:none'>";
+        echo "<div id=mostra class=conteudo style='display:none'>";
       
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito e julgado
     //$sinistrado=new Odbc();
