@@ -107,11 +107,10 @@
     public function busca3($search = null, $order = null){
         $result=array();
         $busca = $this->query($this->getBuscaSql3($search, $order));
+        //$busca = $this->query('SELECT TITULAR,SINISTRO,idtitular,CPF FROM sinipend WHERE TITULAR like "%Geraldo de Oliveira%" ORDER BY TITULAR');
         if(isset($busca)){
-         //PRINT_R($busca);
          foreach ($busca as $key => $row) {
      //echo '<pre>';
-     //print_r($row);die;
             $todo = new Todo();
             TodoMapper::map($todo, $row);
             $result[$todo->getidtitular()] = $todo;
@@ -120,7 +119,7 @@
         //if($result){
           //echo '<pre>';
           //echo 'estou aqui';
-          //print_r($result);
+          //print_r($result);die;
         //}
         return @$result;
     }
@@ -128,22 +127,27 @@
      //print_r($search);die;
         $result=array();
         $busca = $this->query($this->getBuscaSql4($search, $order));
+        //$busca = $this->query2('SELECT sinistro,nome,idbenefi,cpf FROM Beneficiarios WHERE nome like "%Maria de Lourdes Ribeiro de Oliveira%" AND vlindeniza > 0  AND idbenefi > 0  ORDER BY nome');
         //echo 'estou aqui';
         //echo '<br>';
-        //print_r($busca);
+        //print_r($busca);die;
         if(@$busca){
          foreach ($busca as $key => $row) {
+          //print_r($row);
           //echo '<br>';
-          //print_r($row);die;
             $todo = new Todo();
             TodoMapper::map($todo, $row);
+            //print_r($todo);die;
+          //echo '<br>';
+          //print_r($row);
+          //print_r($todo);
             $result[$todo->getidbenefi()] = $todo;
          }
         }
         //if($result){
         //echo 'estou aqui';
           //echo '<pre>';
-          //print_r($result);die;
+          //print_r($result);
         //}
         return @$result;
     }
@@ -151,7 +155,7 @@
         $sql = "SELECT TITULAR,SINISTRO,idtitular,CPF FROM sinipend WHERE ";
         if($order == null){
             $order = ' idtitular';
-        }
+        }    
         if(@$search->getENDOSSO()){
          $campo='ENDOSSO';
          $busca=$search->getENDOSSO();
@@ -185,12 +189,12 @@
         }
         //$sql .= ' AND idtitular > '.$idtitular.' ';
         $sql .= ' ORDER BY '.$order;
-        //print_r($sql);DIE;
+        //print_r($sql);
         return $sql;
     }
     private function getBuscaSql4($search = null, $order = null){
      //print_r($search);die;
-        $sql = "SELECT sinistro,nome,idbenefi,cpf FROM Beneficiarios WHERE ";
+        $sql = "SELECT * FROM Beneficiarios WHERE ";
         //PRINT_R($sql);die;
         if($order == null){
             $order = ' idbenefi';
@@ -342,6 +346,10 @@
         $config = Config::getConfig("db");
         try {
             $this->db = new PDO($config['dsn'], $config['username'], $config['password']);
+            $this->db->exec("set names utf8");
+            $this->db->exec('SET character_set_connection=utf8');
+            $this->db->exec('SET character_set_client=utf8');
+            $this->db->exec('SET character_set_results=utf8');
         } catch (Exception $ex) {
             throw new Exception('DB connection error: ' . $ex->getMessage());
         }
@@ -618,8 +626,19 @@
         }
     }
     public function query($sql) {
-            set_time_limit(3600);
+            //set_time_limit(3600);
+            //print_r($sql);
         $statement = $this->getDb()->query($sql, PDO::FETCH_ASSOC);
+        if ($statement === false) {
+            self::throwDbError($this->getDb()->errorInfo());
+        }
+        return $statement;
+    }
+    public function query2($sql) {
+            //set_time_limit(3600);
+            //print_r($sql);die;
+        $statement = $this->getDb()->query($sql, PDO::FETCH_ASSOC);
+        //print_r($statement);die;
         if ($statement === false) {
             self::throwDbError($this->getDb()->errorInfo());
         }

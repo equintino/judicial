@@ -251,7 +251,7 @@ $totalDuplicidade=0;
     //////// Exibe tabela /////////
   if(@$act=='ver'){ 
       
-        //echo "<div id=mostra class=conteudo style='display:none'>";
+        echo "<div id=mostra class=conteudo style='display:none'>";
       
     $judis=$Judidao->listaAcao($Judisearch,$ordem);// tabela transito x credito
     //echo '<pre>';
@@ -287,7 +287,14 @@ $totalDuplicidade=0;
       $titularOld='inicial';
       $titular_=null;
       $atual=count($judis);
-      foreach($judis as $judi){       
+      $loop=0;
+      foreach($judis as $judi){ 
+       if($loop == 50){
+         //die($loop." vez(es)");
+       }
+       //echo '<pre>';
+       //print_r($judi);
+       $loop++;
         echo "<div><script>contagem2('".(time(true) - $time)."');</script></div>";
           //// Procurando por duplicidade no administrativo ////          
           //if($x==330)die;
@@ -295,9 +302,11 @@ $totalDuplicidade=0;
         if(!$judi->getSINISTRO() && $judi->getSegurado() != null){
          $Todosearch->setTITULAR(JudiValidator::tirarAcento('%'.$judi->getSegurado().'%'));
          $sinistrado=$Tododao->busca3($Todosearch, 'TITULAR');
-         //echo '<pre>';
-         //print_r($sinistrado);die;
-         if($sinistrado){
+         echo '<pre>';
+         //echo 'Sinistrado - ';
+         //print_r($sinistrado);
+         if(isset($sinistrado)){
+         // echo 'entrei';die;
            
             foreach($sinistrado as $keys => $item){
          //print_r($item);die;
@@ -328,6 +337,7 @@ $totalDuplicidade=0;
           }else{
             if($judi->getParte_contraria()){
              $Todosearch->setnome("".JudiValidator::tirarAcento($judi->getParte_contraria())."");
+             //echo '<pre>';
              //print_r($Todosearch);
              $beneficiarios=$Tododao->busca4($Todosearch, 'nome');
              //echo 'estou aqui mesmo';
@@ -367,11 +377,13 @@ $totalDuplicidade=0;
        $campos=conteudo($judi);
       echo "<tr>";
        foreach($campos as $key => $campo){
+       //echo '<pre>';
+       //$campo=(utf8_encode($campo));
        //echo $campo;
         if(preg_match("/^[0-9]/",$campo) && $campos[0] != $campo && $campos[13] != $campo){// passa somente valores monetarios e a data
             if($key == 15){//formata a data
                 echo "<td align=right bgcolor=white>";
-                    //echo date('H:i d/m/Y',$campo);
+                    echo date('H:i d/m/Y',$campo);
                 echo "</td>";
             }else{//formata valores monetários
                 echo "<td align=right bgcolor=white>";
@@ -400,10 +412,10 @@ $totalDuplicidade=0;
              $judi->setTITULAR(utf8_encode($judi->getTITULAR_h()));
              $judi->setVALOR_ADMINISTRATIVO($judi->getCORRECAO_TR_h());
              $judi->setidbenefi($judi->getidbenefi()); 
-           //if($atualiza==1){
+           if($atualiza==1){
             //$judi->setrecente(1);  
-            //$Judidao->saveJd2($judi);//die;
-           //}
+             $Judidao->saveJd2($judi);//die;
+           }
             //}
          }else{
            ///// Gravando Sinistro e Titular em Acoes /////
@@ -508,7 +520,7 @@ $totalDuplicidade=0;
                      //echo "<pre>";
                      //print_r($judi);
                     if($atualiza==1){
-                     $Judidao->saveJd2($judi);
+                       $Judidao->saveJd2($judi);
                     }
             }
             echo "</td>";

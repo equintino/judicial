@@ -105,7 +105,7 @@ final class JudiValidator {
         return $data;
         //print_r(substr($data,8,2));die;
     }
-    public static function tirarAcento($string){  
+    public static function tirarAcento($string){ 
       return preg_replace(array("/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/","/(ç)/","/(Ç)/"),explode(" ","_ _ _ _ _ _ _ _ _ _ _ _ _ _"),$string);
     }
     public static function tirarAcento2($string){  

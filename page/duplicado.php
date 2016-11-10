@@ -141,10 +141,10 @@ $Judisearch=new JudiSearchCriteria();
 $Odbcsearch=new OdbcSearchCriteria();
 $Odbcdao=new OdbcDao();
 $ordem='TITULAR';
-
+//echo 'estou aqui';die;
 $segurados=$Judidao->listaSegurados($Judisearch, $ordem);
 //echo '<pre>';
-//print_r($segurados);die;
+//print_r($Odbcdao);die;
 $atual=count($segurados);
 $sinistro_old=null;
 $contador=0;
@@ -183,11 +183,18 @@ echo "</tr><tr>";
 
 $sinistros=array();
 foreach($segurados as $item){
+ //echo '<pre>';
+ //print_r($item);die;
     echo "<div><script>contagem2('".(time(true) - $time)."');</script></div>";
     if($seguradoOld != $item->getTITULAR() || $item->getTITULAR() == ''){
+     echo '<pre>';
+     //print_r($item);
         if($item->getTITULAR() != ''){
             $segurado=JudiValidator::tirarAcento($item->getTITULAR());
+            //print_r($segurado);die;
             $Odbcsearch->setTITULAR($segurado);
+            //echo '<pre>';
+            //print_r($Odbcsearch);die;
             $odbcs=$Odbcdao->busca3($Odbcsearch);
             //if($item->getTITULAR()=='FRANCISCO GONÇALVES DA SILVA'){
              //echo $segurado;
@@ -195,13 +202,16 @@ foreach($segurados as $item){
              //echo "<pre>";
              //print_r($odbcs);
             //}
-            if(!$odbcs){
+            if(!isset($odbcs)){
               $Odbcsearch->setnome($item->getbeneficiario());
               $odbcs=$Odbcdao->busca4($Odbcsearch);
             }
         }else{
+            //echo '<pre>';
+            //print_r($item->getbeneficiario());die;
             $Odbcsearch->setnome($item->getbeneficiario());
-            $odbcs=$Odbcdao->busca4($Odbcsearch);         
+            $odbcs=$Odbcdao->busca4($Odbcsearch); 
+            //print_r($odbcs);die;        
         }
         foreach($odbcs as $key => $judi){
           if(!in_array($judi->getSINISTRO(),$sinistros)){

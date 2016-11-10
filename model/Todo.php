@@ -33,6 +33,7 @@ class Todo {
     private $AVISO;
     /** @var string */
     private $SINISTRO;
+    //private $sinistro;
     /** @var string */
     private $PESSOA;
     /** @var string one of PENDING/COMPLETED/VOIDED */
@@ -204,6 +205,16 @@ class Todo {
     public function setSINISTRO($SINISTRO) {
         $this->SINISTRO = $SINISTRO;
     }
+    /*
+    public function getsinistro() {
+        return $this->sinistro;
+    }
+
+    public function setsinistro($sinistro) {
+        $this->sinistro = $sinistro;
+    }
+     * 
+     */
     public function getPESSOA() {
         return $this->PESSOA;
     }

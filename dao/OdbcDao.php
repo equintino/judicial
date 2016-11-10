@@ -37,7 +37,7 @@ final class OdbcDao {
         if ($this->db !== null) {
             return $this->db;
         }
-        $config = Config::getConfig("odbc");
+        $config = Config::getConfig("db");
         try {
             $this->db = new PDO($config['dsn'], $config['username'], $config['password']);
         } catch (Exception $ex) {
@@ -47,23 +47,21 @@ final class OdbcDao {
     }
     public function query($sql) {
             set_time_limit(3600);
-            /*
+            
         $statement = $this->getDb()->query($sql, PDO::FETCH_ASSOC);
         if ($statement === false) {
             self::throwDbError($this->getDb()->errorInfo());
         }
         return $statement;
-             * 
-             */
         //var_dump($this->getDb(),$sql);die;
         //$sql = "SELECT * FROM Beneficiarios WHERE exclui like 0";
      //print_r($sql);die;
        //odbc_exec($conn, "SET names utf8"); 
-      @$statement = odbc_exec($this->getDb(),$sql);
+      //@$statement = odbc_exec($this->getDb(),$sql);
       //print_r($statement);die;
-      while(@$linha = odbc_fetch_array($statement)){
-        $result[]=$linha;
-      }
+      //while(@$linha = odbc_fetch_array($statement)){
+        //$result[]=$linha;
+      //}
       //print_r(utf8_decode($result));die;
       //$col1=utf8_decode(odbc_result($rs, "name"));
       //print_r(@$result);
@@ -394,7 +392,9 @@ final class OdbcDao {
     public function busca4(OdbcSearchCriteria $search = null, $order = null){
         $result=array();
         $busca = $this->query($this->getBuscaSql4($search, $order));
-        //print_r($this->getBuscaSql4($search, $order));die;
+        //($this->getBuscaSql4($search, $order));
+        //echo 'estou aqui';
+        //print_r($busca);
         if(@$busca){
          foreach ($busca as $key => $row) {
             $odbc = new Odbc();
@@ -656,7 +656,7 @@ final class OdbcDao {
         return $sql;
     }
     private function getBuscaSql4(OdbcSearchCriteria $search = null, $order = null){
-        $sql = "SELECT TOP 14 sinistro,nome,idbenefi,cpf FROM Beneficiarios WHERE ";
+        $sql = "SELECT * FROM Beneficiarios WHERE ";
         if($order == null){
             $order = ' idbenefi';
         }

@@ -26,6 +26,8 @@ final class TodoMapper {
      * @param array $properties
      */
     public static function map(Todo $todo, array $properties) {
+     //echo '<pre>';
+     //print_r($properties);die;
         if (array_key_exists('id', $properties)) {
             $todo->setId($properties['id']);
         }

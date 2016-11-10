@@ -10,7 +10,11 @@ class JudiDao {//extends TodoDao{
         }
         $config = Config::getConfig("db2");
         try {
-            $this->db = new PDO($config['dsn'], $config['username'], $config['password']);
+            $this->db = new PDO($config['dsn'], $config['username'], $config['password'],array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $this->db->exec("set names utf8");
+            $this->db->exec('SET character_set_connection=utf8');
+            $this->db->exec('SET character_set_client=utf8');
+            $this->db->exec('SET character_set_results=utf8');
         } catch (Exception $ex) {
             throw new Exception('DB connection error: ' . $ex->getMessage());
         }
@@ -397,11 +401,13 @@ class JudiDao {//extends TodoDao{
         return $this->execute2($sql, $judi);
     }
     private function update2(Judi $judi) {
-        $now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
-        $now=$now_->getTimestamp();
-        $timestamp = mktime(date("H")-4);
-        $judi->setAlteracao($timestamp);
+        //$now_ = new DateTime("+0 day", new DateTimeZone('America/Sao_Paulo'));
+        //$now=$now_->getTimestamp();
+        //$timestamp = mktime(date("H")-4);
+        //$judi->setAlteracao($timestamp);
         $sql = "UPDATE `acoes_transitado_julgado_18102016` SET Numero_CNJ_Antigo = :Numero_CNJ_Antigo , Natureza = :Natureza, UF = :UF, Parte_contraria = :Parte_contraria, Segurado = :Segurado, Vlr_deferido=:Vlr_deferido, Faixa_de_Probabilidade = :Faixa_de_Probabilidade, Vlr_da_causa = :Vlr_da_causa, Vlr_condenacao = :Vlr_condenacao, Valor_Pedido = :Valor_Pedido, Honorarios = :Honorarios, OBS=:OBS, Alteracao = :Alteracao, login = :login, SINISTRO = :SINISTRO, ok = :ok, TITULAR = :TITULAR, VALOR_ADMINISTRATIVO = :VALOR_ADMINISTRATIVO, beneficiario = :beneficiario, idtitular = :idtitular, idbenefi = :idbenefi, recente = :recente WHERE id = :id";
+        //echo '<pre>';
+        //print_r($judi);
         return $this->execute2($sql, $judi);
     }
     private function insert3($judi) {
